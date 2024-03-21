@@ -7,10 +7,7 @@ import random
 import os
 import sys
 
-
-#img_path : 이미지 파일을 증강 시키는 경우
 #folder_path : 폴더 안에 있는 모든 이미지 파일을 증강 시키는 경우 
-
 
 folder_path = "/home/dyjung/amr_ws/ml/project/data/augmentedIMG"
 dist_folder_name = "augmentedIMG"
