@@ -41,3 +41,49 @@
 * **workerStatisticButton** - 작업자별 통계 확인 버튼 누르면 작업자별 통계가 **workergraphLayout**에 출력됨
 * **workergraphLayout** - **taskgraphLayout**와 같은 시스템으로 matplotlib 출력 
  
+
+
+
+## workingorder.xml
+---
+  이 파일은 프로젝트의 작업 순서가 들어 가있는 파일이다
+  
+  ![image](https://github.com/dyjung-dev/Amr_eda_basic/assets/137265648/47c41332-3af7-4e55-b132-708a40b475c9)
+  
+  위의 이미지는 내부 구조 예시이다.
+  
+  새로운 작업 목록을 작성할 경우 위의 파일을 복사해서 새로운 파일을 작성한뒤,    
+  ```<package name="dog_light">```에서 "dog_light"를 해당 작업으로 수정한뒤 작업 목록을 작성한다   
+  
+  예) ```<package name="watch">``` 로 수정하고 "watch"의 작업 순서롤 작성해준다    
+
+## read_xml.py
+---
+  클래스 Cxml_reader이 들어 있는 파일이다 
+
+  * Cxml_reader(path,workingname) : 클래스 생성자
+       
+    * Parameter
+        
+      | parameter | description |
+      |---|---|
+      |path|읽고자 하는 xml 파일의 경로|
+      |workingname|xml 파일 안에 정의되어 있는 작업 이름|
+
+    * Return
+      | return | description |
+      |---|---|
+      | Cxml_reader | Cxml_reader 클래스를 반환한다|
+      
+  * xml_open() : 생성할때 입력한 경로에 있는 xml을 불러온다
+                 생성자 안에서 호출된다
+    
+  * get_order_count() : 작업 순서의 목록 갯수를 반환하는 함수
+
+   * get_order_list() : 작업 목록을 리스트 형식으로 반환하는 함수
+     
+## test_use_xmlreader.py
+---
+Cxml_reader 클래스 사용 예제가 들어 있는 파일이다
+
+![image](https://github.com/dyjung-dev/Amr_eda_basic/assets/137265648/2379e795-cb86-43d1-ab0f-66b78021c91a)
