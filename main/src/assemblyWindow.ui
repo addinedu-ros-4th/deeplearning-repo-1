@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1383</width>
-    <height>875</height>
+    <height>873</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -51,13 +51,13 @@ border-radius :15px;
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QLabel" name="guidLabel">
+  <widget class="QLabel" name="workGuidLabel">
    <property name="geometry">
     <rect>
      <x>590</x>
-     <y>20</y>
+     <y>10</y>
      <width>781</width>
-     <height>331</height>
+     <height>341</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -67,7 +67,7 @@ border-radius :15px;
     <string>작업 가이드 이미지</string>
    </property>
   </widget>
-  <widget class="QLabel" name="workCamera">
+  <widget class="QLabel" name="workNowLabel">
    <property name="geometry">
     <rect>
      <x>590</x>
@@ -103,7 +103,7 @@ border-radius :15px;
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>10</y>
+     <y>40</y>
      <width>141</width>
      <height>41</height>
     </rect>
@@ -123,9 +123,9 @@ border-radius :15px;
   <widget class="QLabel" name="idBack">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>60</y>
-     <width>541</width>
+     <x>170</x>
+     <y>10</y>
+     <width>411</width>
      <height>101</height>
     </rect>
    </property>
@@ -139,8 +139,8 @@ border-radius :15px;
   <widget class="QPushButton" name="logoutButton">
    <property name="geometry">
     <rect>
-     <x>410</x>
-     <y>70</y>
+     <x>460</x>
+     <y>20</y>
      <width>111</width>
      <height>81</height>
     </rect>
@@ -159,13 +159,13 @@ border-radius :15px;
     <string>로그아웃</string>
    </property>
   </widget>
-  <widget class="QLabel" name="progressBack">
+  <widget class="QLabel" name="backProgress">
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>170</y>
+     <y>120</y>
      <width>541</width>
-     <height>691</height>
+     <height>681</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -179,7 +179,7 @@ border-radius :15px;
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>180</y>
+     <y>130</y>
      <width>521</width>
      <height>41</height>
     </rect>
@@ -206,9 +206,9 @@ border-radius :15px;
    <property name="geometry">
     <rect>
      <x>40</x>
-     <y>230</y>
+     <y>180</y>
      <width>511</width>
-     <height>621</height>
+     <height>611</height>
     </rect>
    </property>
    <property name="widgetResizable">
@@ -220,7 +220,7 @@ border-radius :15px;
       <x>0</x>
       <y>0</y>
       <width>509</width>
-      <height>619</height>
+      <height>609</height>
      </rect>
     </property>
     <widget class="QWidget" name="layoutWidget">
@@ -551,7 +551,7 @@ border-radius :15px;
       </item>
      </layout>
     </widget>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -881,12 +881,12 @@ border-radius :15px;
     </widget>
    </widget>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>70</y>
-     <width>311</width>
+     <x>180</x>
+     <y>20</y>
+     <width>271</width>
      <height>81</height>
     </rect>
    </property>
@@ -922,7 +922,7 @@ border-radius :15px;
      </widget>
     </item>
     <item row="0" column="1">
-     <widget class="QTextEdit" name="IDlabel"/>
+     <widget class="QTextEdit" name="idLabel"/>
     </item>
     <item row="1" column="0">
      <widget class="QLabel" name="Name">
@@ -955,9 +955,32 @@ border-radius :15px;
      </widget>
     </item>
     <item row="1" column="1">
-     <widget class="QTextEdit" name="NameLabel"/>
+     <widget class="QTextEdit" name="nameLabel"/>
     </item>
    </layout>
+  </widget>
+  <widget class="QPushButton" name="errorButton">
+   <property name="geometry">
+    <rect>
+     <x>410</x>
+     <y>810</y>
+     <width>151</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>15</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); border-radius: 20px</string>
+   </property>
+   <property name="text">
+    <string>불량 보고 </string>
+   </property>
   </widget>
  </widget>
  <resources/>
