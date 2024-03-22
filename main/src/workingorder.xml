@@ -1,0 +1,14 @@
+<package name="dog_light">
+    <instructions>
+        <step order="1">
+            <description>재료화면에 모든 재료들을 위의 사진처럼 나열해주세요</description>
+        </step>
+        <step order="2">
+            <description>HEAD BLOCK A를 가져옵니다</description>
+        </step>
+        <step order="3">
+            <description>HEAD BLOCK B를 가져옵니다</description>
+        </step>
+    </instructions>
+</package>
+
