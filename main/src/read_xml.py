@@ -1,6 +1,6 @@
 import xml.etree.ElementTree as ET
 
-class xml_reader:
+class Cxml_reader:
     def __init__(self, path, workingname):
         self.xml_path = path
         self.workingname = workingname
