@@ -1,8 +1,9 @@
 import xml.etree.ElementTree as ET
 
 class xml_reader:
-    def __init__(self, path):
+    def __init__(self, path, workingname):
         self.xml_path = path
+        self.workingname = workingname
         self.xml_open()
 
     def xml_open(self):
@@ -14,7 +15,7 @@ class xml_reader:
 
         result = 0
 
-        if self.xml_root.attrib.get('name') == 'dog_light':
+        if self.xml_root.attrib.get('name') == self.workingname:
             orders = [step.attrib.get('order') for step in self.xml_root.findall('./instructions/step')]
             result = len(orders)
         
@@ -24,7 +25,7 @@ class xml_reader:
 
         result = []
 
-        if self.xml_root.attrib.get('name') == 'dog_light':
+        if self.xml_root.attrib.get('name') == self.workingname:
             descriptions = [step.find('description').text for step in self.xml_root.findall('./instructions/step')]
             result = descriptions[:]
         
