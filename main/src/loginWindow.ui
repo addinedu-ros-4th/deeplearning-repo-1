@@ -167,7 +167,13 @@
       </widget>
      </item>
      <item>
-      <widget class="QPlainTextEdit" name="IDinput"/>
+      <widget class="QPlainTextEdit" name="IDinput">
+       <property name="font">
+        <font>
+         <pointsize>15</pointsize>
+        </font>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
