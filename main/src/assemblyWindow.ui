@@ -13,10 +13,47 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <widget class="QLabel" name="materialLabel">
+   <property name="geometry">
+    <rect>
+     <x>990</x>
+     <y>370</y>
+     <width>371</width>
+     <height>421</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string>재료창 웹캠 송출 </string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="backButton">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>40</y>
+     <width>141</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>15</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); border-radius: 20px</string>
+   </property>
+   <property name="text">
+    <string>◀️    Back</string>
+   </property>
+  </widget>
   <widget class="QProgressBar" name="progressBar">
    <property name="geometry">
     <rect>
-     <x>580</x>
+     <x>570</x>
      <y>810</y>
      <width>791</width>
      <height>41</height>
@@ -51,163 +88,12 @@ border-radius :15px;
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QLabel" name="workGuidLabel">
-   <property name="geometry">
-    <rect>
-     <x>590</x>
-     <y>10</y>
-     <width>781</width>
-     <height>341</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(255, 255, 255);</string>
-   </property>
-   <property name="text">
-    <string>작업 가이드 이미지</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="workNowLabel">
-   <property name="geometry">
-    <rect>
-     <x>590</x>
-     <y>370</y>
-     <width>391</width>
-     <height>421</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(255, 255, 255);</string>
-   </property>
-   <property name="text">
-    <string>현재 작업 웹캠 송출 </string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="materialLabel">
-   <property name="geometry">
-    <rect>
-     <x>1000</x>
-     <y>370</y>
-     <width>371</width>
-     <height>421</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(255, 255, 255);</string>
-   </property>
-   <property name="text">
-    <string>재료창 웹캠 송출 </string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="backButton">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>40</y>
-     <width>141</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>15</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); border-radius: 20px</string>
-   </property>
-   <property name="text">
-    <string>◀️    Back</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="idBack">
-   <property name="geometry">
-    <rect>
-     <x>170</x>
-     <y>10</y>
-     <width>411</width>
-     <height>101</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgba(85, 85, 127, 25); border-radius: 20px</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="logoutButton">
-   <property name="geometry">
-    <rect>
-     <x>460</x>
-     <y>20</y>
-     <width>111</width>
-     <height>81</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>15</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); border-radius: 20px</string>
-   </property>
-   <property name="text">
-    <string>로그아웃</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="backProgress">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>120</y>
-     <width>541</width>
-     <height>681</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgba(85, 85, 127, 25); border-radius: 20px</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
-  <widget class="QLabel" name="progressTitleLabel">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>130</y>
-     <width>521</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Ubuntu Mono</family>
-     <pointsize>13</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); border-radius: 20px</string>
-   </property>
-   <property name="text">
-    <string>후아유 강아지 조명 만들기</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
   <widget class="QScrollArea" name="scrollArea">
    <property name="geometry">
     <rect>
-     <x>40</x>
+     <x>30</x>
      <y>180</y>
-     <width>511</width>
+     <width>521</width>
      <height>611</height>
     </rect>
    </property>
@@ -219,344 +105,16 @@ border-radius :15px;
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>509</width>
+      <width>519</width>
       <height>609</height>
      </rect>
     </property>
-    <widget class="QWidget" name="layoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>440</x>
-       <y>10</y>
-       <width>62</width>
-       <height>591</height>
-      </rect>
-     </property>
-     <layout class="QVBoxLayout" name="check_num">
-      <item>
-       <widget class="QLabel" name="check1">
-        <property name="font">
-         <font>
-          <family>Ubuntu</family>
-          <pointsize>23</pointsize>
-         </font>
-        </property>
-        <property name="toolTip">
-         <UInt>0</UInt>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); border-radius: 20px</string>
-        </property>
-        <property name="text">
-         <string>✔️</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="check2">
-        <property name="font">
-         <font>
-          <family>Ubuntu Mono</family>
-          <pointsize>16</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); border-radius: 20px</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="check3">
-        <property name="font">
-         <font>
-          <family>Ubuntu Mono</family>
-          <pointsize>13</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); border-radius: 20px</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="check4">
-        <property name="font">
-         <font>
-          <family>Ubuntu Mono</family>
-          <pointsize>13</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); border-radius: 20px</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="check5">
-        <property name="font">
-         <font>
-          <family>Ubuntu Mono</family>
-          <pointsize>13</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); border-radius: 20px</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="check6">
-        <property name="font">
-         <font>
-          <family>Ubuntu Mono</family>
-          <pointsize>13</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); border-radius: 20px</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="check7">
-        <property name="font">
-         <font>
-          <family>Ubuntu Mono</family>
-          <pointsize>13</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); border-radius: 20px</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="check8">
-        <property name="font">
-         <font>
-          <family>Ubuntu Mono</family>
-          <pointsize>13</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); border-radius: 20px</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="check9">
-        <property name="font">
-         <font>
-          <family>Ubuntu Mono</family>
-          <pointsize>13</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); border-radius: 20px</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="check10">
-        <property name="font">
-         <font>
-          <family>Ubuntu Mono</family>
-          <pointsize>13</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); border-radius: 20px</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="check11">
-        <property name="font">
-         <font>
-          <family>Ubuntu Mono</family>
-          <pointsize>13</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); border-radius: 20px</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="check12">
-        <property name="font">
-         <font>
-          <family>Ubuntu Mono</family>
-          <pointsize>13</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); border-radius: 20px</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="check13">
-        <property name="font">
-         <font>
-          <family>Ubuntu Mono</family>
-          <pointsize>13</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); border-radius: 20px</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="check14">
-        <property name="font">
-         <font>
-          <family>Ubuntu Mono</family>
-          <pointsize>13</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); border-radius: 20px</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="check15">
-        <property name="font">
-         <font>
-          <family>Ubuntu Mono</family>
-          <pointsize>13</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); border-radius: 20px</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-    <widget class="QWidget" name="layoutWidget">
+    <widget class="QWidget" name="layoutWidget_2">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>12</y>
-       <width>421</width>
+       <y>10</y>
+       <width>441</width>
        <height>591</height>
       </rect>
      </property>
@@ -879,12 +437,444 @@ border-radius :15px;
       </item>
      </layout>
     </widget>
+    <widget class="QWidget" name="layoutWidget_4">
+     <property name="geometry">
+      <rect>
+       <x>460</x>
+       <y>10</y>
+       <width>51</width>
+       <height>591</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="check_num_2">
+      <item>
+       <widget class="QLabel" name="check">
+        <property name="font">
+         <font>
+          <family>Ubuntu Mono</family>
+          <pointsize>20</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+        </property>
+        <property name="text">
+         <string>✔️</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="check_2">
+        <property name="font">
+         <font>
+          <family>Ubuntu Mono</family>
+          <pointsize>20</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="check_3">
+        <property name="font">
+         <font>
+          <family>Ubuntu Mono</family>
+          <pointsize>20</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="check_4">
+        <property name="font">
+         <font>
+          <family>Ubuntu Mono</family>
+          <pointsize>20</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="check_5">
+        <property name="font">
+         <font>
+          <family>Ubuntu Mono</family>
+          <pointsize>20</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="check_6">
+        <property name="font">
+         <font>
+          <family>Ubuntu Mono</family>
+          <pointsize>20</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="check_7">
+        <property name="font">
+         <font>
+          <family>Ubuntu Mono</family>
+          <pointsize>20</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="check_8">
+        <property name="font">
+         <font>
+          <family>Ubuntu Mono</family>
+          <pointsize>20</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="check_9">
+        <property name="font">
+         <font>
+          <family>Ubuntu Mono</family>
+          <pointsize>20</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="check_10">
+        <property name="font">
+         <font>
+          <family>Ubuntu Mono</family>
+          <pointsize>20</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="check_11">
+        <property name="font">
+         <font>
+          <family>Ubuntu Mono</family>
+          <pointsize>20</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="check_12">
+        <property name="font">
+         <font>
+          <family>Ubuntu Mono</family>
+          <pointsize>20</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="check_13">
+        <property name="font">
+         <font>
+          <family>Ubuntu Mono</family>
+          <pointsize>20</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="check_14">
+        <property name="font">
+         <font>
+          <family>Ubuntu Mono</family>
+          <pointsize>20</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="check_15">
+        <property name="font">
+         <font>
+          <family>Ubuntu Mono</family>
+          <pointsize>20</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </widget>
   </widget>
-  <widget class="QWidget" name="layoutWidget">
+  <widget class="QLabel" name="progressTitleLabel">
    <property name="geometry">
     <rect>
-     <x>180</x>
+     <x>20</x>
+     <y>130</y>
+     <width>521</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Ubuntu Mono</family>
+     <pointsize>13</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); border-radius: 20px</string>
+   </property>
+   <property name="text">
+    <string>후아유 강아지 조명 만들기</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="errorButton">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>810</y>
+     <width>151</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>15</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); border-radius: 20px</string>
+   </property>
+   <property name="text">
+    <string>불량 보고 </string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="idBack">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>10</y>
+     <width>411</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgba(85, 85, 127, 25); border-radius: 20px</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="workNowLabel">
+   <property name="geometry">
+    <rect>
+     <x>580</x>
+     <y>370</y>
+     <width>391</width>
+     <height>421</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string>현재 작업 웹캠 송출 </string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="logoutButton">
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>20</y>
+     <width>111</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>15</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); border-radius: 20px</string>
+   </property>
+   <property name="text">
+    <string>로그아웃</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="layoutWidget_3">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
      <y>20</y>
      <width>271</width>
      <height>81</height>
@@ -977,29 +967,50 @@ border-radius :15px;
     </item>
    </layout>
   </widget>
-  <widget class="QPushButton" name="errorButton">
+  <widget class="QLabel" name="workGuideLabel">
    <property name="geometry">
     <rect>
-     <x>410</x>
-     <y>810</y>
-     <width>151</width>
-     <height>51</height>
+     <x>580</x>
+     <y>10</y>
+     <width>781</width>
+     <height>341</height>
     </rect>
    </property>
-   <property name="font">
-    <font>
-     <pointsize>15</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
    <property name="styleSheet">
-    <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); border-radius: 20px</string>
+    <string notr="true">background-color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
-    <string>불량 보고 </string>
+    <string>작업 가이드 이미지</string>
    </property>
   </widget>
+  <widget class="QLabel" name="backProgress">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>120</y>
+     <width>551</width>
+     <height>681</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgba(85, 85, 127, 25); border-radius: 20px</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <zorder>backProgress</zorder>
+  <zorder>materialLabel</zorder>
+  <zorder>backButton</zorder>
+  <zorder>progressBar</zorder>
+  <zorder>scrollArea</zorder>
+  <zorder>progressTitleLabel</zorder>
+  <zorder>errorButton</zorder>
+  <zorder>idBack</zorder>
+  <zorder>workNowLabel</zorder>
+  <zorder>logoutButton</zorder>
+  <zorder>layoutWidget_3</zorder>
+  <zorder>workGuideLabel</zorder>
  </widget>
  <resources/>
  <connections/>
