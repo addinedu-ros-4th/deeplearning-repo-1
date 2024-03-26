@@ -62,9 +62,9 @@ while True:
         wid = euclidean(tl, tr) / dist_in_pixel * dist_in_cm
         ht = euclidean(tr, br) / dist_in_pixel * dist_in_cm
         cv2.putText(frame, "{:.1f}cm".format(wid), (int(mid_pt_horizontal[0] - 15), int(mid_pt_horizontal[1] - 10)), 
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 2)
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.3, (255, 255, 0), 1)
         cv2.putText(frame, "{:.1f}cm".format(ht), (int(mid_pt_verticle[0] + 10), int(mid_pt_verticle[1])), 
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 2)
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.3, (255, 255, 0), 1)
 
     cv2.imshow("Frame", frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
