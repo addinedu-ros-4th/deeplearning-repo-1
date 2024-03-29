@@ -4,6 +4,9 @@ import time
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
 from PyQt5.QtGui import *
+from read_xml import Cxml_reader
+from connect_database import Cdatabase_connect
+
 
 
 form_loginpage_ui = uic.loadUiType("loginWindow.ui")[0]
