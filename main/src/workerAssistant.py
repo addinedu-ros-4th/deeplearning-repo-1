@@ -21,13 +21,30 @@ class MainWindow(QMainWindow, form_loginpage_ui):
         super().__init__()
         self.setupUi(self) 
         self.loginButton.clicked.connect(self.get_login)
+        self.login.hide()
+        self.IDinput.textChanged.connect(self.check_text)
         
+        self.operatorList = self.get_operatorList()
+
+    def get_operatorList(self):
+        db = Cdatabase_connect()
+        result = db.get_operator()
+        db.dbclose()
+        return result
+    
+    def check_text(self):
+        id_input = self.IDinput.text()
+        
+        for val in self.operatorList:
+            if id_input == str(val[0]):
+                self.login.show()
+                self.login.setText("ID : %s 작업자 %s님 작업장으로 로그인 합니다"%(id_input,val[1])) #김ㅇㅇ은 db에서 받아와야함
+            elif id_input == "":
+                self.login.hide()
+
+
+
     def get_login(self): ## 로그인 버튼 클릭 - 로그인 정보 저장 & 선택 화면으로 넘어가기 
-        #로그인 정보 여기는 db연동 후 작업해야할듯 
-        input = self.IDinput.toPlainText()
-        self.IDinput.clear()
-        self.login.setText("ID %s 작업자 %s님 작업장으로 로그인 합니다"%(input,'김ㅇㅇ')) #김ㅇㅇ은 db에서 받아와야함 
-        
          #선택화면으로 이동 
         self.hide() #현재 화면 숨겨주고
         selectPage = selectWindow(self) #페이지 2로 불러오고
