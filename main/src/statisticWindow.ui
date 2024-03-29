@@ -334,20 +334,6 @@
    </column>
    <column>
     <property name="text">
-     <string>작업자 </string>
-    </property>
-    <property name="font">
-     <font>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="textAlignment">
-     <set>AlignCenter</set>
-    </property>
-   </column>
-   <column>
-    <property name="text">
      <string>작업 날짜 </string>
     </property>
     <property name="font">
@@ -389,15 +375,10 @@
    </item>
    <item row="0" column="2">
     <property name="text">
-     <string>ㅇㅇㅇ</string>
-    </property>
-   </item>
-   <item row="0" column="3">
-    <property name="text">
      <string>20240322</string>
     </property>
    </item>
-   <item row="0" column="4">
+   <item row="0" column="3">
     <property name="text">
      <string>완료</string>
     </property>
@@ -417,15 +398,10 @@
    </item>
    <item row="1" column="2">
     <property name="text">
-     <string>ㅁㅁㅁ</string>
-    </property>
-   </item>
-   <item row="1" column="3">
-    <property name="text">
      <string>20240322</string>
     </property>
    </item>
-   <item row="1" column="4">
+   <item row="1" column="3">
     <property name="text">
      <string>불량</string>
     </property>
@@ -463,15 +439,10 @@
    </item>
    <item row="2" column="2">
     <property name="text">
-     <string>ㄱㄴㄷ</string>
-    </property>
-   </item>
-   <item row="2" column="3">
-    <property name="text">
      <string>20240323</string>
     </property>
    </item>
-   <item row="2" column="4">
+   <item row="2" column="3">
     <property name="text">
      <string>완료</string>
     </property>

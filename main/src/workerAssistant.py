@@ -102,7 +102,13 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
     def __init__(self, parent):
         super().__init__(parent)
         self.setupUi(self) 
+
+        self.progresslist = [self.progress1, self.progress2, self.progress3, self.progress4, self.progress5]
         
+        cxml = Cxml_reader("workingorder.xml", "dog_light")  #xml_reader 클래스를 생성한다. 생성시 불러올 xml 주소를 인자로 넘겨준다
+        self.xml_count = cxml.get_order_count() #xml안에 들어 있는 작업 순서 갯수 출력 
+        self.workorderlist = cxml.get_order_list() #xml안에 들어 있는 작업순서(string)가 리스트 형태로 출력된다
+
         self.logoutButton.clicked.connect(self.go_main)
         self.backButton.clicked.connect(self.go_back)
         self.errorButton.clicked.connect(self.go_error)
@@ -124,6 +130,11 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         for val in self.operatorList:
             if self.currentOperator == val[0]:
                 self.nameLabel.setText(val[1])
+
+        for idx, val in enumerate(self.workorderlist):
+            tmp_txt = "{}. ".format(idx+1) +val
+            self.progresslist[idx].setText(tmp_txt)
+            
         
     def go_main(self):
         self.hide()
