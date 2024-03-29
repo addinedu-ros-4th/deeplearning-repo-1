@@ -174,7 +174,7 @@
      <x>330</x>
      <y>300</y>
      <width>711</width>
-     <height>51</height>
+     <height>72</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -228,7 +228,7 @@
      <x>330</x>
      <y>210</y>
      <width>301</width>
-     <height>81</height>
+     <height>148</height>
     </rect>
    </property>
    <layout class="QFormLayout" name="formLayout">
@@ -262,30 +262,6 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="1">
-     <widget class="QTextEdit" name="idLabel">
-      <property name="font">
-       <font>
-        <pointsize>15</pointsize>
-       </font>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QTextEdit" name="nameLabel">
-      <property name="font">
-       <font>
-        <pointsize>15</pointsize>
-       </font>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
     <item row="1" column="0">
      <widget class="QLabel" name="Name">
       <property name="maximumSize">
@@ -316,6 +292,30 @@
       </property>
      </widget>
     </item>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="idLabel">
+      <property name="font">
+       <font>
+        <family>DejaVu Sans</family>
+        <pointsize>15</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="nameLabel">
+      <property name="font">
+       <font>
+        <family>DejaVu Sans</family>
+        <pointsize>15</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QWidget" name="layoutWidget">
@@ -324,7 +324,7 @@
      <x>330</x>
      <y>360</y>
      <width>711</width>
-     <height>51</height>
+     <height>72</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
