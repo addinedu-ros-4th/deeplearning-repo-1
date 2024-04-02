@@ -23,9 +23,16 @@ inputID=''; name='' ; #사용자 정보
 # 웹캠 속성 설정
 cap1 = cv2.VideoCapture(1)
 cap2 = cv2.VideoCapture(2)        
-        
-cap1.set(cv2.CAP_PROP_FPS, 30)
-cap2.set(cv2.CAP_PROP_FPS, 30)
+
+if cap1.isOpened():
+    cap1.set(cv2.CAP_PROP_FPS, 30)
+else:
+    pass
+
+if cap2.isOpened():
+    cap2.set(cv2.CAP_PROP_FPS, 30)
+else:
+    pass
         
 class MainWindow(QMainWindow, form_loginpage_ui):
     def __init__(self):
