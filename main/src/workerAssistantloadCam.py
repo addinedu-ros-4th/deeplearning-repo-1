@@ -120,8 +120,16 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         super().__init__(parent)
         self.setupUi(self) 
 
-        self.progresslist = [self.progress1, self.progress2, self.progress3, self.progress4, self.progress5]
-        self.checklist = [self.check,self.check_2,self.check_3,self.check_4,self.check_5]
+        self.progresslist = [self.progress1, self.progress2, self.progress3, self.progress4, self.progress5,
+                             self.progress6, self.progress7, self.progress8, self.progress9, self.progress10,
+                             self.progress11, self.progress12, self.progress13, self.progress14, self.progress15,
+                             self.progress16, self.progress17, self.progress18, self.progress19, self.progress20,
+                             self.progress21, self.progress22, self.progress23, self.progress24, self.progress25,]
+        self.checklist = [self.check_1,self.check_2,self.check_3,self.check_4,self.check_5,
+                          self.check_6,self.check_7,self.check_8,self.check_9,self.check_10,
+                          self.check_11,self.check_12,self.check_13,self.check_14,self.check_15,
+                          self.check_16,self.check_17,self.check_18,self.check_19,self.check_20,
+                          self.check_21,self.check_22,self.check_23,self.check_24,self.check_25]
         cxml = Cxml_reader("workingorder.xml", "dog_light")  #xml_reader 클래스를 생성한다. 생성시 불러올 xml 주소를 인자로 넘겨준다
         self.xml_count = cxml.get_order_count() #xml안에 들어 있는 작업 순서 갯수 출력 
         self.workorderlist = cxml.get_order_list() #xml안에 들어 있는 작업순서(string)가 리스트 형태로 출력된다
@@ -130,7 +138,7 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         self.backButton.clicked.connect(self.go_back)
         self.errorButton.clicked.connect(self.go_error)
         self.operatorList = self.get_operatorList()
-        self.idLabel.setText(inputID)
+        self.idLabel.setText(str(inputID))
         self.nameLabel.setText(name)
 
         self.workNowLabel.setAlignment(Qt.AlignCenter)
@@ -183,7 +191,6 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         for val in self.operatorList:
             if self.currentOperator == val[0]:
                 self.nameLabel.setText(val[1])
-                
 
         for idx, val in enumerate(self.workorderlist):
             tmp_txt = "{}. ".format(idx+1) +val 

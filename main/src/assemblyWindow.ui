@@ -1043,7 +1043,7 @@ border-radius :15px;
        <item>
         <layout class="QVBoxLayout" name="check_num_2">
          <item>
-          <widget class="QLabel" name="check">
+          <widget class="QLabel" name="check_1">
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
@@ -1440,30 +1440,6 @@ border-radius :15px;
             <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
            </property>
            <property name="text">
-            <string>   </string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-           <property name="margin">
-            <number>5</number>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="check_19">
-           <property name="font">
-            <font>
-             <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
-           </property>
-           <property name="text">
             <string/>
            </property>
            <property name="alignment">
@@ -1499,7 +1475,55 @@ border-radius :15px;
           </widget>
          </item>
          <item>
+          <widget class="QLabel" name="check_19">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>13</pointsize>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QLabel" name="check_20">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>20</pointsize>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="check_21">
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
@@ -1618,30 +1642,6 @@ border-radius :15px;
            </property>
           </widget>
          </item>
-         <item>
-          <widget class="QLabel" name="check_51">
-           <property name="font">
-            <font>
-             <family>Ubuntu Mono</family>
-             <pointsize>20</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-           <property name="margin">
-            <number>5</number>
-           </property>
-          </widget>
-         </item>
         </layout>
        </item>
       </layout>
@@ -1660,10 +1660,6 @@ border-radius :15px;
   <zorder>logoutButton</zorder>
   <zorder>workGuideLabel</zorder>
   <zorder>layoutWidget</zorder>
-  <zorder>progress8_2</zorder>
-  <zorder>progress7_2</zorder>
-  <zorder>progress6_2</zorder>
-  <zorder>progress9_2</zorder>
   <zorder>scrollArea_2</zorder>
  </widget>
  <resources/>
