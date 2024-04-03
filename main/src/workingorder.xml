@@ -1,131 +1,130 @@
 <package name="dog_light">
     <instructions>
         <step order="1">
-            <description>재료화면에 모든 재료들을 위의 사진처럼 나열해주세요</description>
+            <description>모든 재료들을 위의 사진처럼 나열해 재료화면에 놓아주세요</description>
         </step>
         <step order="2">
-            <description>HEAD BLOCK A를 가져옵니다</description>
+            <description>위 이미지처럼 블럭과 볼트를 가져와 작업 화면에 놓아주세요 </description>
         </step>
         <step order="3">
-            <description>HEAD BLOCK B를 가져옵니다</description>
+            <description>동영상을 보며 조립을 진행해주세요.한 번더 반복 재생됩니다</description>
         </step>
         <step order="4">
-            <description>---</description>
+            <description>조립 상태를 확인할 수 있도록 이미지와 동일하게 놓아주세요</description>
         </step>
         <step order="5">
-            <description>---</description>
+            <description>위 이미지처럼 블럭과 볼트를 가져와 작업 화면에 놓아주세요 </description>
         </step>
         <step order="6">
-            <description>---</description>
+            <description>동영상을 보며 조립을 진행해주세요.한 번더 반복 재생됩니다</description>
         </step>
         <step order="7">
-            <description>---</description>
+            <description>조립 상태를 확인할 수 있도록 이미지와 동일하게 놓아주세요</description>
         </step>
         <step order="8">
-            <description>---</description>
+            <description>위의 블럭들을 작업 화면에 놓아주세요</description>
         </step>
         <step order="9">
-            <description>---</description>
+            <description>동영상을 보며 조립을 진행해주세요.한 번더 반복 재생됩니다</description>
         </step>
         <step order="10">
-            <description>---</description>
+            <description>조립 상태를 확인할 수 있도록 이미지와 동일하게 놓아주세요</description>
         </step>
         <step order="11">
-            <description>---</description>
+            <description>앞에서 조립 완료했던 블럭 2개를 홈이 보이게 작업 화면에 놓아주세요</description>
         </step>
         <step order="12">
-            <description>---</description>
+            <description>동영상을 보며 조립을 진행해주세요.한 번더 반복 재생됩니다</description>
         </step>
         <step order="13">
-            <description>---</description>
+            <description>조립 상태를 확인할 수 있도록 이미지와 동일하게 놓아주세요</description>
         </step>
         <step order="14">
-            <description>---</description>
+            <description>위의 블럭을 작업 화면에 놓아주세요</description>
         </step>
         <step order="15">
-            <description>---</description>
+            <description>동영상을 보며 조립을 진행해주세요.한 번더 반복 재생됩니다</description>
         </step>
         <step order="16">
-            <description>---</description>
+            <description>조립 상태를 확인할 수 있도록 이미지와 동일하게 놓아주세요</description>
         </step>
         <step order="17">
-            <description>---</description>
+            <description>금색장식못 8개를 가져오세요.</description>
         </step>
         <step order="18">
-            <description>---</description>
+            <description>동영상을 보며 조립을 진행해주세요.한 번더 반복 재생됩니다</description>
         </step>
         <step order="19">
-            <description>---</description>
+            <description>동영상을 보며 조립을 진행해주세요.한 번더 반복 재생됩니다</description>
         </step>
         <step order="20">
-            <description>---</description>
+            <description>조립 상태를 확인할 수 있도록 이미지와 동일하게 놓아주세요</description>
         </step>
         <step order="21">
-            <description>---</description>
+            <description>위 이미지처럼 블럭과 볼트를 가져와 작업 화면에 놓아주세요 </description>
         </step>
         <step order="22">
-            <description>---</description>
+            <description>동영상을 보며 조립을 진행해주세요.한 번더 반복 재생됩니다</description>
         </step>
         <step order="23">
-            <description>---</description>
+            <description>위 이미지처럼 블럭과 볼트를 가져와 작업 화면에 놓아주세요 </description>
         </step>
         <step order="24">
-            <description>---</description>
+            <description>동영상을 보며 조립을 진행해주세요.한 번더 반복 재생됩니다</description>
         </step>
         <step order="25">
-            <description>---</description>
+            <description>위의 블럭을 작업 화면에 놓아주세요</description>
         </step>
         <step order="26">
-            <description>---</description>
+            <description>동영상을 보며 조립을 진행해주세요.한 번더 반복 재생됩니다</description>
         </step>
         <step order="27">
-            <description>---</description>
+            <description>조립 상태를 확인할 수 있도록 이미지와 동일하게 놓아주세요</description>
         </step>
         <step order="28">
-            <description>---</description>
+            <description>위의 블럭들을 작업 화면에 놓아주세요</description>
         </step>
         <step order="29">
-            <description>---</description>
+            <description>동영상을 보며 조립을 진행해주세요.한 번더 반복 재생됩니다</description>
         </step>
         <step order="30">
-            <description>---</description>
+            <description>조립 상태를 확인할 수 있도록 이미지와 동일하게 놓아주세요</description>
         </step>
-
         <step order="31">
-            <description>---</description>
+            <description>위의 블럭을 작업 화면에 놓아주세요</description>
         </step>
         <step order="32">
-            <description>---</description>
+            <description>동영상을 보며 조립을 진행해주세요.한 번더 반복 재생됩니다</description>
         </step>
         <step order="33">
-            <description>---</description>
+            <description>조립 상태를 확인할 수 있도록 이미지와 동일하게 놓아주세요</description>
         </step>
         <step order="34">
-            <description>---</description>
+            <description>위의 블럭들을 작업 화면에 놓아주세요</description>
         </step>
         <step order="35">
-            <description>---</description>
+            <description>동영상을 보며 조립을 진행해주세요.한 번더 반복 재생됩니다</description>
         </step>
         <step order="36">
-            <description>---</description>
+            <description>조립 상태를 확인할 수 있도록 이미지와 동일하게 놓아주세요</description>
         </step>
         <step order="37">
-            <description>---</description>
+            <description>위의 너트들을 작업 화면에 놓아주세요</description>
         </step>
         <step order="38">
-            <description>---</description>
+            <description>동영상을 보며 조립을 진행해주세요.한 번더 반복 재생됩니다</description>
         </step>
          <step order="39">
-            <description>---</description>
+            <description>조립 상태를 확인할 수 있도록 이미지와 동일하게 놓아주세요</description>
         </step>
          <step order="40">
-            <description>---</description>
+            <description>조립 상태를 확인할 수 있도록 이미지와 동일하게 놓아주세요</description>
         </step>
          <step order="41">
-            <description>---</description>
+            <description>동영상을 보며 조립을 진행해주세요.한 번더 반복 재생됩니다</description>
         </step>
          <step order="42">
-            <description>---</description>
+            <description>조립 상태를 확인할 수 있도록 이미지와 동일하게 놓아주세요</description>
         </step>
 
         
