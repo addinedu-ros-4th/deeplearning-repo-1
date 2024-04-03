@@ -13,6 +13,7 @@ from connect_database import Cdatabase_connect
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QFont
+from ultralytics import YOLO
 
 form_loginpage_ui = uic.loadUiType("loginWindow.ui")[0]
 form_selectpage_ui = uic.loadUiType("selectWindow.ui")[0]
@@ -172,12 +173,15 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         timer2 = QTimer(self)
         timer2.timeout.connect(self.update_frame2)
         timer2.start(1) 
+
+        # Load the YOLOv8 model
+        self.model = YOLO('best.pt')
     
 ## workGuideLabel에 가이드 이미지/영상 띄우기 --
 # - 폴더내에 있는 이미지/영상 순차적으로 띄움 
 # - 일단 이미지는 5초 디스플레이하고 넘어가게/ 영상은 2회 반복재생되면 넘어가게함 
  
-        self.media_folder = './workorder' #가이드이미지, 영상 저장된 폴더 루트 
+        self.media_folder = '/home/dyjung/amr_ws/ml/project/data/workorder' #가이드이미지, 영상 저장된 폴더 루트 
         self.media_files = self.load_media_files()
         self.current_index = 0
         self.playback_count = 0  # 재생 횟수를 저ㅛ장하는 변수 추가
@@ -191,6 +195,21 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         self.progressBar.setValue(0)
         self.progressBar.setMinimum(0)
         self.progressBar.setMaximum(42)
+
+    def predict_byYOLO(self, img):
+
+        # YOLO 객체 감지
+        box_results = self.model.predict(img, conf = 0.5, verbose=False, show = False)
+        boxes = box_results[0].boxes.xyxy.cpu()
+        box_class = box_results[0].boxes.cls.cpu().tolist()
+
+        names = self.model.names
+
+        for r in box_results:
+            for idx,c in enumerate(r.boxes.cls):
+                # print("idx : {}".format(idx))
+                # print(names[int(c.item())])
+                pass
 
     def load_media_files(self): # 폴더내 모든 파일 불러와서 숫자 순서 순으로 정렬 
         media_files = []
@@ -216,8 +235,8 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
 
     def display_image(self, image_file): #이미지 띄우기 
         pixmap = QPixmap(image_file)
-        fontOld = QFont() ;  fontOld.setPointSize(14); fontOld.setBold(False)
-        fontNow = QFont() ;fontNow.setPointSize(14) ; fontNow.setBold(True)
+        fontOld = QFont() ;  fontOld.setPointSize(12); fontOld.setBold(False)
+        fontNow = QFont() ;fontNow.setPointSize(12) ; fontNow.setBold(True)
         self.progresslist[self.current_index].setFont(fontNow)
         ordernow=self.progresslist[self.current_index].text()
         self.workorderLabel.setText(ordernow)
@@ -227,8 +246,8 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         self.workGuideLabel.setPixmap(pixmap.scaled(self.workGuideLabel.size()))
 
     def display_video(self, video_file): # 영상 띄우기 
-        fontOld = QFont() ;  fontOld.setPointSize(14); fontOld.setBold(False)
-        fontNow = QFont() ;fontNow.setPointSize(14) ; fontNow.setBold(True)
+        fontOld = QFont() ;  fontOld.setPointSize(12); fontOld.setBold(False)
+        fontNow = QFont() ;fontNow.setPointSize(12) ; fontNow.setBold(True)
         ordernow=self.progresslist[self.current_index].text()
         self.workorderLabel.setText(ordernow)
         self.progresslist[self.current_index].setFont(fontNow)
@@ -273,6 +292,9 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
             pixmap = QPixmap.fromImage(q_img)
             self.workNowLabel.setPixmap(pixmap)
 
+            self.predict_byYOLO(frame)
+
+
     def update_frame2(self):
         ret, frame = cap2.read()  # 웹캠 2번
         if ret:
@@ -305,8 +327,6 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
 
         for idx, val in enumerate(self.workorderlist):
             tmp_txt = "{}. ".format(idx+1) +val 
-            #self.progresslist[idx].setMargin(7)
-            #self.checklist[idx].setMargin(7)
             self.progresslist[idx].setText(tmp_txt)
             
                  
@@ -333,11 +353,11 @@ class errorWindow(QMainWindow,form_errorwindowpage_ui):
         super().__init__(parent)
         self.setupUi(self)
         global inputID, name 
-        self.idLabel.setText(inputID)
+        self.idLabel.setText(str(inputID))
         self.nameLabel.setText(name)  
         self.saveButton.clicked.connect(self.report_error)
         self.operatorList = self.get_operatorList()
-        self.backButton.clicked.connect(self.go_back)
+        self.saveButton.clicked.connect(self.go_back)
 
     def showEvent(self,event):
         super().showEvent(event)
@@ -352,6 +372,7 @@ class errorWindow(QMainWindow,form_errorwindowpage_ui):
         result = db.get_operator()
         db.dbclose()
         return result
+    
     def go_back(self):
         self.hide() #현재 화면 숨겨주고
         self.parent().show() #작업페이지로 감 
