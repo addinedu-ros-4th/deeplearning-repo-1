@@ -345,7 +345,7 @@ border-radius :15px;
       <x>0</x>
       <y>0</y>
       <width>525</width>
-      <height>1738</height>
+      <height>1528</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -358,7 +358,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -391,7 +391,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -419,7 +419,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -446,7 +446,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -473,7 +473,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -500,7 +500,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -527,7 +527,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -554,7 +554,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -581,7 +581,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -608,7 +608,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -635,7 +635,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -662,7 +662,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -689,7 +689,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -716,7 +716,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -743,7 +743,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -770,7 +770,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -797,7 +797,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -824,7 +824,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -851,7 +851,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -878,7 +878,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -908,7 +908,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -935,7 +935,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -962,7 +962,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -989,7 +989,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -1016,7 +1016,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -1043,7 +1043,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -1070,7 +1070,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -1097,7 +1097,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -1127,7 +1127,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -1154,7 +1154,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -1181,7 +1181,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -1208,7 +1208,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -1238,7 +1238,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -1265,7 +1265,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -1292,7 +1292,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -1319,7 +1319,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -1346,7 +1346,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -1376,7 +1376,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -1403,7 +1403,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -1430,7 +1430,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -1457,7 +1457,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -1484,7 +1484,7 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
