@@ -4,12 +4,14 @@ import time
 import cv2
 import numpy as np 
 from PyQt5.QtWidgets import *
+from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5 import uic
 from PyQt5.QtGui import *
 from PyQt5.QtCore import QThread, pyqtSignal, Qt, QTimer
 from read_xml import Cxml_reader
 from connect_database import Cdatabase_connect
-
+from PyQt5.QtGui import QPixmap, QImage
+from PyQt5.QtCore import QTimer
 
 form_loginpage_ui = uic.loadUiType("loginWindow.ui")[0]
 form_selectpage_ui = uic.loadUiType("selectWindow.ui")[0]
@@ -18,8 +20,22 @@ form_errorwindowpage_ui = uic.loadUiType("errorWindow.ui")[0]
 form_statisticpage_ui = uic.loadUiType("statisticWindow.ui")[0]
 form_servicenotready_ui = uic.loadUiType("serviceNotReady.ui")[0]
 
-inputID=''; name='' ; #사용자 정보를 받아와서 전역변수화 시키는건 어떨까요 제 컴에서는 name이 로딩이 안돼서 이걸로 띄웠습니다 
+inputID=''; name='' ; #사용자 정보 
 
+# 웹캠 속성 설정
+cap1 = cv2.VideoCapture(1)
+cap2 = cv2.VideoCapture(4)        
+
+if cap1.isOpened():
+    cap1.set(cv2.CAP_PROP_FPS, 30)
+else:
+    pass
+
+if cap2.isOpened():
+    cap2.set(cv2.CAP_PROP_FPS, 30)
+else:
+    pass
+        
 class MainWindow(QMainWindow, form_loginpage_ui):
     def __init__(self):
         super().__init__()
@@ -74,6 +90,7 @@ class selectWindow(QMainWindow,form_selectpage_ui):
     def __init__(self, parent):
         super().__init__(parent)
         self.setupUi(self)
+        self.camera_threads = [] 
         
         self.selectDogButton.clicked.connect(self.go_assembly)
         self.selectdeskButton.clicked.connect(self.go_servicenotready)
@@ -91,7 +108,7 @@ class selectWindow(QMainWindow,form_selectpage_ui):
         self.hide() #현재 화면 숨겨주고
         assemblyPage = assemblyWindow(self) #페이지 3 불러오고
         assemblyPage.get_currentoperator(self.currentOperator)
-        assemblyPage.show()      
+        assemblyPage.show() 
 
     def go_servicenotready(self): #작업창 이동 
         self.hide() #현재 화면 숨겨주고
@@ -104,34 +121,24 @@ class selectWindow(QMainWindow,form_selectpage_ui):
         statisticPage.get_currentoperator(self.currentOperator)
         statisticPage.show()  
 
-# 웹캠 송출 클래스 
-class CameraThread(QThread):
-    frame_ready = pyqtSignal(np.ndarray)
-
-    def __init__(self, camera_id):
-        super().__init__()
-        self.camera_id = camera_id
-        self.running = False
-
-    def run(self):
-        self.running = True
-        self.video = cv2.VideoCapture(self.camera_id)
-        while self.running:
-            retval, frame = self.video.read()
-            if retval:
-                self.frame_ready.emit(frame)
-    def stop(self):
-        self.running = False
-        self.wait() 
-       
         
-class assemblyWindow(QMainWindow,form_assemblypage_ui): #-- 해결해야하는 문제: back이나 로그아윳을하면 카메라 연동이 안됨 
+class assemblyWindow(QMainWindow,form_assemblypage_ui):
+    
     def __init__(self, parent):
         global inputID, name 
         super().__init__(parent)
         self.setupUi(self) 
 
-        self.progresslist = [self.progress1, self.progress2, self.progress3, self.progress4, self.progress5]
+        self.progresslist = [self.progress1, self.progress2, self.progress3, self.progress4, self.progress5,
+                             self.progress6, self.progress7, self.progress8, self.progress9, self.progress10,
+                             self.progress11, self.progress12, self.progress13, self.progress14, self.progress15,
+                             self.progress16, self.progress17, self.progress18, self.progress19, self.progress20,
+                             self.progress21, self.progress22, self.progress23, self.progress24, self.progress25,]
+        self.checklist = [self.check_1,self.check_2,self.check_3,self.check_4,self.check_5,
+                          self.check_6,self.check_7,self.check_8,self.check_9,self.check_10,
+                          self.check_11,self.check_12,self.check_13,self.check_14,self.check_15,
+                          self.check_16,self.check_17,self.check_18,self.check_19,self.check_20,
+                          self.check_21,self.check_22,self.check_23,self.check_24,self.check_25]
         
         cxml = Cxml_reader("workingorder.xml", "dog_light")  #xml_reader 클래스를 생성한다. 생성시 불러올 xml 주소를 인자로 넘겨준다
         self.xml_count = cxml.get_order_count() #xml안에 들어 있는 작업 순서 갯수 출력 
@@ -141,45 +148,105 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui): #-- 해결해야하는 �
         self.backButton.clicked.connect(self.go_back)
         self.errorButton.clicked.connect(self.go_error)
         self.operatorList = self.get_operatorList()
-        self.idLabel.setText(inputID)
+        self.idLabel.setText(str(inputID))
         self.nameLabel.setText(name)
-                
-    # ---- 캠 송출 코드 
-        self.label1 = self.workNowLabel
-        self.label2 = self.materialLabel
+
+        self.workNowLabel.setAlignment(Qt.AlignCenter)
+        self.materialLabel.setAlignment(Qt.AlignCenter)
         
-        available_index = []
-        for index in range(5):  # 임의의 범위를 지정하여 카메라 인덱스를 확인
-            camera = cv2.VideoCapture(index)
-            if camera.isOpened():
-                available_index.append(index)
-                camera.release()        
+        # 웹캠 영상을 표시하기 위해 QTimer 사용
+        timer1 = QTimer(self)
+        timer1.timeout.connect(self.update_frame1)
+        timer1.start(1)  # 100ms마다 업데이트
+        timer2 = QTimer(self)
+        timer2.timeout.connect(self.update_frame2)
+        timer2.start(1) 
+    
+## workGuideLabel에 가이드 이미지/영상 띄우기 --
+# - 폴더내에 있는 이미지/영상 순차적으로 띄움 
+# - 일단 이미지는 5초 디스플레이하고 넘어가게/ 영상은 2회 반복재생되면 넘어가게함 
+ 
+        self.media_folder = './workorder' #가이드이미지, 영상 저장된 폴더 루트 
+        self.media_files = self.load_media_files()
+        self.current_index = 0
+        self.playback_count = 0  # 재생 횟수를 저ㅛ장하는 변수 추가
 
-        self.camera1_thread = CameraThread(available_index[0]) 
-        self.camera1_thread.frame_ready.connect(self.update_frame1)
-        self.camera1_thread.start()
-        self.camera2_thread = CameraThread(available_index[1]) 
-        self.camera2_thread.frame_ready.connect(self.update_frame2)
-        self.camera2_thread.start()
-            
-    def update_frame1(self, frame):
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        height, width, channel = frame.shape
-        bytes_per_line = 3 * width
-        q_img = QPixmap.fromImage(QImage(frame.data, 391, 421, bytes_per_line, QImage.Format_RGB888))
-        self.label1.setPixmap(q_img.scaled(self.label1.width(), self.label1.height(), Qt.KeepAspectRatio))
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.display_media)
+        self.timer.start(1)  # 1초마다 체크
 
-    def update_frame2(self, frame):
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        height, width, channel = frame.shape
-        bytes_per_line = 3 * width
-        q_img = QPixmap.fromImage(QImage(frame.data, 371, 421, bytes_per_line, QImage.Format_RGB888))
-        self.label2.setPixmap(q_img.scaled(self.label2.width(), self.label2.height(), Qt.KeepAspectRatio))
+    def load_media_files(self): # 폴더내 모든 파일 불러와서 숫자 순서 순으로 정렬 
+        media_files = []
+        for file_name in os.listdir(self.media_folder):
+            file_path = os.path.join(self.media_folder, file_name)
+            if file_name.endswith('.jpg') or file_name.endswith('.png') or file_name.endswith('.avi'):
+                media_files.append(file_path)
+        media_files.sort(key=lambda x: int(os.path.basename(x).split('_')[0]))    
+        return media_files
 
-    def closeEvent(self, event):
-        self.camera1_thread.stop()
-        self.camera2_thread.stop()
-        event.accept() 
+    def display_media(self): # 가이드 띄우기- 이미지/영상 
+        if self.current_index < len(self.media_files):
+            media_file = self.media_files[self.current_index]
+            if media_file.endswith('.jpg') or media_file.endswith('.png'):
+                self.display_image(media_file)
+                self.current_index += 1
+                self.timer.start(5000)  # 이미지를 5초 동안 표시
+            elif media_file.endswith('.avi'):
+                self.display_video(media_file)
+        else:
+            self.timer.stop()
+
+    def display_image(self, image_file): #이미지 띄우기 
+        pixmap = QPixmap(image_file)
+        self.workGuideLabel.setPixmap(pixmap.scaled(self.workGuideLabel.size()))
+
+    def display_video(self, video_file): # 영상 띄우기 
+        cap = cv2.VideoCapture(video_file)
+        fps = cap.get(cv2.CAP_PROP_FPS)  # 영상의 프레임 속도 가져오기
+        
+        while True:
+            ret, frame = cap.read()
+            if not ret:
+                self.playback_count += 1
+                if self.playback_count < 2:  # 2번 반복 재생
+                    cap.set(cv2.CAP_PROP_POS_FRAMES, 0)  # 영상을 처음으로 되감음
+                else:
+                    break
+            else:
+                frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                h, w, ch = frame_rgb.shape
+                bytes_per_line = ch * w
+                q_img = QImage(frame_rgb.data, w, h, bytes_per_line, QImage.Format_RGB888)
+                pixmap = QPixmap.fromImage(q_img)
+                self.workGuideLabel.setPixmap(pixmap.scaled(self.workGuideLabel.size()))
+                QApplication.processEvents()  # 이벤트 처리를 위해 프로세스 이벤트를 실행
+                time.sleep(1 / fps)  # 프레임을 표시하는 간격만큼 대기      
+        cap.release()
+        self.current_index += 1  # 다음 미디어 파일로 이동
+        self.playback_count = 0  # 재생 횟수 초기화
+        self.timer.start(1000)  # 1초 후에 다음 미디어 파일을 표시       
+# --- workGuideLabel 띄우기 끝 
+                
+    def update_frame1(self):
+        ret, frame = cap1.read()  # 웹캠 1번
+        if ret:
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            height, width, channel = frame.shape
+            bytes_per_line = 3 * width
+            q_img = QImage(frame.data, width, height, bytes_per_line, QImage.Format_RGB888)
+            pixmap = QPixmap.fromImage(q_img)
+            self.workNowLabel.setPixmap(pixmap)
+
+    def update_frame2(self):
+        ret, frame = cap2.read()  # 웹캠 2번
+        if ret:
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            height, width, channel = frame.shape
+            bytes_per_line = 3 * width
+            q_img = QImage(frame.data, width, height, bytes_per_line, QImage.Format_RGB888)
+            pixmap = QPixmap.fromImage(q_img)
+            self.materialLabel.setPixmap(pixmap)
+                
     ## ------캠 송출 코드     
     
     def get_currentoperator(self,id):
@@ -199,26 +266,31 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui): #-- 해결해야하는 �
         for val in self.operatorList:
             if self.currentOperator == val[0]:
                 self.nameLabel.setText(val[1])
-                
 
         for idx, val in enumerate(self.workorderlist):
-            tmp_txt = "{}. ".format(idx+1) +val
+            tmp_txt = "{}. ".format(idx+1) +val 
+            self.progresslist[idx].setMargin(7)
+            self.checklist[idx].setMargin(6)
             self.progresslist[idx].setText(tmp_txt)
+            
                  
     def go_main(self):
         self.hide()
         self.parent().parent().get_currentoperator(0)
         self.parent().parent().show()
+        
            
     def go_back(self):
         self.hide() #현재 화면 숨겨주고
         self.parent().show() #작업선택 페이지로 감 
+        
 
     def go_error(self):
         self.hide() #현재 화면 숨겨주고
         errorPage = errorWindow(self) #에러 페이지 불러오고
         errorPage.get_currentoperator(self.currentOperator)
         errorPage.show()          
+    
         
 class errorWindow(QMainWindow,form_errorwindowpage_ui):
     def __init__(self, parent):
