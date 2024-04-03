@@ -12,6 +12,7 @@ from read_xml import Cxml_reader
 from connect_database import Cdatabase_connect
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtCore import QTimer
+from PyQt5.QtGui import QFont
 
 form_loginpage_ui = uic.loadUiType("loginWindow.ui")[0]
 form_selectpage_ui = uic.loadUiType("selectWindow.ui")[0]
@@ -23,8 +24,8 @@ form_servicenotready_ui = uic.loadUiType("serviceNotReady.ui")[0]
 inputID=''; name='' ; #사용자 정보 
 
 # 웹캠 속성 설정
-cap1 = cv2.VideoCapture(1)
-cap2 = cv2.VideoCapture(4)        
+cap1 = cv2.VideoCapture(0)
+cap2 = cv2.VideoCapture(2)        
 
 if cap1.isOpened():
     cap1.set(cv2.CAP_PROP_FPS, 30)
@@ -133,12 +134,22 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                              self.progress6, self.progress7, self.progress8, self.progress9, self.progress10,
                              self.progress11, self.progress12, self.progress13, self.progress14, self.progress15,
                              self.progress16, self.progress17, self.progress18, self.progress19, self.progress20,
-                             self.progress21, self.progress22, self.progress23, self.progress24, self.progress25,]
+                             self.progress21, self.progress22, self.progress23, self.progress24, self.progress25,
+                             self.progress26, self.progress27, self.progress28, self.progress29, self.progress30,
+                             self.progress31, self.progress32, self.progress33, self.progress34, self.progress35,
+                             self.progress36, self.progress37, self.progress38, self.progress39, self.progress40, 
+                             self.progress41, self.progress42                             
+                             ]
         self.checklist = [self.check_1,self.check_2,self.check_3,self.check_4,self.check_5,
                           self.check_6,self.check_7,self.check_8,self.check_9,self.check_10,
                           self.check_11,self.check_12,self.check_13,self.check_14,self.check_15,
                           self.check_16,self.check_17,self.check_18,self.check_19,self.check_20,
-                          self.check_21,self.check_22,self.check_23,self.check_24,self.check_25]
+                          self.check_21,self.check_22,self.check_23,self.check_24,self.check_25,
+                          self.check_26,self.check_27,self.check_28,self.check_29,self.check_30,
+                          self.check_31,self.check_32,self.check_33,self.check_34,self.check_35, 
+                          self.check_36,self.check_37,self.check_38,self.check_39,self.check_40,                       
+                          self.check_41,self.check_42
+                          ]
         
         cxml = Cxml_reader("workingorder.xml", "dog_light")  #xml_reader 클래스를 생성한다. 생성시 불러올 xml 주소를 인자로 넘겨준다
         self.xml_count = cxml.get_order_count() #xml안에 들어 있는 작업 순서 갯수 출력 
@@ -174,6 +185,12 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.display_media)
         self.timer.start(1)  # 1초마다 체크
+        font = QFont()
+        font.setPointSize(13)
+        font.setBold(True) 
+        self.progressBar.setValue(0)
+        self.progressBar.setMinimum(0)
+        self.progressBar.setMaximum(42)
 
     def load_media_files(self): # 폴더내 모든 파일 불러와서 숫자 순서 순으로 정렬 
         media_files = []
@@ -190,7 +207,8 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
             if media_file.endswith('.jpg') or media_file.endswith('.png'):
                 self.display_image(media_file)
                 self.current_index += 1
-                self.timer.start(5000)  # 이미지를 5초 동안 표시
+                self.timer.start(3000)
+                #self.timer.start(5000)  # 이미지를 3초 동안 표시
             elif media_file.endswith('.avi'):
                 self.display_video(media_file)
         else:
@@ -198,9 +216,26 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
 
     def display_image(self, image_file): #이미지 띄우기 
         pixmap = QPixmap(image_file)
+        fontOld = QFont() ;  fontOld.setPointSize(14); fontOld.setBold(False)
+        fontNow = QFont() ;fontNow.setPointSize(14) ; fontNow.setBold(True)
+        self.progresslist[self.current_index].setFont(fontNow)
+        ordernow=self.progresslist[self.current_index].text()
+        self.workorderLabel.setText(ordernow)
+        self.checklist[self.current_index-1].setText('✔️')
+        self.progresslist[self.current_index-1].setFont(fontOld)
+        self.progressBar.setValue(self.current_index)
         self.workGuideLabel.setPixmap(pixmap.scaled(self.workGuideLabel.size()))
 
     def display_video(self, video_file): # 영상 띄우기 
+        fontOld = QFont() ;  fontOld.setPointSize(14); fontOld.setBold(False)
+        fontNow = QFont() ;fontNow.setPointSize(14) ; fontNow.setBold(True)
+        ordernow=self.progresslist[self.current_index].text()
+        self.workorderLabel.setText(ordernow)
+        self.progresslist[self.current_index].setFont(fontNow)
+        self.checklist[self.current_index-1].setText('✔️')
+        self.progresslist[self.current_index-1].setFont(fontOld)
+        self.progressBar.setValue(self.current_index)
+        
         cap = cv2.VideoCapture(video_file)
         fps = cap.get(cv2.CAP_PROP_FPS)  # 영상의 프레임 속도 가져오기
         
@@ -222,6 +257,7 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                 QApplication.processEvents()  # 이벤트 처리를 위해 프로세스 이벤트를 실행
                 time.sleep(1 / fps)  # 프레임을 표시하는 간격만큼 대기      
         cap.release()
+        
         self.current_index += 1  # 다음 미디어 파일로 이동
         self.playback_count = 0  # 재생 횟수 초기화
         self.timer.start(1000)  # 1초 후에 다음 미디어 파일을 표시       
@@ -269,8 +305,8 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
 
         for idx, val in enumerate(self.workorderlist):
             tmp_txt = "{}. ".format(idx+1) +val 
-            self.progresslist[idx].setMargin(7)
-            self.checklist[idx].setMargin(6)
+            #self.progresslist[idx].setMargin(7)
+            #self.checklist[idx].setMargin(7)
             self.progresslist[idx].setText(tmp_txt)
             
                  

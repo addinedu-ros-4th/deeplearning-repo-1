@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1374</width>
-    <height>872</height>
+    <width>1394</width>
+    <height>923</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,9 +17,9 @@
    <property name="geometry">
     <rect>
      <x>990</x>
-     <y>370</y>
+     <y>420</y>
      <width>371</width>
-     <height>421</height>
+     <height>431</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -54,7 +54,7 @@
    <property name="geometry">
     <rect>
      <x>570</x>
-     <y>810</y>
+     <y>870</y>
      <width>791</width>
      <height>41</height>
     </rect>
@@ -119,7 +119,7 @@ border-radius :15px;
    <property name="geometry">
     <rect>
      <x>400</x>
-     <y>810</y>
+     <y>860</y>
      <width>151</width>
      <height>51</height>
     </rect>
@@ -158,9 +158,9 @@ border-radius :15px;
    <property name="geometry">
     <rect>
      <x>580</x>
-     <y>370</y>
+     <y>420</y>
      <width>391</width>
-     <height>421</height>
+     <height>431</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -199,7 +199,7 @@ border-radius :15px;
      <x>580</x>
      <y>10</y>
      <width>781</width>
-     <height>341</height>
+     <height>391</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -215,7 +215,7 @@ border-radius :15px;
      <x>10</x>
      <y>120</y>
      <width>561</width>
-     <height>681</height>
+     <height>731</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -333,7 +333,7 @@ border-radius :15px;
      <x>20</x>
      <y>180</y>
      <width>541</width>
-     <height>611</height>
+     <height>661</height>
     </rect>
    </property>
    <property name="widgetResizable">
@@ -345,7 +345,7 @@ border-radius :15px;
       <x>0</x>
       <y>0</y>
       <width>525</width>
-      <height>1041</height>
+      <height>1738</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -367,7 +367,7 @@ border-radius :15px;
             <string notr="true">background-color:rgb(255,255,255); color: rgb(50, 50,50); border-radius: 20px ;   </string>
            </property>
            <property name="text">
-            <string>   1. block A 가져오세요</string>
+            <string>1. block A 가져오세요</string>
            </property>
            <property name="scaledContents">
             <bool>true</bool>
@@ -392,8 +392,8 @@ border-radius :15px;
             <font>
              <family>Ubuntu Mono</family>
              <pointsize>13</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
+             <weight>50</weight>
+             <bold>false</bold>
             </font>
            </property>
            <property name="styleSheet">
@@ -401,7 +401,7 @@ border-radius :15px;
 </string>
            </property>
            <property name="text">
-            <string>   2. block B 가져오세요 - 현재 작업중       </string>
+            <string>2. block A 가져오세요</string>
            </property>
            <property name="scaledContents">
             <bool>true</bool>
@@ -428,7 +428,7 @@ border-radius :15px;
             <string notr="true">background-color:rgb(255,255,255); color: rgb(50, 50,50); border-radius: 20px</string>
            </property>
            <property name="text">
-            <string>   3.  block A 가져오세요</string>
+            <string>3. block A 가져오세요</string>
            </property>
            <property name="scaledContents">
             <bool>true</bool>
@@ -793,7 +793,7 @@ border-radius :15px;
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="progress18">
+          <widget class="QLabel" name="progress17">
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
@@ -820,7 +820,7 @@ border-radius :15px;
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="progress19">
+          <widget class="QLabel" name="progress18">
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
@@ -847,7 +847,7 @@ border-radius :15px;
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="progress20">
+          <widget class="QLabel" name="progress19">
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
@@ -874,7 +874,7 @@ border-radius :15px;
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="progress22">
+          <widget class="QLabel" name="progress20">
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
@@ -931,7 +931,7 @@ border-radius :15px;
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="progress23">
+          <widget class="QLabel" name="progress22">
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
@@ -958,7 +958,7 @@ border-radius :15px;
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="progress24">
+          <widget class="QLabel" name="progress23">
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
@@ -985,7 +985,7 @@ border-radius :15px;
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="progress25">
+          <widget class="QLabel" name="progress24">
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
@@ -1012,7 +1012,7 @@ border-radius :15px;
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="progress17">
+          <widget class="QLabel" name="progress25">
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
@@ -1038,12 +1038,8 @@ border-radius :15px;
            </property>
           </widget>
          </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="check_num_2">
          <item>
-          <widget class="QLabel" name="check_1">
+          <widget class="QLabel" name="progress26">
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
@@ -1053,10 +1049,482 @@ border-radius :15px;
             </font>
            </property>
            <property name="styleSheet">
+            <string notr="true">background-color:rgb(255,255,255); color: rgb(50, 50,50); border-radius: 20px</string>
+           </property>
+           <property name="text">
+            <string>26. block A 가져오세요</string>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="progress27">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>13</pointsize>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color:rgb(255,255,255); color: rgb(50, 50,50); border-radius: 20px</string>
+           </property>
+           <property name="text">
+            <string>27.  block A 가져오세요</string>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="progress28">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>13</pointsize>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color:rgb(255,255,255); color: rgb(50, 50,50); border-radius: 20px</string>
+           </property>
+           <property name="text">
+            <string>28.  block A 가져오세요</string>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="progress29">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>13</pointsize>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color:rgb(255,255,255); color: rgb(50, 50,50); border-radius: 20px</string>
+           </property>
+           <property name="text">
+            <string>29.  block A 가져오세요</string>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="progress30">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>13</pointsize>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color:rgb(255,255,255); color: rgb(50, 50,50); border-radius: 20px</string>
+           </property>
+           <property name="text">
+            <string>30.  block A 가져오세요</string>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="progress31">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>13</pointsize>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color:rgb(255,255,255); color: rgb(50, 50,50); border-radius: 20px</string>
+           </property>
+           <property name="text">
+            <string>31.  block A 가져오세요</string>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="progress32">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>13</pointsize>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color:rgb(255,255,255); color: rgb(50, 50,50); border-radius: 20px</string>
+           </property>
+           <property name="text">
+            <string>32. block A 가져오세요</string>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="progress33">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>13</pointsize>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color:rgb(255,255,255); color: rgb(50, 50,50); border-radius: 20px</string>
+           </property>
+           <property name="text">
+            <string>33.  block A 가져오세요</string>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="progress34">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>13</pointsize>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color:rgb(255,255,255); color: rgb(50, 50,50); border-radius: 20px</string>
+           </property>
+           <property name="text">
+            <string>34.  block A 가져오세요</string>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="progress35">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>13</pointsize>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color:rgb(255,255,255); color: rgb(50, 50,50); border-radius: 20px</string>
+           </property>
+           <property name="text">
+            <string>35.  block A 가져오세요</string>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="progress36">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>13</pointsize>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color:rgb(255,255,255); color: rgb(50, 50,50); border-radius: 20px</string>
+           </property>
+           <property name="text">
+            <string>36.  block A 가져오세요</string>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="progress37">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>13</pointsize>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color:rgb(255,255,255); color: rgb(50, 50,50); border-radius: 20px</string>
+           </property>
+           <property name="text">
+            <string>37.  block A 가져오세요</string>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="progress38">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>13</pointsize>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color:rgb(255,255,255); color: rgb(50, 50,50); border-radius: 20px</string>
+           </property>
+           <property name="text">
+            <string>38.  block A 가져오세요</string>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="progress39">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>13</pointsize>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color:rgb(255,255,255); color: rgb(50, 50,50); border-radius: 20px</string>
+           </property>
+           <property name="text">
+            <string>39.  block A 가져오세요 </string>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="progress40">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>13</pointsize>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color:rgb(255,255,255); color: rgb(50, 50,50); border-radius: 20px</string>
+           </property>
+           <property name="text">
+            <string>40.  block A 가져오세요</string>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="progress41">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>13</pointsize>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color:rgb(255,255,255); color: rgb(50, 50,50); border-radius: 20px</string>
+           </property>
+           <property name="text">
+            <string>41.  block A 가져오세요 </string>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="progress42">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>13</pointsize>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color:rgb(255,255,255); color: rgb(50, 50,50); border-radius: 20px</string>
+           </property>
+           <property name="text">
+            <string>42.  block A 가져오세요</string>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="check_num_2">
+         <item>
+          <widget class="QLabel" name="check_1">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
             <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
            </property>
            <property name="text">
-            <string>✔️</string>
+            <string/>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -1071,16 +1539,16 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
             </font>
            </property>
            <property name="styleSheet">
             <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
            </property>
            <property name="text">
-            <string>✔️</string>
+            <string/>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -1095,16 +1563,16 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
             </font>
            </property>
            <property name="styleSheet">
             <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
            </property>
            <property name="text">
-            <string>✔️</string>
+            <string/>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -1119,9 +1587,9 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
             </font>
            </property>
            <property name="styleSheet">
@@ -1143,9 +1611,9 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
             </font>
            </property>
            <property name="styleSheet">
@@ -1167,9 +1635,9 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
             </font>
            </property>
            <property name="styleSheet">
@@ -1191,9 +1659,9 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
             </font>
            </property>
            <property name="styleSheet">
@@ -1215,9 +1683,9 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
             </font>
            </property>
            <property name="styleSheet">
@@ -1239,9 +1707,9 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
             </font>
            </property>
            <property name="styleSheet">
@@ -1263,9 +1731,9 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
             </font>
            </property>
            <property name="styleSheet">
@@ -1287,9 +1755,9 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
             </font>
            </property>
            <property name="styleSheet">
@@ -1311,9 +1779,9 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
             </font>
            </property>
            <property name="styleSheet">
@@ -1335,9 +1803,9 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
             </font>
            </property>
            <property name="styleSheet">
@@ -1359,9 +1827,9 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
             </font>
            </property>
            <property name="styleSheet">
@@ -1383,9 +1851,9 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
             </font>
            </property>
            <property name="styleSheet">
@@ -1407,9 +1875,9 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
             </font>
            </property>
            <property name="styleSheet">
@@ -1431,9 +1899,9 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
             </font>
            </property>
            <property name="styleSheet">
@@ -1455,9 +1923,9 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>20</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
             </font>
            </property>
            <property name="styleSheet">
@@ -1479,9 +1947,9 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>13</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
             </font>
            </property>
            <property name="styleSheet">
@@ -1503,9 +1971,9 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>20</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
             </font>
            </property>
            <property name="styleSheet">
@@ -1527,9 +1995,9 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>20</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
             </font>
            </property>
            <property name="styleSheet">
@@ -1551,9 +2019,9 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>20</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
             </font>
            </property>
            <property name="styleSheet">
@@ -1575,9 +2043,9 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>20</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
             </font>
            </property>
            <property name="styleSheet">
@@ -1599,9 +2067,9 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>20</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
             </font>
            </property>
            <property name="styleSheet">
@@ -1623,9 +2091,417 @@ border-radius :15px;
            <property name="font">
             <font>
              <family>Ubuntu Mono</family>
-             <pointsize>20</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="check_26">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="check_27">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="check_28">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="check_29">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="check_30">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="check_31">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="check_32">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="check_33">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="check_34">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="check_35">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="check_36">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="check_37">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="check_38">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="check_39">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="check_40">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="check_41">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); </string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="check_42">
+           <property name="font">
+            <font>
+             <family>Ubuntu Mono</family>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
             </font>
            </property>
            <property name="styleSheet">
@@ -1649,6 +2525,29 @@ border-radius :15px;
     </layout>
    </widget>
   </widget>
+  <widget class="QLabel" name="workorderLabel">
+   <property name="geometry">
+    <rect>
+     <x>590</x>
+     <y>20</y>
+     <width>761</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>15</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:rgb(255,1,1); ;background-color: rgb(250, 250,250, 220); </string>
+   </property>
+   <property name="text">
+    <string>작업명령어                          </string>
+   </property>
+  </widget>
   <zorder>backProgress</zorder>
   <zorder>materialLabel</zorder>
   <zorder>backButton</zorder>
@@ -1661,6 +2560,7 @@ border-radius :15px;
   <zorder>workGuideLabel</zorder>
   <zorder>layoutWidget</zorder>
   <zorder>scrollArea_2</zorder>
+  <zorder>workorderLabel</zorder>
  </widget>
  <resources/>
  <connections/>
