@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1385</width>
-    <height>878</height>
+    <width>1393</width>
+    <height>889</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>1361</width>
+     <width>1371</width>
      <height>81</height>
     </rect>
    </property>
@@ -31,7 +31,7 @@
    <widget class="QLabel" name="titleLabel">
     <property name="geometry">
      <rect>
-      <x>370</x>
+      <x>320</x>
       <y>20</y>
       <width>600</width>
       <height>40</height>
@@ -91,8 +91,8 @@
     <rect>
      <x>500</x>
      <y>110</y>
-     <width>111</width>
-     <height>81</height>
+     <width>101</width>
+     <height>71</height>
     </rect>
    </property>
    <property name="font">
@@ -115,7 +115,7 @@
      <x>210</x>
      <y>100</y>
      <width>411</width>
-     <height>101</height>
+     <height>91</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -125,108 +125,12 @@
     <string/>
    </property>
   </widget>
-  <widget class="QWidget" name="layoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>220</x>
-     <y>110</y>
-     <width>271</width>
-     <height>91</height>
-    </rect>
-   </property>
-   <layout class="QFormLayout" name="formLayout">
-    <item row="0" column="0">
-     <widget class="QLabel" name="ID">
-      <property name="maximumSize">
-       <size>
-        <width>600</width>
-        <height>40</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Roboto Light</family>
-        <pointsize>15</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255, 0);</string>
-      </property>
-      <property name="text">
-       <string>ID      :</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="Name">
-      <property name="maximumSize">
-       <size>
-        <width>600</width>
-        <height>40</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Roboto Light</family>
-        <pointsize>15</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255, 0);</string>
-      </property>
-      <property name="text">
-       <string>작업자   :</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QLineEdit" name="idLabel">
-      <property name="font">
-       <font>
-        <family>DejaVu Sans</family>
-        <pointsize>15</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QLineEdit" name="nameLabel">
-      <property name="font">
-       <font>
-        <family>DejaVu Sans</family>
-        <pointsize>15</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
   <widget class="QLabel" name="progressBack">
    <property name="geometry">
     <rect>
      <x>20</x>
      <y>210</y>
-     <width>601</width>
+     <width>611</width>
      <height>661</height>
     </rect>
    </property>
@@ -240,7 +144,7 @@
   <widget class="QLabel" name="statisticBack">
    <property name="geometry">
     <rect>
-     <x>640</x>
+     <x>650</x>
      <y>100</y>
      <width>731</width>
      <height>771</height>
@@ -253,13 +157,13 @@
     <string/>
    </property>
   </widget>
-  <widget class="QTableWidget" name="taskTable">
+  <widget class="QTableWidget" name="workTable">
    <property name="geometry">
     <rect>
-     <x>30</x>
+     <x>80</x>
      <y>270</y>
-     <width>581</width>
-     <height>301</height>
+     <width>461</width>
+     <height>331</height>
     </rect>
    </property>
    <property name="baseSize">
@@ -270,6 +174,9 @@
    </property>
    <property name="acceptDrops">
     <bool>false</bool>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="layoutDirection">
     <enum>Qt::LeftToRight</enum>
@@ -334,6 +241,20 @@
    </column>
    <column>
     <property name="text">
+     <string>작업자 </string>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </column>
+   <column>
+    <property name="text">
      <string>작업 날짜 </string>
     </property>
     <property name="font">
@@ -375,10 +296,15 @@
    </item>
    <item row="0" column="2">
     <property name="text">
-     <string>20240322</string>
+     <string>ㅇㅇㅇ</string>
     </property>
    </item>
    <item row="0" column="3">
+    <property name="text">
+     <string>20240322</string>
+    </property>
+   </item>
+   <item row="0" column="4">
     <property name="text">
      <string>완료</string>
     </property>
@@ -398,10 +324,15 @@
    </item>
    <item row="1" column="2">
     <property name="text">
-     <string>20240322</string>
+     <string>ㅁㅁㅁ</string>
     </property>
    </item>
    <item row="1" column="3">
+    <property name="text">
+     <string>20240322</string>
+    </property>
+   </item>
+   <item row="1" column="4">
     <property name="text">
      <string>불량</string>
     </property>
@@ -439,10 +370,15 @@
    </item>
    <item row="2" column="2">
     <property name="text">
-     <string>20240323</string>
+     <string>ㄱㄴㄷ</string>
     </property>
    </item>
    <item row="2" column="3">
+    <property name="text">
+     <string>20240323</string>
+    </property>
+   </item>
+   <item row="2" column="4">
     <property name="text">
      <string>완료</string>
     </property>
@@ -451,8 +387,8 @@
   <widget class="QPushButton" name="errorButton">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>590</y>
+     <x>210</x>
+     <y>610</y>
      <width>211</width>
      <height>51</height>
     </rect>
@@ -474,7 +410,7 @@
   <widget class="QPushButton" name="taskStatisticButton">
    <property name="geometry">
     <rect>
-     <x>660</x>
+     <x>670</x>
      <y>110</y>
      <width>191</width>
      <height>51</height>
@@ -494,34 +430,11 @@
     <string>⚒️ 작업별 통계 확인</string>
    </property>
   </widget>
-  <widget class="QPlainTextEdit" name="reasonTextEdit">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>650</y>
-     <width>581</width>
-     <height>211</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>14</pointsize>
-    </font>
-   </property>
-   <property name="plainText">
-    <string>불량보고서 확인 버튼 누르면 이 창에 띄워지도록 
-[작업명/ 불량단계/ ID/ 작업자/ 작업날짜/ 불량사유] 
-테이블 위젯 사용보다 이 라벨에 df가 띄워지게 하는게 나을듯 </string>
-   </property>
-   <property name="overwriteMode">
-    <bool>false</bool>
-   </property>
-  </widget>
   <widget class="QPushButton" name="workerStatisticButton">
    <property name="geometry">
     <rect>
-     <x>660</x>
-     <y>570</y>
+     <x>670</x>
+     <y>530</y>
      <width>211</width>
      <height>51</height>
     </rect>
@@ -543,10 +456,10 @@
   <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>660</x>
+     <x>670</x>
      <y>170</y>
      <width>701</width>
-     <height>391</height>
+     <height>301</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="taskgraphLayout"/>
@@ -554,10 +467,10 @@
   <widget class="QWidget" name="verticalLayoutWidget_2">
    <property name="geometry">
     <rect>
-     <x>660</x>
-     <y>630</y>
+     <x>670</x>
+     <y>590</y>
      <width>701</width>
-     <height>231</height>
+     <height>271</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="workergraphLayout"/>
@@ -589,21 +502,337 @@
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
+  <widget class="QWidget" name="layoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>110</y>
+     <width>251</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <layout class="QFormLayout" name="formLayout">
+    <item row="0" column="0">
+     <widget class="QLabel" name="ID">
+      <property name="maximumSize">
+       <size>
+        <width>600</width>
+        <height>40</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto Light</family>
+        <pointsize>15</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255, 0);</string>
+      </property>
+      <property name="text">
+       <string>ID      :  </string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="idLabel">
+      <property name="font">
+       <font>
+        <pointsize>15</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="Name">
+      <property name="maximumSize">
+       <size>
+        <width>600</width>
+        <height>40</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto Light</family>
+        <pointsize>15</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255, 0);</string>
+      </property>
+      <property name="text">
+       <string>작업자   :</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="nameLabel">
+      <property name="font">
+       <font>
+        <pointsize>15</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QTableWidget" name="errorTable">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>670</y>
+     <width>591</width>
+     <height>191</height>
+    </rect>
+   </property>
+   <property name="baseSize">
+    <size>
+     <width>0</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="acceptDrops">
+    <bool>false</bool>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="midLineWidth">
+    <number>2</number>
+   </property>
+   <attribute name="horizontalHeaderVisible">
+    <bool>true</bool>
+   </attribute>
+   <attribute name="horizontalHeaderCascadingSectionResizes">
+    <bool>true</bool>
+   </attribute>
+   <attribute name="horizontalHeaderDefaultSectionSize">
+    <number>115</number>
+   </attribute>
+   <attribute name="horizontalHeaderStretchLastSection">
+    <bool>false</bool>
+   </attribute>
+   <column>
+    <property name="text">
+     <string>작업명</string>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>ID</string>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>작업자 </string>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>작업 날짜 </string>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>불량 단계</string>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>불량 사유</string>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </column>
+  </widget>
+  <widget class="QComboBox" name="workCombobox">
+   <property name="geometry">
+    <rect>
+     <x>870</x>
+     <y>110</y>
+     <width>181</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>13</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <item>
+    <property name="text">
+     <string>후아유 강아지 조명</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>후아유 책상</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>후아유 장난감</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>후아유 테이블</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>후아유 의자</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>기타</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>860</x>
+     <y>470</y>
+     <width>341</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>13</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(255,255,255);color: rgb(110, 110,150); border-radius: 20px</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="personCombobox">
+   <property name="geometry">
+    <rect>
+     <x>890</x>
+     <y>530</y>
+     <width>81</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>13</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+  </widget>
   <zorder>idBack</zorder>
   <zorder>progressBack</zorder>
   <zorder>titleBox</zorder>
   <zorder>backButton</zorder>
   <zorder>logoutButton</zorder>
-  <zorder>layoutWidget</zorder>
   <zorder>statisticBack</zorder>
-  <zorder>taskTable</zorder>
+  <zorder>workTable</zorder>
   <zorder>errorButton</zorder>
   <zorder>taskStatisticButton</zorder>
-  <zorder>reasonTextEdit</zorder>
   <zorder>workerStatisticButton</zorder>
   <zorder>verticalLayoutWidget</zorder>
   <zorder>verticalLayoutWidget_2</zorder>
   <zorder>workTitle</zorder>
+  <zorder>layoutWidget</zorder>
+  <zorder>errorTable</zorder>
+  <zorder>workCombobox</zorder>
+  <zorder>label</zorder>
+  <zorder>personCombobox</zorder>
  </widget>
  <resources/>
  <connections/>
