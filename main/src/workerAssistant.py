@@ -16,6 +16,8 @@ from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QFont
 from ultralytics import YOLO
 
+TESTMODE = 1 #gui 테스트 하실때는 1
+
 form_loginpage_ui = uic.loadUiType("loginWindow.ui")[0]
 form_selectpage_ui = uic.loadUiType("selectWindow.ui")[0]
 form_assemblypage_ui = uic.loadUiType("assemblyWindow.ui")[0]
@@ -310,16 +312,25 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         
     def draw_rec(self,img_form):
         result = img_form.copy()
-        print("draw_rec")
 
         for val in self.yolo_detect_class_coordinate:
-            for coord in val:
+            for idx, coord in enumerate(val):
                 x1 = coord[0]
                 y1 = coord[1]
                 x2 = coord[2]
                 y2 = coord[3]
                 cv2.rectangle(result, (int(x1.item()), int(y1.item())), (int(x2.item()), int(y2.item())), (255, 0, 0), 2)
                 # print("x1 : {}, y1: {} x2: {} y2: {}".format(int(x1), int(y1)), (int(x2), int(y2)))
+
+                # 객체의 크기를 이미지에 표시
+                font = cv2.FONT_HERSHEY_SIMPLEX
+                font_scale = 0.5
+                font_thickness = 1
+                font_color = (255, 255, 255)  # 흰색
+                text_size, _ = cv2.getTextSize(self.yolo_detect_class[idx], font, font_scale, font_thickness)
+                text_x = int((x1 + x2) / 2 - text_size[0] / 2)
+                text_y = int(y2 + text_size[1] + 5)  # 객체 아래에 위치
+                cv2.putText(result, self.yolo_detect_class[idx], (text_x, text_y), font, font_scale, font_color, font_thickness)
         return result 
         
         
@@ -408,7 +419,7 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
             media_file = self.media_files[self.current_index]
             if media_file.endswith('.jpg') or media_file.endswith('.png'):
                 self.display_image(media_file)
-                if(self.isyolomodel_pass() == True):
+                if(self.isyolomodel_pass() == True or TESTMODE == 1 ):
                     self.current_index += 1
                 else:
                     pass
