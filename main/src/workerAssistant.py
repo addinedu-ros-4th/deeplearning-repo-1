@@ -24,6 +24,8 @@ form_servicenotready_ui = uic.loadUiType("serviceNotReady.ui")[0]
 
 inputID=''; name='' ; #사용자 정보 
 
+#yolo_model_path 
+yolo_path = '../../yolo_model/best.pt'
 # 웹캠 속성 설정
 cap1 = cv2.VideoCapture(0)
 cap2 = cv2.VideoCapture(2)        
@@ -175,7 +177,7 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         timer2.start(1) 
 
         # Load the YOLOv8 model
-        self.model = YOLO('best.pt')
+        self.model = YOLO(yolo_path)
     
 ## workGuideLabel에 가이드 이미지/영상 띄우기 --
 # - 폴더내에 있는 이미지/영상 순차적으로 띄움 
