@@ -26,14 +26,17 @@ inputID=''; name='' ; #사용자 정보
 
 #yolo_model_path 
 yolo_path = '../../yolo_model/best.pt'
+step_yolo_path = '../../yolo_model/step.pt'
+
 # 웹캠 속성 설정
 cap1 = cv2.VideoCapture(0)
 cap2 = cv2.VideoCapture(2)        
 
+
 if cap1.isOpened():
     cap1.set(cv2.CAP_PROP_FPS, 30)
 else:
-    pass
+    cap1 = cv2.VideoCapture('testvideo_rgb.avi')
 
 if cap2.isOpened():
     cap2.set(cv2.CAP_PROP_FPS, 30)
@@ -157,7 +160,12 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         cxml = Cxml_reader("workingorder.xml", "dog_light")  #xml_reader 클래스를 생성한다. 생성시 불러올 xml 주소를 인자로 넘겨준다
         self.xml_count = cxml.get_order_count() #xml안에 들어 있는 작업 순서 갯수 출력 
         self.workorderlist = cxml.get_order_list() #xml안에 들어 있는 작업순서(string)가 리스트 형태로 출력된다
-
+        
+        cxml_objectdetect = Cxml_reader("objectdetectlist.xml", "dog_light")
+        self.xml_detection_modellist = cxml_objectdetect.get_model_list() #xml안에 yolo 모델 리스트 출력 
+        self.xml_detection_countlist = cxml_objectdetect.get_object_count_list() #xml안에 들어 있는 yolo 모델이 해당 스텝에 인식해야 할 object 갯수 출력
+        self.xml_detection_partlist = cxml_objectdetect.get_object_parts_list() #xml안에 들어 있는 yolo 모델이 해당 스텝에 인식해야 하는 파트 이름 출력
+        
         self.logoutButton.clicked.connect(self.go_main)
         self.backButton.clicked.connect(self.go_back)
         self.errorButton.clicked.connect(self.go_error)
@@ -176,8 +184,15 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         timer2.timeout.connect(self.update_frame2)
         timer2.start(1) 
 
+        timer_yolo = QTimer(self)
+        timer_yolo.timeout.connect(self.yolo_update)
+        timer_yolo.start(1) 
+
         # Load the YOLOv8 model
         self.model = YOLO(yolo_path)
+        self.stepmodel = YOLO(step_yolo_path)
+        self.yolo_detect_class = []
+
     
 ## workGuideLabel에 가이드 이미지/영상 띄우기 --
 # - 폴더내에 있는 이미지/영상 순차적으로 띄움 
@@ -198,20 +213,50 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         self.progressBar.setMinimum(0)
         self.progressBar.setMaximum(42)
 
-    def predict_byYOLO(self, img):
+    def yolo_update(self):
+        
+        self.yolo_detect_class.clear() #담기 전에 reset
 
-        # YOLO 객체 감지
-        box_results = self.model.predict(img, conf = 0.5, verbose=False, show = False)
-        boxes = box_results[0].boxes.xyxy.cpu()
-        box_class = box_results[0].boxes.cls.cpu().tolist()
+        if self.xml_detection_modellist[self.current_index] == '0':
+            ret, frame_for_yolo = cap1.read()  # 웹캠 1번
+            if ret:
+                results = self.model.predict(frame_for_yolo, show_boxes=False)
+                names = self.model.names
 
-        names = self.model.names
+                for r in results:
+                    for cls_name in r.boxes.cls:
+                        tmp_name = names[int(cls_name.item())]
+                        self.yolo_detect_class.append(tmp_name)
 
-        for r in box_results:
-            for idx,c in enumerate(r.boxes.cls):
-                # print("idx : {}".format(idx))
-                # print(names[int(c.item())])
-                pass
+        elif self.xml_detection_modellist[self.current_index] == '1':
+            ret, frame_for_yolo = cap1.read()  # 웹캠 1번
+            if ret:
+                results = self.stepmodel.predict(frame_for_yolo, show_boxes=False)
+                stepnames = self.stepmodel.names
+
+                for r in results:
+                    for cls_name in r.boxes.cls:
+                        tmp_name = stepnames[int(cls_name.item())]
+                        self.yolo_detect_class.append(tmp_name)
+
+        print(self.yolo_detect_class)
+        
+    def isyolomodel_pass(self):
+        result = False
+        if self.xml_detection_countlist[self.current_index] == '0' : #count가 0이라서 detect 해야할 필요 없음
+            result = True
+        else:
+                detected_cls = set(sorted(self.yolo_detect_class))
+                must_be_detected_cls = set(sorted(self.xml_detection_partlist[self.current_index]))
+                # set1 = set(tuple(item) for item in list1)
+                # set2 = set(tuple(item) for item in list2)
+                if detected_cls == must_be_detected_cls :
+                    result = True
+
+        return result
+
+    def predict_byYOLO(self, img_to_predict):
+        pass
 
     def load_media_files(self): # 폴더내 모든 파일 불러와서 숫자 순서 순으로 정렬 
         media_files = []
@@ -227,7 +272,10 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
             media_file = self.media_files[self.current_index]
             if media_file.endswith('.jpg') or media_file.endswith('.png'):
                 self.display_image(media_file)
-                self.current_index += 1
+                if(self.isyolomodel_pass() == True):
+                    self.current_index += 1
+                else:
+                    pass
                 self.timer.start(3000)
                 #self.timer.start(5000)  # 이미지를 3초 동안 표시
             elif media_file.endswith('.avi'):
@@ -285,16 +333,15 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
 # --- workGuideLabel 띄우기 끝 
                 
     def update_frame1(self):
-        ret, frame = cap1.read()  # 웹캠 1번
+        ret, frame_1 = cap1.read()  # 웹캠 1번
         if ret:
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            height, width, channel = frame.shape
+            frame_1 = cv2.cvtColor(frame_1, cv2.COLOR_BGR2RGB)
+            height, width, channel = frame_1.shape
             bytes_per_line = 3 * width
-            q_img = QImage(frame.data, width, height, bytes_per_line, QImage.Format_RGB888)
+            q_img = QImage(frame_1.data, width, height, bytes_per_line, QImage.Format_RGB888)
             pixmap = QPixmap.fromImage(q_img)
             self.workNowLabel.setPixmap(pixmap)
 
-            self.predict_byYOLO(frame)
 
 
     def update_frame2(self):
