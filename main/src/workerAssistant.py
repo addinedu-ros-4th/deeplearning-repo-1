@@ -194,7 +194,6 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         timer2 = QTimer(self)
         timer2.timeout.connect(self.update_frame2)
         timer2.start(1) 
-
         timer_yolo = QTimer(self)
         timer_yolo.timeout.connect(self.yolo_update)
         timer_yolo.start(1) 
@@ -303,6 +302,51 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
     #             # print(names[int(c.item())])
     #             pass
 
+
+    def yolo_update(self):
+        
+        self.yolo_detect_class.clear() #담기 전에 reset
+
+        if self.xml_detection_modellist[self.current_index] == '0':
+            ret, frame_for_yolo = cap1.read()  # 웹캠 1번
+            if ret:
+                results = self.model.predict(frame_for_yolo, show_boxes=False)
+                names = self.model.names
+
+                for r in results:
+                    for cls_name in r.boxes.cls:
+                        tmp_name = names[int(cls_name.item())]
+                        self.yolo_detect_class.append(tmp_name)
+
+        elif self.xml_detection_modellist[self.current_index] == '1':
+            ret, frame_for_yolo = cap1.read()  # 웹캠 1번
+            if ret:
+                results = self.stepmodel.predict(frame_for_yolo, show_boxes=False)
+                stepnames = self.stepmodel.names
+
+                for r in results:
+                    for cls_name in r.boxes.cls:
+                        tmp_name = stepnames[int(cls_name.item())]
+                        self.yolo_detect_class.append(tmp_name)
+
+        print(self.yolo_detect_class)
+        
+    def isyolomodel_pass(self):
+        result = False
+        if self.xml_detection_countlist[self.current_index] == '0' : #count가 0이라서 detect 해야할 필요 없음
+            result = True
+        else:
+                detected_cls = set(sorted(self.yolo_detect_class))
+                must_be_detected_cls = set(sorted(self.xml_detection_partlist[self.current_index]))
+                # set1 = set(tuple(item) for item in list1)
+                # set2 = set(tuple(item) for item in list2)
+                if detected_cls == must_be_detected_cls :
+                    result = True
+
+        return result
+
+    def predict_byYOLO(self, img_to_predict):
+        pass
 
     def load_media_files(self): # 폴더내 모든 파일 불러와서 숫자 순서 순으로 정렬 
         media_files = []
