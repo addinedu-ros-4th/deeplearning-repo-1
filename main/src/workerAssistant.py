@@ -2,6 +2,7 @@ import os
 import sys
 import time 
 import cv2
+import torch
 import numpy as np 
 from PyQt5.QtWidgets import *
 from PyQt5.QtWidgets import QApplication, QMainWindow
@@ -15,12 +16,12 @@ from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QFont
 from ultralytics import YOLO
 
-form_loginpage_ui = uic.loadUiType("loginWindow.ui")[0]
-form_selectpage_ui = uic.loadUiType("selectWindow.ui")[0]
-form_assemblypage_ui = uic.loadUiType("assemblyWindow.ui")[0]
-form_errorwindowpage_ui = uic.loadUiType("errorWindow.ui")[0]
-form_statisticpage_ui = uic.loadUiType("statisticWindow.ui")[0]
-form_servicenotready_ui = uic.loadUiType("serviceNotReady.ui")[0]
+form_loginpage_ui = uic.loadUiType("/home/addinedu/deeplearning-repo-1/main/src/loginWindow.ui")[0]
+form_selectpage_ui = uic.loadUiType("/home/addinedu/deeplearning-repo-1/main/src/selectWindow.ui")[0]
+form_assemblypage_ui = uic.loadUiType("/home/addinedu/deeplearning-repo-1/main/src/assemblyWindow.ui")[0]
+form_errorwindowpage_ui = uic.loadUiType("/home/addinedu/deeplearning-repo-1/main/src/errorWindow.ui")[0]
+form_statisticpage_ui = uic.loadUiType("/home/addinedu/deeplearning-repo-1/main/src/statisticWindow.ui")[0]
+form_servicenotready_ui = uic.loadUiType("/home/addinedu/deeplearning-repo-1/main/src/serviceNotReady.ui")[0]
 
 inputID=''; name='' ; #사용자 정보 
 
@@ -122,15 +123,21 @@ class selectWindow(QMainWindow,form_selectpage_ui):
         statisticPage = statisticWindow(self) #페이지 4 불러오고
         statisticPage.get_currentoperator(self.currentOperator)
         statisticPage.show()  
-
         
+
 class assemblyWindow(QMainWindow,form_assemblypage_ui):
     
     def __init__(self, parent):
+        
+        
         global inputID, name 
         super().__init__(parent)
         self.setupUi(self) 
 
+        # YOLO 모델 초기화
+        self.yolo_model = YOLO('/home/addinedu/deeplearning-repo-1/yolo_model/best.pt', task="detect")
+        # names = self.yolo_model.names  # 클래스 이름 가져오기
+    
         self.progresslist = [self.progress1, self.progress2, self.progress3, self.progress4, self.progress5,
                              self.progress6, self.progress7, self.progress8, self.progress9, self.progress10,
                              self.progress11, self.progress12, self.progress13, self.progress14, self.progress15,
@@ -152,7 +159,11 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                           self.check_41,self.check_42
                           ]
         
-        cxml = Cxml_reader("workingorder.xml", "dog_light")  #xml_reader 클래스를 생성한다. 생성시 불러올 xml 주소를 인자로 넘겨준다
+        image_path = "/home/addinedu/yolov7/mydata/images/frame_0.jpg" #올릴이미지경로설정
+        pixmap = QPixmap(image_path)
+        self.workNowLabel.setPixmap(pixmap)
+   
+        cxml = Cxml_reader("/home/addinedu/deeplearning-repo-1/main/src/workingorder.xml", "dog_light")  #xml_reader 클래스를 생성한다. 생성시 불러올 xml 주소를 인자로 넘겨준다
         self.xml_count = cxml.get_order_count() #xml안에 들어 있는 작업 순서 갯수 출력 
         self.workorderlist = cxml.get_order_list() #xml안에 들어 있는 작업순서(string)가 리스트 형태로 출력된다
 
@@ -174,14 +185,16 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         timer2.timeout.connect(self.update_frame2)
         timer2.start(1) 
 
-        # Load the YOLOv8 model
-        self.model = YOLO('best.pt')
-    
 ## workGuideLabel에 가이드 이미지/영상 띄우기 --
 # - 폴더내에 있는 이미지/영상 순차적으로 띄움 
 # - 일단 이미지는 5초 디스플레이하고 넘어가게/ 영상은 2회 반복재생되면 넘어가게함 
- 
-        self.media_folder = '/home/dyjung/amr_ws/ml/project/data/workorder' #가이드이미지, 영상 저장된 폴더 루트 
+        # Load the YOLOv8 model and initialize
+        self.model = YOLO('/home/addinedu/deeplearning-repo-1/yolo_model/best.pt', task="detect")
+        names = self.model.names
+        
+        # 객체 인식 메서드 호출
+        self.detect_objects(image_path)
+        self.media_folder = '/home/addinedu/deeplearning-repo-1/main/data/workorder/' #가이드이미지, 영상 저장된 폴더 루트 
         self.media_files = self.load_media_files()
         self.current_index = 0
         self.playback_count = 0  # 재생 횟수를 저ㅛ장하는 변수 추가
@@ -195,21 +208,81 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         self.progressBar.setValue(0)
         self.progressBar.setMinimum(0)
         self.progressBar.setMaximum(42)
+  
+        # 객체 인식 함수 호출
+        self.detect_objects(image_path)
 
-    def predict_byYOLO(self, img):
-
+    def detect_objects(self, image_path):
+        # 이미지를 OpenCV 형식으로 로드
+        image = cv2.imread(image_path)
+        
         # YOLO 객체 감지
-        box_results = self.model.predict(img, conf = 0.5, verbose=False, show = False)
-        boxes = box_results[0].boxes.xyxy.cpu()
-        box_class = box_results[0].boxes.cls.cpu().tolist()
-
-        names = self.model.names
-
+        box_results = self.model.predict(image, conf=0.5, verbose=False, show=False)
+        
         for r in box_results:
-            for idx,c in enumerate(r.boxes.cls):
-                # print("idx : {}".format(idx))
-                # print(names[int(c.item())])
-                pass
+            for box in r.boxes.xyxy.cpu():
+                # 박스 좌표와 신뢰도 추출
+                if len(box) >= 4:
+                    x1, y1, x2, y2 = box[:4]  # bounding box 좌표
+                    confidence = box[4] if len(box) > 4 else None  # 신뢰도
+                    # 실제 길이와 픽셀 길이의 비율 계산
+                    pixel_length = abs(x2 - x1)  # 정사각형의 픽셀 길이
+                    real_length = 2  # 실제 길이 (여기서는 2cm)
+                    pixel_to_cm_ratio = real_length / pixel_length
+
+                    # 객체의 픽셀 좌표를 실제 길이로 변환
+                    real_x1 = x1 * pixel_to_cm_ratio
+                    real_x2 = x2 * pixel_to_cm_ratio
+                    real_y1 = y1 * pixel_to_cm_ratio
+                    real_y2 = y2 * pixel_to_cm_ratio
+
+                    # 객체의 크기 계산
+                    real_width = abs(real_x2 - real_x1)
+                    real_height = abs(real_y2 - real_y1)
+                    
+                    # 각 객체의 박스를 OpenCV 이미지에 그립니다.
+                    cv2.rectangle(image, (int(x1), int(y1)), (int(x2), int(y2)), (255, 0, 0), 2)
+                    
+                        # 객체의 너비와 높이를 문자열로 변환
+                    size_text = "Width: {:.2f} cm, Height: {:.2f} cm".format(real_width, real_height)
+
+                    # 객체의 크기를 이미지에 표시
+                    font = cv2.FONT_HERSHEY_SIMPLEX
+                    font_scale = 0.5
+                    font_thickness = 1
+                    font_color = (255, 255, 255)  # 흰색
+                    text_size, _ = cv2.getTextSize(size_text, font, font_scale, font_thickness)
+                    text_x = int((x1 + x2) / 2 - text_size[0] / 2)
+                    text_y = int(y2 + text_size[1] + 5)  # 객체 아래에 위치
+                    cv2.putText(image, size_text, (text_x, text_y), font, font_scale, font_color, font_thickness)
+
+                else:
+                    continue  # 값이 충분하지 않으면 다음 박스로 넘어감
+                
+                # 각 객체의 박스를 OpenCV 이미지에 그립니다.
+                cv2.rectangle(image, (int(x1), int(y1)), (int(x2), int(y2)), (255, 0, 0), 2)
+
+        # OpenCV 이미지를 Qt 이미지로 변환하여 표시
+        q_image = QImage(image.data, image.shape[1], image.shape[0], QImage.Format_RGB888).rgbSwapped()
+        pixmap = QPixmap.fromImage(q_image)
+        self.workNowLabel.setPixmap(pixmap)
+
+
+
+    # def predict_byYOLO(self, img):
+    #     # YOLO 객체 감지
+    #     box_results = self.model.predict(img, conf = 0.5, verbose=False, show = False)
+    #     boxes = box_results[0].boxes.xyxy.cpu()
+    #     box_class = box_results[0].boxes.cls.cpu().tolist()
+
+    #     names = self.model.names
+
+    #     for r in box_results:
+    #         for idx,c in enumerate(r.boxes.cls):
+    #             # print("idx : {}".format(idx))
+    #             # print(names[int(c.item())])
+    #             pass
+
 
     def load_media_files(self): # 폴더내 모든 파일 불러와서 숫자 순서 순으로 정렬 
         media_files = []
@@ -346,6 +419,7 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         errorPage = errorWindow(self) #에러 페이지 불러오고
         errorPage.get_currentoperator(self.currentOperator)
         errorPage.show()          
+         
     
         
 class errorWindow(QMainWindow,form_errorwindowpage_ui):

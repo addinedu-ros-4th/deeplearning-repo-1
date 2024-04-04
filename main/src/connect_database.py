@@ -7,8 +7,8 @@ class Cdatabase_connect:
         self.local = mysql.connector.connect(
             host = "localhost",
             port = 3306,
-            user = "dyjung",
-            password = "0",
+            user = "root",
+            password = "0000",
             database = "mlproject" 
         )
 
