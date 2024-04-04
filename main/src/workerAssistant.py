@@ -16,12 +16,12 @@ from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QFont
 from ultralytics import YOLO
 
-form_loginpage_ui = uic.loadUiType("/home/addinedu/deeplearning-repo-1/main/src/loginWindow.ui")[0]
-form_selectpage_ui = uic.loadUiType("/home/addinedu/deeplearning-repo-1/main/src/selectWindow.ui")[0]
-form_assemblypage_ui = uic.loadUiType("/home/addinedu/deeplearning-repo-1/main/src/assemblyWindow.ui")[0]
-form_errorwindowpage_ui = uic.loadUiType("/home/addinedu/deeplearning-repo-1/main/src/errorWindow.ui")[0]
-form_statisticpage_ui = uic.loadUiType("/home/addinedu/deeplearning-repo-1/main/src/statisticWindow.ui")[0]
-form_servicenotready_ui = uic.loadUiType("/home/addinedu/deeplearning-repo-1/main/src/serviceNotReady.ui")[0]
+form_loginpage_ui = uic.loadUiType("loginWindow.ui")[0]
+form_selectpage_ui = uic.loadUiType("selectWindow.ui")[0]
+form_assemblypage_ui = uic.loadUiType("assemblyWindow.ui")[0]
+form_errorwindowpage_ui = uic.loadUiType("errorWindow.ui")[0]
+form_statisticpage_ui = uic.loadUiType("statisticWindow.ui")[0]
+form_servicenotready_ui = uic.loadUiType("serviceNotReady.ui")[0]
 
 inputID=''; name='' ; #사용자 정보 
 
@@ -139,10 +139,6 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         super().__init__(parent)
         self.setupUi(self) 
 
-        # YOLO 모델 초기화
-        self.yolo_model = YOLO('/home/addinedu/deeplearning-repo-1/yolo_model/best.pt', task="detect")
-        # names = self.yolo_model.names  # 클래스 이름 가져오기
-    
         self.progresslist = [self.progress1, self.progress2, self.progress3, self.progress4, self.progress5,
                              self.progress6, self.progress7, self.progress8, self.progress9, self.progress10,
                              self.progress11, self.progress12, self.progress13, self.progress14, self.progress15,
@@ -164,11 +160,7 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                           self.check_41,self.check_42
                           ]
         
-        image_path = "/home/addinedu/yolov7/mydata/images/frame_0.jpg" #올릴이미지경로설정
-        pixmap = QPixmap(image_path)
-        self.workNowLabel.setPixmap(pixmap)
-   
-        cxml = Cxml_reader("/home/addinedu/deeplearning-repo-1/main/src/workingorder.xml", "dog_light")  #xml_reader 클래스를 생성한다. 생성시 불러올 xml 주소를 인자로 넘겨준다
+        cxml = Cxml_reader("workingorder.xml", "dog_light")  #xml_reader 클래스를 생성한다. 생성시 불러올 xml 주소를 인자로 넘겨준다
         self.xml_count = cxml.get_order_count() #xml안에 들어 있는 작업 순서 갯수 출력 
         self.workorderlist = cxml.get_order_list() #xml안에 들어 있는 작업순서(string)가 리스트 형태로 출력된다
         
@@ -207,13 +199,9 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
 ## workGuideLabel에 가이드 이미지/영상 띄우기 --
 # - 폴더내에 있는 이미지/영상 순차적으로 띄움 
 # - 일단 이미지는 5초 디스플레이하고 넘어가게/ 영상은 2회 반복재생되면 넘어가게함 
-        # Load the YOLOv8 model and initialize
-        self.model = YOLO('/home/addinedu/deeplearning-repo-1/yolo_model/best.pt', task="detect")
-        names = self.model.names
         
         # 객체 인식 메서드 호출
-        self.detect_objects(image_path)
-        self.media_folder = '/home/addinedu/deeplearning-repo-1/main/data/workorder/' #가이드이미지, 영상 저장된 폴더 루트 
+        self.media_folder = '/home/dyjung/amr_ws/ml/project/data/workorder/' #가이드이미지, 영상 저장된 폴더 루트 
         self.media_files = self.load_media_files()
         self.current_index = 0
         self.playback_count = 0  # 재생 횟수를 저ㅛ장하는 변수 추가
@@ -228,8 +216,6 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         self.progressBar.setMinimum(0)
         self.progressBar.setMaximum(42)
   
-        # 객체 인식 함수 호출
-        self.detect_objects(image_path)
 
     def detect_objects(self, image_path):
         # 이미지를 OpenCV 형식으로 로드
@@ -287,22 +273,6 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         self.workNowLabel.setPixmap(pixmap)
 
 
-
-    # def predict_byYOLO(self, img):
-    #     # YOLO 객체 감지
-    #     box_results = self.model.predict(img, conf = 0.5, verbose=False, show = False)
-    #     boxes = box_results[0].boxes.xyxy.cpu()
-    #     box_class = box_results[0].boxes.cls.cpu().tolist()
-
-    #     names = self.model.names
-
-    #     for r in box_results:
-    #         for idx,c in enumerate(r.boxes.cls):
-    #             # print("idx : {}".format(idx))
-    #             # print(names[int(c.item())])
-    #             pass
-
-
     def yolo_update(self):
         
         self.yolo_detect_class.clear() #담기 전에 reset
@@ -310,12 +280,15 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         if self.xml_detection_modellist[self.current_index] == '0':
             ret, frame_for_yolo = cap1.read()  # 웹캠 1번
             if ret:
-                results = self.model.predict(frame_for_yolo, show_boxes=False)
+                results = self.model.predict(frame_for_yolo, conf=0.5, show_boxes=False)
                 names = self.model.names
 
                 for r in results:
                     for cls_name in r.boxes.cls:
                         tmp_name = names[int(cls_name.item())]
+                        if tmp_name == 'bar':
+                            size = self.measure_bar_size(r.boxes.xyxy.cpu())
+                            tmp_name += str(size)
                         self.yolo_detect_class.append(tmp_name)
 
         elif self.xml_detection_modellist[self.current_index] == '1':
@@ -331,6 +304,38 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
 
         print(self.yolo_detect_class)
         
+    def measure_bar_size(self, xyxy_bar):
+        
+        for box in xyxy_bar:
+            # 박스 좌표와 신뢰도 추출
+            if len(box) >= 4:
+                x1, y1, x2, y2 = box[:4]  # bounding box 좌표
+                confidence = box[4] if len(box) > 4 else None  # 신뢰도
+                # 실제 길이와 픽셀 길이의 비율 계산
+                pixel_length = abs(x2 - x1)  # 정사각형의 픽셀 길이
+                real_length = 2  # 실제 길이 (여기서는 2cm)
+                pixel_to_cm_ratio = real_length / pixel_length
+
+                # 객체의 픽셀 좌표를 실제 길이로 변환
+                real_x1 = x1 * pixel_to_cm_ratio
+                real_x2 = x2 * pixel_to_cm_ratio
+                real_y1 = y1 * pixel_to_cm_ratio
+                real_y2 = y2 * pixel_to_cm_ratio
+
+                # 객체의 크기 계산
+                real_width = abs(real_x2 - real_x1)
+                real_height = abs(real_y2 - real_y1)
+                
+                
+                # 객체의 너비와 높이를 문자열로 변환
+                size_text = "Width: {:.2f} cm, Height: {:.2f} cm".format(real_width, real_height)
+                print(size_text)
+            else:
+                continue  # 값이 충분하지 않으면 다음 박스로 넘어감
+            
+
+
+
     def isyolomodel_pass(self):
         result = False
         if self.xml_detection_countlist[self.current_index] == '0' : #count가 0이라서 detect 해야할 필요 없음
@@ -340,13 +345,11 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                 must_be_detected_cls = set(sorted(self.xml_detection_partlist[self.current_index]))
                 # set1 = set(tuple(item) for item in list1)
                 # set2 = set(tuple(item) for item in list2)
-                if detected_cls == must_be_detected_cls :
+                if detected_cls.issubset(must_be_detected_cls) == True :
                     result = True
 
         return result
 
-    def predict_byYOLO(self, img_to_predict):
-        pass
 
     def load_media_files(self): # 폴더내 모든 파일 불러와서 숫자 순서 순으로 정렬 
         media_files = []
@@ -419,7 +422,8 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         
         self.current_index += 1  # 다음 미디어 파일로 이동
         self.playback_count = 0  # 재생 횟수 초기화
-        self.timer.start(1000)  # 1초 후에 다음 미디어 파일을 표시       
+        self.timer.start(1000)  # 1초 후에 다음 미디어 파일을 표시   
+
 # --- workGuideLabel 띄우기 끝 
                 
     def update_frame1(self):
