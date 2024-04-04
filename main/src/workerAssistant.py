@@ -37,7 +37,9 @@ cap2 = cv2.VideoCapture(2)
 if cap1.isOpened():
     cap1.set(cv2.CAP_PROP_FPS, 30)
 else:
-    cap1 = cv2.VideoCapture('testvideo_rgb.avi')
+    # cap1 = cv2.VideoCapture('testvideo_rgb.avi')
+    cap1 = cv2.VideoCapture('/home/dyjung/amr_ws/yolo/yolov8/color_all_include_manyposition/data/images/frame0bright3.jpg')
+
 
 if cap2.isOpened():
     cap2.set(cv2.CAP_PROP_FPS, 30)
@@ -186,14 +188,13 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         timer2 = QTimer(self)
         timer2.timeout.connect(self.update_frame2)
         timer2.start(1) 
-        timer_yolo = QTimer(self)
-        timer_yolo.timeout.connect(self.yolo_update)
-        timer_yolo.start(1) 
 
         # Load the YOLOv8 model
         self.model = YOLO(yolo_path)
         self.stepmodel = YOLO(step_yolo_path)
         self.yolo_detect_class = []
+        self.yolo_detect_class_coordinate = []
+
 
     
 ## workGuideLabel에 가이드 이미지/영상 띄우기 --
@@ -273,65 +274,107 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         self.workNowLabel.setPixmap(pixmap)
 
 
-    def yolo_update(self):
+    def yolo_update(self, frame_for_yolo):
         
         self.yolo_detect_class.clear() #담기 전에 reset
+        self.yolo_detect_class_coordinate.clear()
 
         if self.xml_detection_modellist[self.current_index] == '0':
-            ret, frame_for_yolo = cap1.read()  # 웹캠 1번
-            if ret:
-                results = self.model.predict(frame_for_yolo, conf=0.5, show_boxes=False)
-                names = self.model.names
+            results = self.model.predict(frame_for_yolo, conf=0.5, show_boxes=False)
+            names = self.model.names
 
-                for r in results:
-                    for cls_name in r.boxes.cls:
-                        tmp_name = names[int(cls_name.item())]
-                        if tmp_name == 'bar':
-                            size = self.measure_bar_size(r.boxes.xyxy.cpu())
+            for r in results:
+                for idx,cls_name in enumerate(r.boxes.cls):
+                    tmp_name = names[int(cls_name.item())]
+                    if tmp_name == 'bar':
+                        size = self.measure_bar_size(r.boxes.xyxy.cpu()[idx]) #bar일때만 꺼내려고 한건데 이게 맞낭..#하린님
+                        if size != 0:
                             tmp_name += str(size)
-                        self.yolo_detect_class.append(tmp_name)
-
+                    self.yolo_detect_class.append(tmp_name)
+                    self.yolo_detect_class_coordinate.append(r.boxes.xyxy.cpu())
+                
         elif self.xml_detection_modellist[self.current_index] == '1':
-            ret, frame_for_yolo = cap1.read()  # 웹캠 1번
-            if ret:
-                results = self.stepmodel.predict(frame_for_yolo, show_boxes=False)
-                stepnames = self.stepmodel.names
+            results = self.stepmodel.predict(frame_for_yolo, show_boxes=False)
+            stepnames = self.stepmodel.names
 
-                for r in results:
-                    for cls_name in r.boxes.cls:
-                        tmp_name = stepnames[int(cls_name.item())]
-                        self.yolo_detect_class.append(tmp_name)
+            for r in results:
+                for cls_name in r.boxes.cls:
+                    tmp_name = stepnames[int(cls_name.item())]
+                    self.yolo_detect_class.append(tmp_name)
+                    self.yolo_detect_class_coordinate.append(r.boxes.xyxy.cpu())
+                
 
         print(self.yolo_detect_class)
+        print("---")
+        print(self.yolo_detect_class_coordinate)
         
+    def draw_rec(self,img_form):
+        result = img_form.copy()
+        print("draw_rec")
+
+        for val in self.yolo_detect_class_coordinate:
+            for coord in val:
+                x1 = coord[0]
+                y1 = coord[1]
+                x2 = coord[2]
+                y2 = coord[3]
+                cv2.rectangle(result, (int(x1.item()), int(y1.item())), (int(x2.item()), int(y2.item())), (255, 0, 0), 2)
+                # print("x1 : {}, y1: {} x2: {} y2: {}".format(int(x1), int(y1)), (int(x2), int(y2)))
+        return result 
+        
+        
+        # YOLO 객체 감지
+        #  for box in xyxy_bar:
+        #     # 박스 좌표와 신뢰도 추출
+        #     if len(box) >= 4:
+        #         x1, y1, x2, y2 = box[:4]  # bounding box 좌표
+            
+        #         print("x1: {} y1: {} x2: {} y2: {}".format(int(x1), int(y1), int(x2), int(y2)))
+                
+        #         # 각 객체의 박스를 OpenCV 이미지에 그립니다.
+        #         cv2.rectangle(img_form, (int(x1), int(y1)), (int(x2), int(y2)), (255, 0, 0), 2)
+            
     def measure_bar_size(self, xyxy_bar):
-        
-        for box in xyxy_bar:
+        result_size = 0
+        if len(xyxy_bar) >= 4:
             # 박스 좌표와 신뢰도 추출
-            if len(box) >= 4:
-                x1, y1, x2, y2 = box[:4]  # bounding box 좌표
-                confidence = box[4] if len(box) > 4 else None  # 신뢰도
-                # 실제 길이와 픽셀 길이의 비율 계산
-                pixel_length = abs(x2 - x1)  # 정사각형의 픽셀 길이
-                real_length = 2  # 실제 길이 (여기서는 2cm)
-                pixel_to_cm_ratio = real_length / pixel_length
+            x1 = xyxy_bar[0]
+            y1 = xyxy_bar[1]
+            x2 = xyxy_bar[2]
+            y2 = xyxy_bar[3]
 
-                # 객체의 픽셀 좌표를 실제 길이로 변환
-                real_x1 = x1 * pixel_to_cm_ratio
-                real_x2 = x2 * pixel_to_cm_ratio
-                real_y1 = y1 * pixel_to_cm_ratio
-                real_y2 = y2 * pixel_to_cm_ratio
+            # 실제 길이와 픽셀 길이의 비율 계산
+            pixel_length = abs(x2 - x1)  # 정사각형의 픽셀 길이
+            real_length = 2  # 실제 길이 (여기서는 2cm)
+            pixel_to_cm_ratio = real_length / pixel_length
 
-                # 객체의 크기 계산
-                real_width = abs(real_x2 - real_x1)
-                real_height = abs(real_y2 - real_y1)
-                
-                
-                # 객체의 너비와 높이를 문자열로 변환
-                size_text = "Width: {:.2f} cm, Height: {:.2f} cm".format(real_width, real_height)
-                print(size_text)
-            else:
-                continue  # 값이 충분하지 않으면 다음 박스로 넘어감
+            # 객체의 픽셀 좌표를 실제 길이로 변환
+            real_x1 = x1 * pixel_to_cm_ratio
+            real_x2 = x2 * pixel_to_cm_ratio
+            real_y1 = y1 * pixel_to_cm_ratio
+            real_y2 = y2 * pixel_to_cm_ratio
+
+            # 객체의 크기 계산
+            real_width = abs(real_x2 - real_x1)
+            real_height = abs(real_y2 - real_y1)
+            
+            # 객체의 너비와 높이를 문자열로 변환
+            size_text = "Width: {:.2f} cm, Height: {:.2f} cm".format(real_width, real_height)
+
+            area = round((real_width.item())* (real_height.item()))
+
+            # #값들 튜닝 필요 #하린님
+            # if area == 4:
+            #     result_size =1
+            # elif area == 6:
+            #     result_size =2
+            # elif area == 8:
+            #     result_size =3
+
+        else:
+            result_size =0
+            
+        return result_size
             
 
 
@@ -430,6 +473,10 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         ret, frame_1 = cap1.read()  # 웹캠 1번
         if ret:
             frame_1 = cv2.cvtColor(frame_1, cv2.COLOR_BGR2RGB)
+            #frame_1으로 predict
+            self.yolo_update(frame_1)
+            frame_1 = self.draw_rec(frame_1)
+            #frame_1에다가 rectangle 그리기 
             height, width, channel = frame_1.shape
             bytes_per_line = 3 * width
             q_img = QImage(frame_1.data, width, height, bytes_per_line, QImage.Format_RGB888)
