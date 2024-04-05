@@ -229,7 +229,7 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
 # - 일단 이미지는 5초 디스플레이하고 넘어가게/ 영상은 2회 반복재생되면 넘어가게함 
         
         # 객체 인식 메서드 호출
-        self.media_folder = './workorder/' #가이드이미지, 영상 저장된 폴더 루트 
+        self.media_folder = '/home/dyjung/amr_ws/ml/project/data/workorder/' #가이드이미지, 영상 저장된 폴더 루트 
         self.media_files = self.load_media_files()
         self.current_index = 0
         self.playback_count = 0  # 재생 횟수를 저ㅛ장하는 변수 추가
@@ -475,7 +475,7 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
             media_file = self.media_files[self.current_index]
             if media_file.endswith('.jpg') or media_file.endswith('.png'):
                 self.display_image(media_file)
-                if(self.isyolomodel_pass() == True or TESTMODE == 1 ):
+                if(TESTMODE == 1 ) or (self.isyolomodel_pass() == True):
                     self.current_index += 1
                 else:
                     pass
