@@ -489,6 +489,10 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
             self.workorderLabel.setText("작업이 완료되었습니다.")
             self.startButton.show()
             self.quitButton.show()
+        # 스크롤을 자동으로 아래로 내리는 코드 추가
+        if self.current_index>1:
+            scroll_bar = self.scrollArea_2.verticalScrollBar()
+            scroll_bar.setValue(scroll_bar.value() + 20)
 
     def display_image(self, image_file): #이미지 띄우기 
         pixmap = QPixmap(image_file)
