@@ -26,8 +26,8 @@ form_servicenotready_ui = uic.loadUiType("/home/addinedu/deeplearning-repo-1/mai
 inputID=''; name='' ; #사용자 정보 
 
 #yolo_model_path 
-yolo_path = '../../yolo_model/best.pt'
-step_yolo_path = '../../yolo_model/step.pt'
+yolo_path = '/home/addinedu/deeplearning-repo-1/yolo_model/best.pt'
+step_yolo_path = '/home/addinedu/deeplearning-repo-1/yolo_model/step.pt'
 
 # 웹캠 속성 설정
 cap1 = cv2.VideoCapture(0)
@@ -140,8 +140,9 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         self.setupUi(self) 
 
         # YOLO 모델 초기화
-        self.yolo_model = YOLO('/home/addinedu/deeplearning-repo-1/yolo_model/best.pt', task="detect")
-        # names = self.yolo_model.names  # 클래스 이름 가져오기
+        # self.yolo_model = YOLO('/home/addinedu/deeplearning-repo-1/yolo_model/best.pt', task="detect")
+        self.yolo_model = YOLO('/home/addinedu/deeplearning-repo-1/yolo_model/best.pt')
+        names = self.yolo_model.names  # 클래스 이름 가져오기
     
         self.progresslist = [self.progress1, self.progress2, self.progress3, self.progress4, self.progress5,
                              self.progress6, self.progress7, self.progress8, self.progress9, self.progress10,
@@ -165,6 +166,7 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                           ]
         
         image_path = "/home/addinedu/yolov7/mydata/images/frame_0.jpg" #올릴이미지경로설정
+        # image_path = "/home/addinedu/Pictures/Screenshots/bar.png"
         pixmap = QPixmap(image_path)
         self.workNowLabel.setPixmap(pixmap)
    
@@ -172,7 +174,7 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         self.xml_count = cxml.get_order_count() #xml안에 들어 있는 작업 순서 갯수 출력 
         self.workorderlist = cxml.get_order_list() #xml안에 들어 있는 작업순서(string)가 리스트 형태로 출력된다
         
-        cxml_objectdetect = Cxml_reader("objectdetectlist.xml", "dog_light")
+        cxml_objectdetect = Cxml_reader("/home/addinedu/deeplearning-repo-1/main/src/objectdetectlist.xml", "dog_light")
         self.xml_detection_modellist = cxml_objectdetect.get_model_list() #xml안에 yolo 모델 리스트 출력 
         self.xml_detection_countlist = cxml_objectdetect.get_object_count_list() #xml안에 들어 있는 yolo 모델이 해당 스텝에 인식해야 할 object 갯수 출력
         self.xml_detection_partlist = cxml_objectdetect.get_object_parts_list() #xml안에 들어 있는 yolo 모델이 해당 스텝에 인식해야 하는 파트 이름 출력
@@ -208,9 +210,8 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
 # - 폴더내에 있는 이미지/영상 순차적으로 띄움 
 # - 일단 이미지는 5초 디스플레이하고 넘어가게/ 영상은 2회 반복재생되면 넘어가게함 
         # Load the YOLOv8 model and initialize
-        self.model = YOLO('/home/addinedu/deeplearning-repo-1/yolo_model/best.pt', task="detect")
-        names = self.model.names
-        
+        # self.model = YOLO('/home/addinedu/deeplearning-repo-1/yolo_model/best.pt', task="detect")
+       
         # 객체 인식 메서드 호출
         self.detect_objects(image_path)
         self.media_folder = '/home/addinedu/deeplearning-repo-1/main/data/workorder/' #가이드이미지, 영상 저장된 폴더 루트 
@@ -228,13 +229,12 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         self.progressBar.setMinimum(0)
         self.progressBar.setMaximum(42)
   
-        # 객체 인식 함수 호출
-        self.detect_objects(image_path)
 
     def detect_objects(self, image_path):
         # 이미지를 OpenCV 형식으로 로드
         image = cv2.imread(image_path)
-        
+        names = self.yolo_model.names  # 클래스 이름 가져오기
+    
         # YOLO 객체 감지
         box_results = self.model.predict(image, conf=0.5, verbose=False, show=False)
         
@@ -244,7 +244,10 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                 if len(box) >= 4:
                     x1, y1, x2, y2 = box[:4]  # bounding box 좌표
                     confidence = box[4] if len(box) > 4 else None  # 신뢰도
+                
                     # 실제 길이와 픽셀 길이의 비율 계산
+                
+               
                     pixel_length = abs(x2 - x1)  # 정사각형의 픽셀 길이
                     real_length = 2  # 실제 길이 (여기서는 2cm)
                     pixel_to_cm_ratio = real_length / pixel_length
@@ -277,6 +280,7 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
 
                 else:
                     continue  # 값이 충분하지 않으면 다음 박스로 넘어감
+                
                 
                 # 각 객체의 박스를 OpenCV 이미지에 그립니다.
                 cv2.rectangle(image, (int(x1), int(y1)), (int(x2), int(y2)), (255, 0, 0), 2)
@@ -329,7 +333,7 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                         tmp_name = stepnames[int(cls_name.item())]
                         self.yolo_detect_class.append(tmp_name)
 
-        print(self.yolo_detect_class)
+        # print(self.yolo_detect_class)
         
     def isyolomodel_pass(self):
         result = False
