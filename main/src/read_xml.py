@@ -30,6 +30,40 @@ class Cxml_reader:
             result = descriptions[:]
         
         return result 
+    
+    def get_model_list(self):
+
+        result = []
+
+        if self.xml_root.attrib.get('name') == self.workingname:
+            model_list = [step.find('model').text for step in self.xml_root.findall('./instructions/step')]
+            result = model_list[:]
+        
+        return result  
+    
+    def get_object_count_list(self):
+
+        result = []
+
+        if self.xml_root.attrib.get('name') == self.workingname:
+            object_count_list = [step.find('count').text for step in self.xml_root.findall('./instructions/step')]
+            result = object_count_list[:]
+        
+        return result  
+    
+    def get_object_parts_list(self):
+
+        result = []
+
+        for step in self.xml_root.findall('.//step'):
+            parts = step.find('parts')
+            if parts is not None:
+                tmp_part_list =[]
+                for part in parts.findall('part'):
+                    tmp_part_list.append(part.text)
+                result.append(tmp_part_list)
+        
+        return result 
 
 
     
