@@ -2576,7 +2576,7 @@ border-radius :15px;
     <string notr="true">color:rgb(255,255,255);background-color: rgb(110, 110,130); border-radius: 20px</string>
    </property>
    <property name="text">
-    <string>작업 시작</string>
+    <string>작업 재시작</string>
    </property>
   </widget>
   <widget class="QPushButton" name="quitButton">
