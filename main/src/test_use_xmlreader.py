@@ -3,7 +3,7 @@ from read_xml import Cxml_reader
 def main():
 
     #xml_reader 클래스를 생성한다. 생성시 불러올 xml 주소를 인자로 넘겨준다
-    cxml = Cxml_reader("/home/addinedu/deeplearning-repo-1/main/src/workingorder.xml", "dog_light")
+    cxml = Cxml_reader("workingorder.xml", "dog_light")
     
     #xml안에 들어 있는 작업 순서 갯수 출력 
     print(cxml.get_order_count())
@@ -22,6 +22,8 @@ def main():
 
     #xml안에 들어 있는 yolo 모델이 해당 스텝에 인식해야 하는 파트 이름 출력
     print(cxml_objectdetect.get_object_parts_list())
+
+    print(cxml_objectdetect.get_bar_count())
 
 if __name__ == "__main__":
     main()
