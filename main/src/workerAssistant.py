@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import koreanize_matplotlib
 
-TESTMODE = 1 #gui 테스트 하실때는 1
+TESTMODE = 0 #gui 테스트 하실때는 1
 
 form_loginpage_ui = uic.loadUiType("loginWindow.ui")[0]
 form_selectpage_ui = uic.loadUiType("selectWindow.ui")[0]
@@ -57,13 +57,14 @@ else:
 if cap1.isOpened():
     cap1.set(cv2.CAP_PROP_FPS, 30)
 else:
-    # cap1 = cv2.VideoCapture('testvideo_rgb.avi')
-    cap1 = cv2.VideoCapture('/home/dyjung/amr_ws/yolo/yolov8/color_all_include_manyposition/data/images/frame0bright3.jpg')
+    cap1 = cv2.VideoCapture('work_view_rgb.avi')
+    # cap1 = cv2.VideoCapture('/home/dyjung/amr_ws/yolo/yolov8/color_all_include_manyposition/data/images/frame0bright3.jpg')
 
 if cap2.isOpened():
     cap2.set(cv2.CAP_PROP_FPS, 30)
 else:
-    pass
+    cap2 = cv2.VideoCapture('material_view_rgb.avi')
+
         
 class MainWindow(QMainWindow, form_loginpage_ui):
     def __init__(self):
@@ -188,7 +189,8 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         self.xml_count = cxml.get_order_count() #xml안에 들어 있는 작업 순서 갯수 출력 
         self.workorderlist = cxml.get_order_list() #xml안에 들어 있는 작업순서(string)가 리스트 형태로 출력된다
         
-        cxml_objectdetect = Cxml_reader("objectdetectlist.xml", "dog_light")
+        cxml_objectdetect = Cxml_reader("objectdetectlist_test.xml", "dog_light")
+        # cxml_objectdetect = Cxml_reader("objectdetectlist.xml", "dog_light")
         self.xml_detection_modellist = cxml_objectdetect.get_model_list() #xml안에 yolo 모델 리스트 출력 
         self.xml_detection_countlist = cxml_objectdetect.get_object_count_list() #xml안에 들어 있는 yolo 모델이 해당 스텝에 인식해야 할 object 갯수 출력
         self.xml_detection_partlist = cxml_objectdetect.get_object_parts_list() #xml안에 들어 있는 yolo 모델이 해당 스텝에 인식해야 하는 파트 이름 출력
@@ -221,6 +223,8 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         self.stepmodel = YOLO(step_yolo_path)
         self.yolo_detect_class = []
         self.yolo_detect_class_coordinate = []
+
+        self.stepmodel_timecount = 0
 
 
     
@@ -260,6 +264,7 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         selectPage = selectWindow(parent=self.parent) #페이지 2로 불러오고
         selectPage.get_currentoperator(inputID)
         selectPage.show()  
+
     def restart_assembly(self):
         global global_work_data, inputID,name,workname
         finishment='완료'
@@ -361,9 +366,9 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                     self.yolo_detect_class_coordinate.append(r.boxes.xyxy.cpu())
                 
 
-        print(self.yolo_detect_class)
-        print("---")
-        print(self.yolo_detect_class_coordinate)
+        # print(self.yolo_detect_class)
+        # print("---")
+        # print(self.yolo_detect_class_coordinate)
         
     def draw_rec(self,img_form):
         result = img_form.copy()
@@ -386,6 +391,32 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                 text_x = int((x1 + x2) / 2 - text_size[0] / 2)
                 text_y = int(y2 + text_size[1] + 5)  # 객체 아래에 위치
                 cv2.putText(result, self.yolo_detect_class[idx], (text_x, text_y), font, font_scale, font_color, font_thickness)
+        return result 
+    
+
+    def draw_rec_for_materialview(self,img_form):
+        result = img_form.copy()
+
+        for val in self.yolo_detect_class_coordinate:
+            for idx, coord in enumerate(val):
+                x1 = coord[0]
+                y1 = coord[1]
+                x2 = coord[2]
+                y2 = coord[3]
+                if self.yolo_detect_class[idx] in self.xml_detection_partlist[self.current_index]:
+                    cv2.rectangle(result, (int(x1.item()), int(y1.item())), (int(x2.item()), int(y2.item())), (255, 0, 0), 2)
+                # print("x1 : {}, y1: {} x2: {} y2: {}".format(int(x1), int(y1)), (int(x2), int(y2)))
+
+                # 객체의 크기를 이미지에 표시
+                font = cv2.FONT_HERSHEY_SIMPLEX
+                font_scale = 0.5
+                font_thickness = 1
+                font_color = (255, 255, 255)  # 흰색
+                text_size, _ = cv2.getTextSize(self.yolo_detect_class[idx], font, font_scale, font_thickness)
+                text_x = int((x1 + x2) / 2 - text_size[0] / 2)
+                text_y = int(y2 + text_size[1] + 5)  # 객체 아래에 위치
+                if self.yolo_detect_class[idx] in self.xml_detection_partlist[self.current_index]:
+                    cv2.putText(result, self.yolo_detect_class[idx], (text_x, text_y), font, font_scale, font_color, font_thickness)
         return result 
         
         
@@ -446,16 +477,23 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
 
 
     def isyolomodel_pass(self):
-        result = False
+        result = 0
         if self.xml_detection_countlist[self.current_index] == '0' : #count가 0이라서 detect 해야할 필요 없음
-            result = True
+            result = 1
         else:
-                detected_cls = set(sorted(self.yolo_detect_class))
-                must_be_detected_cls = set(sorted(self.xml_detection_partlist[self.current_index]))
-                # set1 = set(tuple(item) for item in list1)
-                # set2 = set(tuple(item) for item in list2)
-                if detected_cls.issubset(must_be_detected_cls) == True :
-                    result = True
+            detected_cls = set(sorted(self.yolo_detect_class))
+            must_be_detected_cls = set(sorted(self.xml_detection_partlist[self.current_index]))
+            if must_be_detected_cls == detected_cls :
+                if self.xml_detection_modellist[self.current_index] == '0':
+                    result = 1
+                elif self.xml_detection_modellist[self.current_index] == '1':
+                    if self.stepmodel_timecount == 300:
+                        result = 1
+                        self.stepmodel_timecount =0
+                    else:
+                        self.stepmodel_timecount += 1
+                    
+
 
         return result
 
@@ -475,10 +513,11 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
             media_file = self.media_files[self.current_index]
             if media_file.endswith('.jpg') or media_file.endswith('.png'):
                 self.display_image(media_file)
-                if(TESTMODE == 1 ) or (self.isyolomodel_pass() == True):
+                if TESTMODE == 1 :
                     self.current_index += 1
-                else:
-                    pass
+                elif TESTMODE == 0 :
+                    if self.isyolomodel_pass() == 1:
+                        self.current_index += 1
                 self.timer.start(500)
                 #self.timer.start(5000)  # 이미지를 3초 동안 표시
             elif media_file.endswith('.avi'):
@@ -566,6 +605,9 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         ret, frame = cap2.read()  # 웹캠 2번
         if ret:
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            #frame_1으로 predict
+            self.yolo_update(frame)
+            frame = self.draw_rec_for_materialview(frame)
             height, width, channel = frame.shape
             bytes_per_line = 3 * width
             q_img = QImage(frame.data, width, height, bytes_per_line, QImage.Format_RGB888)
