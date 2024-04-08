@@ -35,8 +35,8 @@ global_work_data = pd.DataFrame(columns=['작업명',' ID ', '작업자',  ' 작
 global_error_data = pd.DataFrame(columns=['작업명','ID', '작업자',  '작업 날짜','불량 단계', '불량 사유'])
 
 #yolo_model_path 
-yolo_path = '../../yolo_model/best.pt'
-step_yolo_path = '../../yolo_model/step.pt'
+yolo_path = '/home/addinedu/deeplearning-repo-1/yolo_model/best.pt'
+step_yolo_path = '/home/addinedu/deeplearning-repo-1/yolo_model/step.pt'
 
 # 웹캠 속성 설정
 
@@ -283,7 +283,8 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
     def detect_objects(self, image_path):
         # 이미지를 OpenCV 형식으로 로드
         image = cv2.imread(image_path)
-        
+        names = self.yolo_model.names  # 클래스 이름 가져오기
+    
         # YOLO 객체 감지
         box_results = self.model.predict(image, conf=0.5, verbose=False, show=False)
         
@@ -293,7 +294,10 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                 if len(box) >= 4:
                     x1, y1, x2, y2 = box[:4]  # bounding box 좌표
                     confidence = box[4] if len(box) > 4 else None  # 신뢰도
+                
                     # 실제 길이와 픽셀 길이의 비율 계산
+                
+               
                     pixel_length = abs(x2 - x1)  # 정사각형의 픽셀 길이
                     real_length = 2  # 실제 길이 (여기서는 2cm)
                     pixel_to_cm_ratio = real_length / pixel_length
@@ -326,6 +330,7 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
 
                 else:
                     continue  # 값이 충분하지 않으면 다음 박스로 넘어감
+                
                 
                 # 각 객체의 박스를 OpenCV 이미지에 그립니다.
                 cv2.rectangle(image, (int(x1), int(y1)), (int(x2), int(y2)), (255, 0, 0), 2)
