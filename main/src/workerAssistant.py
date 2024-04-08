@@ -23,6 +23,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import koreanize_matplotlib
 import mediapipe as mp
 from tensorflow.keras.models import load_model
+from PyQt5.QtWidgets import QMessageBox
 
 TESTMODE = 0 #gui 테스트 하실때는 1
 
@@ -203,7 +204,8 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         self.xml_count = cxml.get_order_count() #xml안에 들어 있는 작업 순서 갯수 출력 
         self.workorderlist = cxml.get_order_list() #xml안에 들어 있는 작업순서(string)가 리스트 형태로 출력된다
         
-        cxml_objectdetect = Cxml_reader("objectdetectlist.xml", "dog_light")
+        cxml_objectdetect = Cxml_reader("objectdetectlist_test.xml", "dog_light")
+        # cxml_objectdetect = Cxml_reader("objectdetectlist.xml", "dog_light")
         self.xml_detection_modellist = cxml_objectdetect.get_model_list() #xml안에 yolo 모델 리스트 출력 
         self.xml_detection_countlist = cxml_objectdetect.get_object_count_list() #xml안에 들어 있는 yolo 모델이 해당 스텝에 인식해야 할 object 갯수 출력
         self.xml_detection_partlist = cxml_objectdetect.get_object_parts_list() #xml안에 들어 있는 yolo 모델이 해당 스텝에 인식해야 하는 파트 이름 출력
@@ -221,7 +223,7 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         self.startButton.clicked.connect(self.restart_assembly)
         self.quitButton.hide()
         self.quitButton.clicked.connect(self.quitWork)
-                
+         
         
         # 웹캠 영상을 표시하기 위해 QTimer 사용
         timer1 = QTimer(self)
@@ -241,6 +243,8 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         self.mp_model = load_model(mp_path)
         self.is_grabbing = False
         
+
+        self.stepmodel_timecount = 0
 
 
     
@@ -277,8 +281,10 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         current_time = datetime.now()
         formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S")
         work_report=pd.DataFrame({'작업명': [workname],' ID ': [inputID], '작업자': [name], ' 작업 날짜 ':[formatted_time] ,'작업 상태': [finishment]})
-        global_work_data = pd.concat([global_work_data, work_report], ignore_index=True)
-        
+        #global_work_data = pd.concat([global_work_data, work_report], ignore_index=True)
+        db = Cdatabase_connect()
+        db.insert_workdata(workname,inputID,name,formatted_time,finishment) 
+        db.dbclose()
         self.hide()
         selectPage = selectWindow(parent=self.parent) #페이지 2로 불러오고
         selectPage.get_currentoperator(inputID)
@@ -290,7 +296,10 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         current_time = datetime.now()
         formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S")
         work_report=pd.DataFrame({'작업명': [workname],' ID ': [inputID], '작업자': [name], ' 작업 날짜 ':[formatted_time] ,'작업 상태': [finishment]})
-        global_work_data = pd.concat([global_work_data, work_report], ignore_index=True)        
+        #global_work_data = pd.concat([global_work_data, work_report], ignore_index=True)
+        db = Cdatabase_connect()
+        db.insert_workdata(workname,inputID,name,formatted_time,finishment)       
+        db.dbclose()
         # 현재 창 닫기
         self.close()
         # 새 assemblyWindow 창 열기
@@ -352,7 +361,8 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
     def detect_objects(self, image_path):
         # 이미지를 OpenCV 형식으로 로드
         image = cv2.imread(image_path)
-        
+        names = self.yolo_model.names  # 클래스 이름 가져오기
+    
         # YOLO 객체 감지
         box_results = self.model.predict(image, conf=0.5, verbose=False, show=False)
         
@@ -362,7 +372,10 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                 if len(box) >= 4:
                     x1, y1, x2, y2 = box[:4]  # bounding box 좌표
                     confidence = box[4] if len(box) > 4 else None  # 신뢰도
+                
                     # 실제 길이와 픽셀 길이의 비율 계산
+                
+               
                     pixel_length = abs(x2 - x1)  # 정사각형의 픽셀 길이
                     real_length = 2  # 실제 길이 (여기서는 2cm)
                     pixel_to_cm_ratio = real_length / pixel_length
@@ -394,6 +407,7 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                     cv2.putText(image, size_text, (text_x, text_y), font, font_scale, font_color, font_thickness)
                 else:
                     continue  # 값이 충분하지 않으면 다음 박스로 넘어감
+                
                 
                 # 각 객체의 박스를 OpenCV 이미지에 그립니다.
                 cv2.rectangle(image, (int(x1), int(y1)), (int(x2), int(y2)), (255, 0, 0), 2)
@@ -434,11 +448,11 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                     self.yolo_detect_class_coordinate.append(r.boxes.xyxy.cpu())
                 
 
-        print(self.yolo_detect_class)
-        print("---")
-        print(self.yolo_detect_class_coordinate)
-    
-    def draw_rec(self, img_form):
+        # print(self.yolo_detect_class)
+        # print("---")
+        # print(self.yolo_detect_class_coordinate)
+        
+    def draw_rec(self,img_form):
         result = img_form.copy()
         is_grabbing = False
 
@@ -476,6 +490,32 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                 cv2.putText(result, grab_text, (10, 30), font, font_scale2, font_color3, font_thickness2)           #위치 수정 필요
                 
                 
+        return result 
+    
+
+    def draw_rec_for_materialview(self,img_form):
+        result = img_form.copy()
+
+        for val in self.yolo_detect_class_coordinate:
+            for idx, coord in enumerate(val):
+                x1 = coord[0]
+                y1 = coord[1]
+                x2 = coord[2]
+                y2 = coord[3]
+                if self.yolo_detect_class[idx] in self.xml_detection_partlist[self.current_index]:
+                    cv2.rectangle(result, (int(x1.item()), int(y1.item())), (int(x2.item()), int(y2.item())), (255, 0, 0), 2)
+                # print("x1 : {}, y1: {} x2: {} y2: {}".format(int(x1), int(y1)), (int(x2), int(y2)))
+
+                # 객체의 크기를 이미지에 표시
+                font = cv2.FONT_HERSHEY_SIMPLEX
+                font_scale = 0.5
+                font_thickness = 1
+                font_color = (255, 255, 255)  # 흰색
+                text_size, _ = cv2.getTextSize(self.yolo_detect_class[idx], font, font_scale, font_thickness)
+                text_x = int((x1 + x2) / 2 - text_size[0] / 2)
+                text_y = int(y2 + text_size[1] + 5)  # 객체 아래에 위치
+                if self.yolo_detect_class[idx] in self.xml_detection_partlist[self.current_index]:
+                    cv2.putText(result, self.yolo_detect_class[idx], (text_x, text_y), font, font_scale, font_color, font_thickness)
         return result 
         
         
@@ -536,16 +576,23 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
 
 
     def isyolomodel_pass(self):
-        result = False
+        result = 0
         if self.xml_detection_countlist[self.current_index] == '0' : #count가 0이라서 detect 해야할 필요 없음
-            result = True
+            result = 1
         else:
-                detected_cls = set(sorted(self.yolo_detect_class))
-                must_be_detected_cls = set(sorted(self.xml_detection_partlist[self.current_index]))
-                # set1 = set(tuple(item) for item in list1)
-                # set2 = set(tuple(item) for item in list2)
-                if detected_cls.issubset(must_be_detected_cls) == True :
-                    result = True
+            detected_cls = set(sorted(self.yolo_detect_class))
+            must_be_detected_cls = set(sorted(self.xml_detection_partlist[self.current_index]))
+            if must_be_detected_cls == detected_cls :
+                if self.xml_detection_modellist[self.current_index] == '0':
+                    result = 1
+                elif self.xml_detection_modellist[self.current_index] == '1':
+                    if self.stepmodel_timecount == 300:
+                        result = 1
+                        self.stepmodel_timecount =0
+                    else:
+                        self.stepmodel_timecount += 1
+                    
+
 
         return result
 
@@ -565,11 +612,16 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
             media_file = self.media_files[self.current_index]
             if media_file.endswith('.jpg') or media_file.endswith('.png'):
                 self.display_image(media_file)
-                if(TESTMODE == 1 ) or (self.isyolomodel_pass() == True):
+                if TESTMODE == 1 :
                     self.current_index += 1
+                elif TESTMODE == 0 :
+                    if self.isyolomodel_pass() == 1:
+                        self.current_index += 1
+                        
+                if self.current_index in [11, 17]:  # 11번째 사진, 17번째 사진의 경우
+                    self.timer.start(5000)  # 5초 동안 표시
                 else:
-                    pass
-                self.timer.start(500)
+                    self.timer.start(200)  # 나머지는 0.5초 동안 표시
                 #self.timer.start(5000)  # 이미지를 3초 동안 표시
             elif media_file.endswith('.avi'):
                 self.display_video(media_file)
@@ -579,6 +631,10 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
             self.workorderLabel.setText("작업이 완료되었습니다.")
             self.startButton.show()
             self.quitButton.show()
+        # 스크롤을 자동으로 아래로 내리는 코드 추가
+        if self.current_index>1:
+            scroll_bar = self.scrollArea_2.verticalScrollBar()
+            scroll_bar.setValue(scroll_bar.value() + 20)
 
     def display_image(self, image_file): #이미지 띄우기 
         
@@ -623,13 +679,14 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                 q_img = QImage(frame_rgb.data, w, h, bytes_per_line, QImage.Format_RGB888)
                 pixmap = QPixmap.fromImage(q_img)
                 self.workGuideLabel.setPixmap(pixmap.scaled(self.workGuideLabel.size()))
-                QApplication.processEvents()  # 이벤트 처리를 위해 프로세스 이벤트를 실행
-                #time.sleep(1 / fps)  # 프레임을 표시하는 간격만큼 대기  - 캠 킬때는 이거 뮤트하기 너무 느려짐       
+                QApplication.processEvents()  # 이벤트 처리를 위해 프로세스 이벤트를 실행   
+                #time.sleep(1 / fps)  # 프레임을 표시하는 간격만큼 대기  - 캠 킬때는 이거 뮤트하기 너무 느from PyQt5.QtWidgets import QMessageBox려짐       
         cap.release()
         
         self.current_index += 1  # 다음 미디어 파일로 이동
         self.playback_count = 0  # 재생 횟수 초기화
         self.timer.start(1000)  # 1초 후에 다음 미디어 파일을 표시
+    
 # --- workGuideLabel 띄우기 끝 
                 
     def update_frame1(self):
@@ -647,13 +704,13 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
             pixmap_1 = QPixmap.fromImage(q_img)
             self.workNowLabel.setPixmap(pixmap_1)
 
-
-
     def update_frame2(self):
         ret, frame_2 = cap2.read()  # 웹캠 2번
         if ret:
             frame_2 = cv2.cvtColor(frame_2, cv2.COLOR_BGR2RGB)
             self.mp_update(frame_2)
+            self.yolo_update(frame_2)
+            frame_2 = self.draw_rec_for_materialview(frame_2)
             height, width, channel = frame_2.shape
             bytes_per_line = 3 * width
             q_img = QImage(frame_2.data, width, height, bytes_per_line, QImage.Format_RGB888)
@@ -687,26 +744,39 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
             self.progresslist[idx].setText(tmp_txt)
                     
     def go_main(self):
-        self.hide()
-        main_window = self.parent  # 메인 창을 찾음
-        main_window.get_currentoperator(0)  # 로그아웃한 상태로 설정
-        main_window.show()
-
+        if self.current_index == len(self.media_files): # 작업 완료 됐는데 버튼을 눌렀을 때만 경고 팝업 창 표시
+            QMessageBox.warning(self,'경고','작업 종료나 재시작 버튼을 먼저 눌러주세요.')
+        else:
+            self.hide()
+            main_window = self.parent  # 메인 창을 찾음
+            main_window.get_currentoperator(0)  # 로그아웃한 상태로 설정
+            main_window.show()
+             
     def go_back(self):
-        self.hide()
-        global inputID 
-        selectPage = selectWindow(parent=self.parent) #페이지 2로 불러오고
-        selectPage.get_currentoperator(inputID)
-        selectPage.show()         
+        if self.current_index == len(self.media_files): # 작업 완료 됐는데 버튼을 눌렀을 때만 경고 팝업 창 표시
+            QMessageBox.warning(self,'경고','작업 종료나 재시작 버튼을 먼저 눌러주세요.')
+        else:
+            retval =QMessageBox.question(self, 'Back', '작업선택창으로 이동하시겠습니까?', QMessageBox.Yes|QMessageBox.No, QMessageBox.Yes)
+            if retval == QMessageBox.Yes:# 뒤로 가기 동작 수행
+                self.hide()
+                global inputID 
+                selectPage = selectWindow(parent=self.parent)
+                selectPage.get_currentoperator(inputID)
+                selectPage.show()                   
+            
+       
 
 
     def go_error(self):
-        global errorpart 
-        errorpart = self.workorderLabel.text()
-        self.hide()
-        error_window = errorWindow(parent=self.parent)  # 에러 페이지를 열고
-        error_window.show()  # 에러 페이지를 보여줌          
-
+        if self.current_index == len(self.media_files): # 작업 완료 됐는데 버튼을 눌렀을 때만 경고 팝업 창 표시
+            QMessageBox.warning(self,'경고','작업 종료나 재시작 버튼을 먼저 눌러주세요.')
+        else:
+            global errorpart 
+            errorpart = self.workorderLabel.text()
+            self.hide()
+            error_window = errorWindow(parent=self.parent)  # 에러 페이지를 열고
+            error_window.show()  # 에러 페이지를 보여줌          
+         
         
 class errorWindow(QMainWindow,form_errorwindowpage_ui):
     def __init__(self, parent):
@@ -751,16 +821,22 @@ class errorWindow(QMainWindow,form_errorwindowpage_ui):
         formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S")
         errorment='불량'
         
+        db = Cdatabase_connect()
         error_work_report=pd.DataFrame({'작업명': [workname],' ID ': [inputID], '작업자': [name], ' 작업 날짜 ':[formatted_time] ,'작업 상태': [errorment]})
-        global_work_data = pd.concat([global_work_data, error_work_report], ignore_index=True)
+        db.insert_workdata(workname,inputID,name,formatted_time,errorment)
+        #global_work_data = pd.concat([global_work_data, error_work_report], ignore_index=True)
+        
         
         error_report = pd.DataFrame({'작업명': [workname],'ID': [inputID], '작업자': [name], '작업 날짜':[formatted_time] ,'불량 단계': [errorpart], '불량 사유': [errorReason]})
-        global_error_data = pd.concat([global_error_data, error_report], ignore_index=True)
+        db.insert_errordata(workname,inputID,name,formatted_time,errorpart,errorReason)
+        #global_error_data = pd.concat([global_error_data, error_report], ignore_index=True)      
+        db.dbclose()
         
         self.close() 
         assemblyPage = assemblyWindow(parent=self.parent) #페이지 3 불러오고
         assemblyPage.get_currentoperator(inputID)
-        assemblyPage.show()
+        assemblyPage.show()          
+        
 
     def get_currentoperator(self,id):
         self.currentOperator = id
@@ -768,6 +844,15 @@ class errorWindow(QMainWindow,form_errorwindowpage_ui):
 class statisticWindow(QMainWindow,form_statisticpage_ui):
 
     def __init__(self, parent):
+        global global_work_data, global_error_data
+        db = Cdatabase_connect() 
+        workdata=db.get_workdatas()
+        global_work_data=pd.DataFrame(workdata,columns=['작업명',' ID ', '작업자',  ' 작업 날짜 ','작업 상태']) 
+        
+        errordata=db.get_errordata()
+        global_error_data=pd.DataFrame(errordata, columns=["작업명", "ID", "작업자", "작업 날짜", "불량 단계", "불량 사유"])
+        db.dbclose()
+        
         super().__init__(parent)
         global inputID, name 
         self.parent = parent
@@ -802,7 +887,9 @@ class statisticWindow(QMainWindow,form_statisticpage_ui):
         self.showTaskGraph()
         self.showPersonGraph()
         
+        
     def showPersonGraph(self):
+        global global_work_data
         selected_person = self.personCombobox.currentText()
         selected_work = self.workCombobox.currentText()
         filter_data=global_work_data[global_work_data['작업명'] == selected_work]
@@ -853,6 +940,8 @@ class statisticWindow(QMainWindow,form_statisticpage_ui):
         self.current_graph2 = canvas
         
     def showTaskGraph(self):
+        global global_work_data
+
         selected_work = self.workCombobox.currentText()
         filtered_data = global_work_data[global_work_data['작업명'] == selected_work]
 
@@ -891,8 +980,8 @@ class statisticWindow(QMainWindow,form_statisticpage_ui):
     def showEvent(self,event):
         super().showEvent(event)
         global global_work_data
-        
-        # errorTable에 데이터프레임 표시
+
+        # workTable에 데이터프레임 표시
         self.workTable.setRowCount(len(global_work_data.index))
         self.workTable.setColumnCount(len(global_work_data.columns))
         self.workTable.setHorizontalHeaderLabels(global_work_data.columns)
@@ -909,8 +998,7 @@ class statisticWindow(QMainWindow,form_statisticpage_ui):
         
     def showError(self):
         global global_error_data
-        
-        
+
         # errorTable에 데이터프레임 표시
         self.errorTable.setRowCount(len(global_error_data.index))
         self.errorTable.setColumnCount(len(global_error_data.columns))
