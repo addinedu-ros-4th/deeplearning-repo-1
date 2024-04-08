@@ -2,9 +2,11 @@
     <instructions>
         <step order="1">
             <model>0</model>
-            <count>12</count>
+            <count>14</count>
             <parts>
-                <part>bar</part>
+                <part>bar1</part>
+                <part>bar2</part>
+                <part>bar3</part>
                 <part>head_l</part>
                 <part>head_r</part>
                 <part>nut</part>
@@ -16,13 +18,14 @@
                 <part>head_u</part>
                 <part>body</part>
                 <part>neck</part>
+                <barcount>2,2,3</barcount>
             </parts>
         </step>
         <step order="2">
             <model>0</model>
             <count>4</count>
             <parts>
-                <part>bar</part>
+                <part>bar3</part>
                 <part>head_r</part>
                 <part>bolt_x</part>
                 <part>bolt_y</part>
@@ -40,10 +43,13 @@
             </parts>
         </step>
         <step order="5">
-            <model>1</model>
-            <count>1</count>
+            <model>0</model>
+            <count>4</count>
             <parts>
-                <part>step1-1</part>
+                <part>bar3</part>
+                <part>head_l</part>
+                <part>bolt_x</part>
+                <part>bolt_y</part>
             </parts>
         </step>
         <step order="6">
@@ -133,7 +139,7 @@
             <model>0</model>
             <count>2</count>
             <parts>
-                <part>bar</part>
+                <part>bar1</part>
                 <part>bolt_L</part>
             </parts>
         </step>
@@ -145,7 +151,7 @@
             <model>0</model>
             <count>2</count>
             <parts>
-                <part>bar</part>
+                <part>bar2</part>
                 <part>bolt_L</part>
             </parts>
         </step>
@@ -175,7 +181,7 @@
             <model>0</model>
             <count>2</count>
             <parts>
-                <part>bar</part>
+                <part>bar3</part>
                 <part>neck</part>
             </parts>
         </step>
@@ -212,7 +218,8 @@
             <model>0</model>
             <count>2</count>
             <parts>
-                <part>bar</part>
+                <part>bar1</part>
+                <part>bar2</part>
             </parts>
         </step>
         <step order="35">
