@@ -63,8 +63,8 @@ if cap1.isOpened():
 else:
     print("camera 1 is not open")
     
-    cap2 = cv2.VideoCapture('/home/bo/amr_ws/git_dl/deeplearning-repo-1/main/data/material_view_rgb.avi')
-    cap1 = cv2.VideoCapture('/home/bo/amr_ws/git_dl/deeplearning-repo-1/main/data/work_view_rgb.avi')
+    cap2 = cv2.VideoCapture('../data/material_view_rgb.avi')
+    cap1 = cv2.VideoCapture('../data/work_view_rgb.avi')
 
 if cap2.isOpened():
     cap2.set(cv2.CAP_PROP_FPS, 30)
