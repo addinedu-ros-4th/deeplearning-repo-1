@@ -23,12 +23,12 @@ import koreanize_matplotlib
 
 TESTMODE = 1 #gui 테스트 하실때는 1
 
-form_loginpage_ui = uic.loadUiType("loginWindow.ui")[0]
-form_selectpage_ui = uic.loadUiType("selectWindow.ui")[0]
-form_assemblypage_ui = uic.loadUiType("assemblyWindow.ui")[0]
-form_errorwindowpage_ui = uic.loadUiType("errorWindow.ui")[0]
-form_statisticpage_ui = uic.loadUiType("statisticWindow.ui")[0]
-form_servicenotready_ui = uic.loadUiType("serviceNotReady.ui")[0]
+form_loginpage_ui = uic.loadUiType("/home/addinedu/deeplearning-repo-1/main/src/loginWindow.ui")[0]
+form_selectpage_ui = uic.loadUiType("/home/addinedu/deeplearning-repo-1/main/src/selectWindow.ui")[0]
+form_assemblypage_ui = uic.loadUiType("/home/addinedu/deeplearning-repo-1/main/src/assemblyWindow.ui")[0]
+form_errorwindowpage_ui = uic.loadUiType("/home/addinedu/deeplearning-repo-1/main/src/errorWindow.ui")[0]
+form_statisticpage_ui = uic.loadUiType("/home/addinedu/deeplearning-repo-1/main/src/statisticWindow.ui")[0]
+form_servicenotready_ui = uic.loadUiType("/home/addinedu/deeplearning-repo-1/main/src/serviceNotReady.ui")[0]
 
 inputID=''; name=''; workname=''; errorpart=''; errorReason='' #사용자 정보 
 global_work_data = pd.DataFrame(columns=['작업명',' ID ', '작업자',  ' 작업 날짜 ','작업 상태'])
@@ -40,7 +40,7 @@ step_yolo_path = '/home/addinedu/deeplearning-repo-1/yolo_model/step.pt'
 
 # 웹캠 속성 설정
 
-available_index = []
+available_index = [3,4]
 for index in range(5): 
     camera = cv2.VideoCapture(index)
     if camera.isOpened():
@@ -54,11 +54,12 @@ elif len(available_index)==1:
 else:
     cap1=cv2.VideoCapture(0); cap2 =cv2.VideoCapture(2)
 
-if cap1.isOpened():
-    cap1.set(cv2.CAP_PROP_FPS, 30)
-else:
+# if cap1.isOpened():
+#     cap1.set(cv2.CAP_PROP_FPS, 30)
+# else:
     # cap1 = cv2.VideoCapture('testvideo_rgb.avi')
-    cap1 = cv2.VideoCapture('/home/dyjung/amr_ws/yolo/yolov8/color_all_include_manyposition/data/images/frame0bright3.jpg')
+# cap1 = cv2.VideoCapture('/home/addinedu/Downloads/adjust_light.avi')
+cap1 = cv2.VideoCapture('/home/addinedu/yolov7/mydata/images/frame_1.jpg')
 
 if cap2.isOpened():
     cap2.set(cv2.CAP_PROP_FPS, 30)
@@ -184,7 +185,7 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                           self.check_41,self.check_42
                           ]
         
-        cxml = Cxml_reader("workingorder.xml", "dog_light")  #xml_reader 클래스를 생성한다. 생성시 불러올 xml 주소를 인자로 넘겨준다
+        cxml = Cxml_reader("/home/addinedu/deeplearning-repo-1/main/src/workingorder.xml", "dog_light")  #xml_reader 클래스를 생성한다. 생성시 불러올 xml 주소를 인자로 넘겨준다
         self.xml_count = cxml.get_order_count() #xml안에 들어 있는 작업 순서 갯수 출력 
         self.workorderlist = cxml.get_order_list() #xml안에 들어 있는 작업순서(string)가 리스트 형태로 출력된다
         
@@ -229,7 +230,7 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
 # - 일단 이미지는 5초 디스플레이하고 넘어가게/ 영상은 2회 반복재생되면 넘어가게함 
         
         # 객체 인식 메서드 호출
-        self.media_folder = '/home/dyjung/amr_ws/ml/project/data/workorder/' #가이드이미지, 영상 저장된 폴더 루트 
+        self.media_folder = '/home/addinedu/deeplearning-repo-1/main/data/workorder' #가이드이미지, 영상 저장된 폴더 루트 
         self.media_files = self.load_media_files()
         self.current_index = 0
         self.playback_count = 0  # 재생 횟수를 저ㅛ장하는 변수 추가
@@ -260,6 +261,7 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         selectPage = selectWindow(parent=self.parent) #페이지 2로 불러오고
         selectPage.get_currentoperator(inputID)
         selectPage.show()  
+        
     def restart_assembly(self):
         global global_work_data, inputID,name,workname
         finishment='완료'
@@ -272,75 +274,46 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         # 새 assemblyWindow 창 열기
         new_assembly_window = assemblyWindow(parent=self.parent)
         new_assembly_window.get_currentoperator(inputID)
-        new_assembly_window.show()
   
+    # def process_video(self, video_path, output_file):
+    #     # 비디오 캡처 객체 생성
+    #     video_capture = cv2.VideoCapture(video_path)
 
-    def detect_objects(self, image_path):
-        # 이미지를 OpenCV 형식으로 로드
-        image = cv2.imread(image_path)
-        names = self.yolo_model.names  # 클래스 이름 가져오기
+    #     # 프레임 인덱스 초기화
+    #     frame_index = 0
+
+    #     # .txt 파일을 쓰기 모드로 열기
+    #     with open(output_file, 'w') as file:
+    #         # 비디오가 열려 있는 동안 반복
+    #         while video_capture.isOpened():
+    #             # 프레임 읽기
+    #             ret, frame = video_capture.read()
+
+    #             # 프레임이 제대로 읽혔는지 확인
+    #             if not ret:
+    #                 break
+
+    #             # 객체 탐지 및 크기 측정
+    #             self.yolo_update(frame)
+    #             object_width, object_height = self.measure_bar_size(self.yolo_detect_class_coordinate)
+
+    #             # 측정된 객체의 크기를 .txt 파일에 씀
+    #             file.write("Frame {}: Width: {:.2f} cm, Height: {:.2f} cm\n".format(frame_index, object_width, object_height))
+
+    #             # 다음 프레임으로 이동
+    #             frame_index += 1
+
+    #     # 비디오 캡처 객체 해제
+    #     video_capture.release()
+
     
-        # YOLO 객체 감지
-        box_results = self.model.predict(image, conf=0.5, verbose=False, show=False)
-        
-        for r in box_results:
-            for box in r.boxes.xyxy.cpu():
-                # 박스 좌표와 신뢰도 추출
-                if len(box) >= 4:
-                    x1, y1, x2, y2 = box[:4]  # bounding box 좌표
-                    confidence = box[4] if len(box) > 4 else None  # 신뢰도
-                
-                    # 실제 길이와 픽셀 길이의 비율 계산
-                
-               
-                    pixel_length = abs(x2 - x1)  # 정사각형의 픽셀 길이
-                    real_length = 2  # 실제 길이 (여기서는 2cm)
-                    pixel_to_cm_ratio = real_length / pixel_length
-
-                    # 객체의 픽셀 좌표를 실제 길이로 변환
-                    real_x1 = x1 * pixel_to_cm_ratio
-                    real_x2 = x2 * pixel_to_cm_ratio
-                    real_y1 = y1 * pixel_to_cm_ratio
-                    real_y2 = y2 * pixel_to_cm_ratio
-
-                    # 객체의 크기 계산
-                    real_width = abs(real_x2 - real_x1)
-                    real_height = abs(real_y2 - real_y1)
-                    
-                    # 각 객체의 박스를 OpenCV 이미지에 그립니다.
-                    cv2.rectangle(image, (int(x1), int(y1)), (int(x2), int(y2)), (255, 0, 0), 2)
-                    
-                        # 객체의 너비와 높이를 문자열로 변환
-                    size_text = "Width: {:.2f} cm, Height: {:.2f} cm".format(real_width, real_height)
-
-                    # 객체의 크기를 이미지에 표시
-                    font = cv2.FONT_HERSHEY_SIMPLEX
-                    font_scale = 0.5
-                    font_thickness = 1
-                    font_color = (255, 255, 255)  # 흰색
-                    text_size, _ = cv2.getTextSize(size_text, font, font_scale, font_thickness)
-                    text_x = int((x1 + x2) / 2 - text_size[0] / 2)
-                    text_y = int(y2 + text_size[1] + 5)  # 객체 아래에 위치
-                    cv2.putText(image, size_text, (text_x, text_y), font, font_scale, font_color, font_thickness)
-
-                else:
-                    continue  # 값이 충분하지 않으면 다음 박스로 넘어감
-                
-                
-                # 각 객체의 박스를 OpenCV 이미지에 그립니다.
-                cv2.rectangle(image, (int(x1), int(y1)), (int(x2), int(y2)), (255, 0, 0), 2)
-
-        # OpenCV 이미지를 Qt 이미지로 변환하여 표시
-        q_image = QImage(image.data, image.shape[1], image.shape[0], QImage.Format_RGB888).rgbSwapped()
-        pixmap = QPixmap.fromImage(q_image)
-        self.workNowLabel.setPixmap(pixmap)
-
-
+    
     def yolo_update(self, frame_for_yolo):
         
         self.yolo_detect_class.clear() #담기 전에 reset
         self.yolo_detect_class_coordinate.clear()
 
+    
         if self.xml_detection_modellist[self.current_index] == '0':
             results = self.model.predict(frame_for_yolo, conf=0.5, show_boxes=False)
             names = self.model.names
@@ -366,9 +339,9 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                     self.yolo_detect_class_coordinate.append(r.boxes.xyxy.cpu())
                 
 
-        print(self.yolo_detect_class)
-        print("---")
-        print(self.yolo_detect_class_coordinate)
+        # print(self.yolo_detect_class)
+        # print("---")
+        # print(self.yolo_detect_class_coordinate)
         
     def draw_rec(self,img_form):
         result = img_form.copy()
@@ -391,20 +364,17 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                 text_x = int((x1 + x2) / 2 - text_size[0] / 2)
                 text_y = int(y2 + text_size[1] + 5)  # 객체 아래에 위치
                 cv2.putText(result, self.yolo_detect_class[idx], (text_x, text_y), font, font_scale, font_color, font_thickness)
-        return result 
-        
-        
-        # YOLO 객체 감지
-        #  for box in xyxy_bar:
-        #     # 박스 좌표와 신뢰도 추출
-        #     if len(box) >= 4:
-        #         x1, y1, x2, y2 = box[:4]  # bounding box 좌표
-            
-        #         print("x1: {} y1: {} x2: {} y2: {}".format(int(x1), int(y1), int(x2), int(y2)))
                 
-        #         # 각 객체의 박스를 OpenCV 이미지에 그립니다.
-        #         cv2.rectangle(img_form, (int(x1), int(y1)), (int(x2), int(y2)), (255, 0, 0), 2)
-            
+                # if self.yolo_detect_class[idx] == 'bar':
+                #     object_width, object_height = self.measure_bar(val)
+                #     # size_text = f"{object_width:.2f} cm, {object_height:.2f} cm"
+                #     size_text = f"{object_width} cm, {object_height} cm"
+                #     cv2.putText(result, size_text, (text_x, text_y + 20), font, font_scale, font_color, font_thickness)
+
+                    
+        return result 
+    
+
     def measure_bar_size(self, xyxy_bar):
         result_size = 0
         if len(xyxy_bar) >= 4:
@@ -429,26 +399,28 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
             real_width = abs(real_x2 - real_x1)
             real_height = abs(real_y2 - real_y1)
             
-            # 객체의 너비와 높이를 문자열로 변환
+            real_width = round(real_width.item(), 2)
+            real_height = round(real_height.item(), 2)
+            
+            
+       # 객체의 너비와 높이를 문자열로 변환
             size_text = "Width: {:.2f} cm, Height: {:.2f} cm".format(real_width, real_height)
-
-            area = round((real_width.item())* (real_height.item()))
-
+       
+            print(size_text)
             # #값들 튜닝 필요 #하린님
-            # if area == 4:
-            #     result_size =1
-            # elif area == 6:
-            #     result_size =2
-            # elif area == 8:
-            #     result_size =3
+            if 2.00 <= real_height < 4.00:
+                result_size =1
+            elif 4.00 <= real_height <= 4.85:
+                result_size =2
+            elif 4.86 <= real_height <= 6.00:
+                result_size =3
 
         else:
-            result_size =0
+            result_size = 0
             
         return result_size
             
-
-
+    
 
     def isyolomodel_pass(self):
         result = False
@@ -624,6 +596,8 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         error_window = errorWindow(parent=self.parent)  # 에러 페이지를 열고
         error_window.show()  # 에러 페이지를 보여줌          
          
+    
+
         
 class errorWindow(QMainWindow,form_errorwindowpage_ui):
     def __init__(self, parent):
@@ -889,6 +863,7 @@ class servicenotreadyWindow(QMainWindow,form_servicenotready_ui):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+    
     window = MainWindow()
     window.show()
     sys.exit(app.exec())
