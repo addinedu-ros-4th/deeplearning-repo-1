@@ -599,7 +599,12 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
 
     def load_media_files(self): # 폴더내 모든 파일 불러와서 숫자 순서 순으로 정렬 
         media_files = []
-        for file_name in os.listdir(self.media_folder):
+        try:
+            tmp_listdir = os.listdir(self.media_folder)
+        except FileNotFoundError:
+            print(f"The directory '{self.media_folder}' does not exist.")
+
+        for file_name in tmp_listdir:
             file_path = os.path.join(self.media_folder, file_name)
             if file_name.endswith('.jpg') or file_name.endswith('.png') or file_name.endswith('.avi'):
                 media_files.append(file_path)
