@@ -19,7 +19,11 @@ import pandas as  pd
 from datetime import datetime 
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+import imutils
+from scipy.spatial import distance as dist
+from imutils import perspective
 import koreanize_matplotlib
+from imutils import contours
 
 TESTMODE = 1 #gui 테스트 하실때는 1
 
@@ -58,8 +62,9 @@ else:
 #     cap1.set(cv2.CAP_PROP_FPS, 30)
 # else:
     # cap1 = cv2.VideoCapture('testvideo_rgb.avi')
+cap1 = cv2.VideoCapture('/home/addinedu/Downloads/work_view_rgb.avi')
 # cap1 = cv2.VideoCapture('/home/addinedu/Downloads/adjust_light.avi')
-cap1 = cv2.VideoCapture('/home/addinedu/yolov7/mydata/images/frame_1.jpg')
+# cap1 = cv2.VideoCapture('/home/addinedu/yolov7/mydata/images/frame_1.jpg')
 
 if cap2.isOpened():
     cap2.set(cv2.CAP_PROP_FPS, 30)
@@ -163,7 +168,8 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         super().__init__(parent)
         self.setupUi(self) 
         self.parent = parent
-
+        self.pixel_per_cm = None
+   
         self.progresslist = [self.progress1, self.progress2, self.progress3, self.progress4, self.progress5,
                              self.progress6, self.progress7, self.progress8, self.progress9, self.progress10,
                              self.progress11, self.progress12, self.progress13, self.progress14, self.progress15,
@@ -374,51 +380,138 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                     
         return result 
     
-
+    
     def measure_bar_size(self, xyxy_bar):
         result_size = 0
+       
         if len(xyxy_bar) >= 4:
-            # 박스 좌표와 신뢰도 추출
+            # 박스 좌표 추출
             x1 = xyxy_bar[0]
             y1 = xyxy_bar[1]
             x2 = xyxy_bar[2]
             y2 = xyxy_bar[3]
+            
+            x1 = round(x1.item(), 2)
+            y1 = round(y1.item(), 2)
+            x2 = round(x2.item(), 2)
+            y2 = round(y2.item(), 2)
+     
+            print('x1: ',x1)
+            print('y1: ',y1)
+            print('x2: ',x2)
+            print('y2: ',y2)
 
             # 실제 길이와 픽셀 길이의 비율 계산
-            pixel_length = abs(x2 - x1)  # 정사각형의 픽셀 길이
-            real_length = 2  # 실제 길이 (여기서는 2cm)
-            pixel_to_cm_ratio = real_length / pixel_length
+            pixel_length_wid = abs(x2 - x1)  # 픽셀 길이 
+            pixel_length_hei = abs(y2 - y1) 
+            
+            if pixel_length_wid > pixel_length_hei:
+                pixel_length_wid, pixel_length_hei = pixel_length_hei, pixel_length_wid
+
+         
+            print('pixel_length_wid: ', pixel_length_wid)
+            print('pixel_length_hei: ', pixel_length_hei)
+            
+ 
+            if 80 < pixel_length_hei < 90:
+                real_wid = 3
+            else:
+                real_wid = 2.5
+            
+            # real_length = 2  # 실제 길이 (여기서는 2cm)
+            pixel_to_cm_ratio = real_wid / pixel_length_wid
 
             # 객체의 픽셀 좌표를 실제 길이로 변환
             real_x1 = x1 * pixel_to_cm_ratio
             real_x2 = x2 * pixel_to_cm_ratio
             real_y1 = y1 * pixel_to_cm_ratio
             real_y2 = y2 * pixel_to_cm_ratio
-
+            
+            print('real_x1:',real_x1)
+            print('real_x2:',real_x2)
+            print('real_y1:',real_y1)
+            print('real_y2:',real_y2)
+            
             # 객체의 크기 계산
             real_width = abs(real_x2 - real_x1)
             real_height = abs(real_y2 - real_y1)
             
-            real_width = round(real_width.item(), 2)
-            real_height = round(real_height.item(), 2)
+            # real_width = round(real_width.item(), 2)
+            # real_height = round(real_height.item(), 2)
             
             
        # 객체의 너비와 높이를 문자열로 변환
-            size_text = "Width: {:.2f} cm, Height: {:.2f} cm".format(real_width, real_height)
-       
+            size_text = "Width: {:.3f} cm, Height: {:.3f} cm".format(real_width, real_height)
+            
             print(size_text)
-            # #값들 튜닝 필요 #하린님
-            if 2.00 <= real_height < 4.00:
-                result_size =1
-            elif 4.00 <= real_height <= 4.85:
-                result_size =2
-            elif 4.86 <= real_height <= 6.00:
-                result_size =3
+           
+            if 3.00 <= real_height < 4.55:      
+               result_size = 1 
+            elif 4.55 <= real_height < 5.55:
+                result_size = 2
+            else:
+                result_size = 3
+
+            # # #값들 튜닝 필요 #하린님
+            # if real_width == 2.5:
+            #     result_size = 2
+            # else :
+            #     if 3.00 <= real_height < 4.55:
+            #         result_size =1
+            #     else:
+            #         result_size =3
+            print('bar',result_size)
+            print('---')
 
         else:
             result_size = 0
             
         return result_size
+
+    # def measure_bar_size(self, frame):
+    #     # Measure pixel per centimeter
+    #     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    #     blur = cv2.GaussianBlur(gray, (9, 9), 0)
+    #     edged = cv2.Canny(blur, 50, 100)
+    #     edged = cv2.dilate(edged, None, iterations=1)
+    #     edged = cv2.erode(edged, None, iterations=1)
+    #     cnts = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    #     cnts = imutils.grab_contours(cnts)
+    #     cnts = contours.sort_contours(cnts)[0]
+    #     cnts = [x for x in cnts if cv2.contourArea(x) > 50]
+
+    #     # 참조 객체 설정 (Reference object)
+    #     ref_object = cnts[0]
+    #     box = cv2.minAreaRect(ref_object)
+    #     box = cv2.boxPoints(box)
+    #     box = np.array(box, dtype="int")
+    #     box = perspective.order_points(box)
+    #     (tl, tr, br, bl) = box
+
+    #     # 정사각형 한 변의 길이를 2cm로 설정
+    #     dist_in_pixel = dist.euclidean(tl, tr)
+    #     dist_in_cm = 2  # Reference object size in cm
+
+    #     # 픽셀 당 센티미터 비율 계산
+    #     self.pixel_per_cm = dist_in_pixel / dist_in_cm
+
+    #     return self.pixel_per_cm
+
+    # def process_yolo_results(self, det, names, im0):
+    #     red_color = (0, 0, 255)  # 빨간색
+    #     for *xyxy, conf, cls in reversed(det):
+    #         if names[int(cls)] == 'bar':
+    #             plot_one_box(xyxy, im0, label=label, color=red_color, line_thickness=2)
+
+    #             # Measure object size
+    #             xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # 정규화된 xywh
+    #             width_cm = xywh[2] * self.pixel_per_cm  # 센티미터 단위의 객체 너비
+    #             height_cm = xywh[3] * self.pixel_per_cm  # 센티미터 단위의 객체 높이
+    #             cv2.putText(im0, f"Width: {width_cm:.2f} cm, Height: {height_cm:.2f} cm",
+    #                         (int(xyxy[0]), int(xyxy[1] - 10)),
+    #                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+
+    #     return im0
             
     
 
