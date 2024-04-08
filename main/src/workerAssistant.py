@@ -4,6 +4,7 @@ import time
 import cv2
 import torch
 import numpy as np 
+import atexit
 from PyQt5.QtWidgets import *
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5 import uic
@@ -20,8 +21,10 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import koreanize_matplotlib
+import mediapipe as mp
+from tensorflow.keras.models import load_model
 
-TESTMODE = 1 #gui 테스트 하실때는 1
+TESTMODE = 0 #gui 테스트 하실때는 1
 
 form_loginpage_ui = uic.loadUiType("loginWindow.ui")[0]
 form_selectpage_ui = uic.loadUiType("selectWindow.ui")[0]
@@ -35,12 +38,12 @@ global_work_data = pd.DataFrame(columns=['작업명',' ID ', '작업자',  ' 작
 global_error_data = pd.DataFrame(columns=['작업명','ID', '작업자',  '작업 날짜','불량 단계', '불량 사유'])
 
 #yolo_model_path 
-yolo_path = '../../yolo_model/best.pt'
-step_yolo_path = '../../yolo_model/step.pt'
-
+yolo_path = '../../model/best.pt'
+step_yolo_path = '../../model/step_model_best.pt'
+mp_path = '../../model/model_cnn_mediapipe_vector2.h5'
 # 웹캠 속성 설정
 
-available_index = []
+available_index = [0,2]
 for index in range(5): 
     camera = cv2.VideoCapture(index)
     if camera.isOpened():
@@ -57,14 +60,26 @@ else:
 if cap1.isOpened():
     cap1.set(cv2.CAP_PROP_FPS, 30)
 else:
-    # cap1 = cv2.VideoCapture('testvideo_rgb.avi')
-    cap1 = cv2.VideoCapture('/home/dyjung/amr_ws/yolo/yolov8/color_all_include_manyposition/data/images/frame0bright3.jpg')
+    print("camera 1 is not open")
+    
+    cap2 = cv2.VideoCapture('/home/bo/amr_ws/git_dl/deeplearning-repo-1/main/data/material_view_rgb.avi')
+    cap1 = cv2.VideoCapture('/home/bo/amr_ws/git_dl/deeplearning-repo-1/main/data/work_view_rgb.avi')
 
 if cap2.isOpened():
     cap2.set(cv2.CAP_PROP_FPS, 30)
 else:
-    pass
-        
+    print("camera 2 is not open")
+    
+#mediapipe hand 속성 설정
+
+mp_hands = mp.solutions.hands
+hands = mp_hands.Hands(static_image_mode = True, max_num_hands = 1, min_detection_confidence = 0.3)
+    
+def cleanup():
+    cap1.release()
+    cap2.release()
+    print("release")
+    
 class MainWindow(QMainWindow, form_loginpage_ui):
     def __init__(self):
         super().__init__()
@@ -108,7 +123,7 @@ class MainWindow(QMainWindow, form_loginpage_ui):
     def get_login(self): ## 로그인 버튼 클릭 - 로그인 정보 저장 & 선택 화면으로 넘어가기 
         id_input = self.IDinput.text()
         self.currentOperator = int(id_input)
-         #선택화면으로 이동 
+        #선택화면으로 이동 
         self.hide() #현재 화면 숨겨주고
         selectPage = selectWindow(self) #페이지 2로 불러오고
         selectPage.get_currentoperator(self.currentOperator)
@@ -164,25 +179,25 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         self.parent = parent
 
         self.progresslist = [self.progress1, self.progress2, self.progress3, self.progress4, self.progress5,
-                             self.progress6, self.progress7, self.progress8, self.progress9, self.progress10,
-                             self.progress11, self.progress12, self.progress13, self.progress14, self.progress15,
-                             self.progress16, self.progress17, self.progress18, self.progress19, self.progress20,
-                             self.progress21, self.progress22, self.progress23, self.progress24, self.progress25,
-                             self.progress26, self.progress27, self.progress28, self.progress29, self.progress30,
-                             self.progress31, self.progress32, self.progress33, self.progress34, self.progress35,
-                             self.progress36, self.progress37, self.progress38, self.progress39, self.progress40, 
-                             self.progress41, self.progress42                             
-                             ]
+                            self.progress6, self.progress7, self.progress8, self.progress9, self.progress10,
+                            self.progress11, self.progress12, self.progress13, self.progress14, self.progress15,
+                            self.progress16, self.progress17, self.progress18, self.progress19, self.progress20,
+                            self.progress21, self.progress22, self.progress23, self.progress24, self.progress25,
+                            self.progress26, self.progress27, self.progress28, self.progress29, self.progress30,
+                            self.progress31, self.progress32, self.progress33, self.progress34, self.progress35,
+                            self.progress36, self.progress37, self.progress38, self.progress39, self.progress40, 
+                            self.progress41, self.progress42                             
+                            ]
         self.checklist = [self.check_1,self.check_2,self.check_3,self.check_4,self.check_5,
-                          self.check_6,self.check_7,self.check_8,self.check_9,self.check_10,
-                          self.check_11,self.check_12,self.check_13,self.check_14,self.check_15,
-                          self.check_16,self.check_17,self.check_18,self.check_19,self.check_20,
-                          self.check_21,self.check_22,self.check_23,self.check_24,self.check_25,
-                          self.check_26,self.check_27,self.check_28,self.check_29,self.check_30,
-                          self.check_31,self.check_32,self.check_33,self.check_34,self.check_35, 
-                          self.check_36,self.check_37,self.check_38,self.check_39,self.check_40,                       
-                          self.check_41,self.check_42
-                          ]
+                        self.check_6,self.check_7,self.check_8,self.check_9,self.check_10,
+                        self.check_11,self.check_12,self.check_13,self.check_14,self.check_15,
+                        self.check_16,self.check_17,self.check_18,self.check_19,self.check_20,
+                        self.check_21,self.check_22,self.check_23,self.check_24,self.check_25,
+                        self.check_26,self.check_27,self.check_28,self.check_29,self.check_30,
+                        self.check_31,self.check_32,self.check_33,self.check_34,self.check_35, 
+                        self.check_36,self.check_37,self.check_38,self.check_39,self.check_40,                       
+                        self.check_41,self.check_42
+                        ]
         
         cxml = Cxml_reader("workingorder.xml", "dog_light")  #xml_reader 클래스를 생성한다. 생성시 불러올 xml 주소를 인자로 넘겨준다
         self.xml_count = cxml.get_order_count() #xml안에 들어 있는 작업 순서 갯수 출력 
@@ -221,6 +236,11 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         self.stepmodel = YOLO(step_yolo_path)
         self.yolo_detect_class = []
         self.yolo_detect_class_coordinate = []
+        
+        #Load the Mediapipe model
+        self.mp_model = load_model(mp_path)
+        self.is_grabbing = False
+        
 
 
     
@@ -229,7 +249,7 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
 # - 일단 이미지는 5초 디스플레이하고 넘어가게/ 영상은 2회 반복재생되면 넘어가게함 
         
         # 객체 인식 메서드 호출
-        self.media_folder = '/home/dyjung/amr_ws/ml/project/data/workorder/' #가이드이미지, 영상 저장된 폴더 루트 
+        self.media_folder = '/home/bo/amr_ws/dl_project/data/workorder/' #가이드이미지, 영상 저장된 폴더 루트 
         self.media_files = self.load_media_files()
         self.current_index = 0
         self.playback_count = 0  # 재생 횟수를 저ㅛ장하는 변수 추가
@@ -247,6 +267,9 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         self.fontNow = QFont() ;self.fontNow.setPointSize(13) ; self.fontNow.setBold(True)
         self.fontCheck= QFont(); self.fontCheck.setPointSize(11);self.fontCheck.setBold(True)
         self.ordernow = ''
+    
+
+        
 
     def quitWork(self):
         global global_work_data, inputID,name,workname
@@ -260,6 +283,7 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         selectPage = selectWindow(parent=self.parent) #페이지 2로 불러오고
         selectPage.get_currentoperator(inputID)
         selectPage.show()  
+        
     def restart_assembly(self):
         global global_work_data, inputID,name,workname
         finishment='완료'
@@ -273,8 +297,58 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         new_assembly_window = assemblyWindow(parent=self.parent)
         new_assembly_window.get_currentoperator(inputID)
         new_assembly_window.show()
-  
+    
+    # 손가락의 좌표와 잡아야 하는 object check 
+    # - 1)객체의 x,x1,y,y1 의 좌표에서 +a 만큼의 오차를 주어 2)손가락의 끝점 좌표로 그 영역에 들어가면 올바르게 잡았다고 확인
+    # - 1) 과 2) 가 모두 True일때 다음 step으로 넘어감 (허공에서 grab을 했을 경우 제외)
+        
+    def object_grab_check(self, mp_results, x1, y1, x2, y2, is_grabbing):
+        
+        # grab_flag = False
+        
+        hand_landmark_list = [4, 8, 12, 16, 20]  # 손 끝점 
+        error = 5  # 오차
+        
+        x1 -= error
+        y1 += error
+        x2 -= error
+        y2 += error
+        rect = [(x1, y1), (x2, y1), (x2, y2), (x1, y2)]
+        
+        if mp_results.multi_hand_landmarks:
+            for hand_landmarks in mp_results.multi_hand_landmarks: 
+                for index in hand_landmark_list:
+                    obj_grab_result = cv2.pointPolygonTest(rect, (hand_landmarks.landmark[index].x, hand_landmarks.landmark[index].y), False) 
+                    # x, y가 사각형 범위 안에 있는지 확인 (bool)
+        return obj_grab_result
+                    
 
+    def mp_update(self, frame_for_mp):
+        
+        mp_results = hands.process(frame_for_mp)
+        
+        if mp_results.multi_hand_landmarks:
+            for hand_landmarks in mp_results.multi_hand_landmarks: 
+                # 손가락 각 관절의 벡터 값을 추출합니다.
+                finger_vectors = []
+                for finger_idx in range(5):  # 각 손가락에 대해
+                    for joint_idx in range(1, 5):  # 각 관절에 대해
+                        # 이전 관절과 현재 관절 사이의 벡터 계산
+                        vector = np.array([hand_landmarks.landmark[finger_idx * 4 + joint_idx].x - hand_landmarks.landmark[finger_idx * 4 + joint_idx - 1].x,
+                                        hand_landmarks.landmark[finger_idx * 4 + joint_idx].y - hand_landmarks.landmark[finger_idx * 4 + joint_idx - 1].y,
+                                        hand_landmarks.landmark[finger_idx * 4 + joint_idx].z - hand_landmarks.landmark[finger_idx * 4 + joint_idx - 1].z])
+                        finger_vectors.append(vector)
+
+                # 모델에 손가락 벡터를 입력으로 전달하여 추론합니다.
+                prediction = self.mp_model.predict(np.array([finger_vectors]))
+                probability = prediction[0][0]  # 확률 값
+        
+                # grab 상태 결정 
+                is_grabbing = probability >= 0.5
+                self.grab_status_text = f"Grab" if is_grabbing else f"Release" # 상태는 업데이트 되므로 qimage 표시하는곳에 puttext하면됨
+        else:
+            self.grab_status_text = " None "
+            
     def detect_objects(self, image_path):
         # 이미지를 OpenCV 형식으로 로드
         image = cv2.imread(image_path)
@@ -318,7 +392,6 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                     text_x = int((x1 + x2) / 2 - text_size[0] / 2)
                     text_y = int(y2 + text_size[1] + 5)  # 객체 아래에 위치
                     cv2.putText(image, size_text, (text_x, text_y), font, font_scale, font_color, font_thickness)
-
                 else:
                     continue  # 값이 충분하지 않으면 다음 박스로 넘어감
                 
@@ -364,9 +437,10 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         print(self.yolo_detect_class)
         print("---")
         print(self.yolo_detect_class_coordinate)
-        
-    def draw_rec(self,img_form):
+    
+    def draw_rec(self, img_form):
         result = img_form.copy()
+        is_grabbing = False
 
         for val in self.yolo_detect_class_coordinate:
             for idx, coord in enumerate(val):
@@ -375,17 +449,33 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                 x2 = coord[2]
                 y2 = coord[3]
                 cv2.rectangle(result, (int(x1.item()), int(y1.item())), (int(x2.item()), int(y2.item())), (255, 0, 0), 2)
+                
+                if is_grabbing and self.object_grab_check(x1, y1, x2, y2): # True ,False 반환 
+                    grab_text = "잘하셨습니다."
+                else:
+                    grab_text = "빨간 박스안의 물체를 잡으세요 !"
+                    #추가적인 시퀀스
+                    
                 # print("x1 : {}, y1: {} x2: {} y2: {}".format(int(x1), int(y1)), (int(x2), int(y2)))
+            
 
                 # 객체의 크기를 이미지에 표시
                 font = cv2.FONT_HERSHEY_SIMPLEX
                 font_scale = 0.5
+                font_scale2 = 1
                 font_thickness = 1
+                font_thickness2 = 2
                 font_color = (255, 255, 255)  # 흰색
+                font_color2 = (255, 0 ,0)
+                font_color3 = (0, 0, 255)
                 text_size, _ = cv2.getTextSize(self.yolo_detect_class[idx], font, font_scale, font_thickness)
                 text_x = int((x1 + x2) / 2 - text_size[0] / 2)
                 text_y = int(y2 + text_size[1] + 5)  # 객체 아래에 위치
                 cv2.putText(result, self.yolo_detect_class[idx], (text_x, text_y), font, font_scale, font_color, font_thickness)
+                cv2.putText(result, self.grab_status_text, (30, 30), font, font_scale, font_color2, font_thickness) #위치 수정 필요
+                cv2.putText(result, grab_text, (10, 30), font, font_scale2, font_color3, font_thickness2)           #위치 수정 필요
+                
+                
         return result 
         
         
@@ -491,8 +581,8 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
             self.quitButton.show()
 
     def display_image(self, image_file): #이미지 띄우기 
+        
         pixmap = QPixmap(image_file)
- 
         self.progresslist[self.current_index].setFont(self.fontNow)  
         ordernow=self.progresslist[self.current_index].text()
         self.workorderLabel.setText(ordernow)
@@ -545,6 +635,7 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
     def update_frame1(self):
         ret, frame_1 = cap1.read()  # 웹캠 1번
         if ret:
+            frame_1 = cv2.rotate(frame_1, cv2.ROTATE_180)
             frame_1 = cv2.cvtColor(frame_1, cv2.COLOR_BGR2RGB)
             #frame_1으로 predict
             self.yolo_update(frame_1)
@@ -553,20 +644,21 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
             height, width, channel = frame_1.shape
             bytes_per_line = 3 * width
             q_img = QImage(frame_1.data, width, height, bytes_per_line, QImage.Format_RGB888)
-            pixmap = QPixmap.fromImage(q_img)
-            self.workNowLabel.setPixmap(pixmap)
+            pixmap_1 = QPixmap.fromImage(q_img)
+            self.workNowLabel.setPixmap(pixmap_1)
 
 
 
     def update_frame2(self):
-        ret, frame = cap2.read()  # 웹캠 2번
+        ret, frame_2 = cap2.read()  # 웹캠 2번
         if ret:
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            height, width, channel = frame.shape
+            frame_2 = cv2.cvtColor(frame_2, cv2.COLOR_BGR2RGB)
+            self.mp_update(frame_2)
+            height, width, channel = frame_2.shape
             bytes_per_line = 3 * width
-            q_img = QImage(frame.data, width, height, bytes_per_line, QImage.Format_RGB888)
-            pixmap = QPixmap.fromImage(q_img)
-            self.materialLabel.setPixmap(pixmap)
+            q_img = QImage(frame_2.data, width, height, bytes_per_line, QImage.Format_RGB888)
+            pixmap_2 = QPixmap.fromImage(q_img)
+            self.materialLabel.setPixmap(pixmap_2)
                 
     ## ------캠 송출 코드     
     
@@ -593,13 +685,13 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
             tmp_txt = "{}. ".format(idx+1) +val 
             self.progresslist[idx].setFont(font)
             self.progresslist[idx].setText(tmp_txt)
-                       
+                    
     def go_main(self):
         self.hide()
         main_window = self.parent  # 메인 창을 찾음
         main_window.get_currentoperator(0)  # 로그아웃한 상태로 설정
         main_window.show()
-             
+
     def go_back(self):
         self.hide()
         global inputID 
@@ -614,7 +706,7 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         self.hide()
         error_window = errorWindow(parent=self.parent)  # 에러 페이지를 열고
         error_window.show()  # 에러 페이지를 보여줌          
-         
+
         
 class errorWindow(QMainWindow,form_errorwindowpage_ui):
     def __init__(self, parent):
@@ -672,9 +764,9 @@ class errorWindow(QMainWindow,form_errorwindowpage_ui):
 
     def get_currentoperator(self,id):
         self.currentOperator = id
-       
+
 class statisticWindow(QMainWindow,form_statisticpage_ui):
-   
+
     def __init__(self, parent):
         super().__init__(parent)
         global inputID, name 
@@ -831,7 +923,7 @@ class statisticWindow(QMainWindow,form_statisticpage_ui):
         self.errorTable.resizeColumnsToContents()
         self.errorTable.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         self.errorTable.show()
-      
+
 
     def get_operatorList(self):
         db = Cdatabase_connect()
@@ -853,7 +945,7 @@ class statisticWindow(QMainWindow,form_statisticpage_ui):
         main_window = self.parent  # 메인 창을 찾음
         main_window.get_currentoperator(0)  # 로그아웃한 상태로 설정
         main_window.show()
-           
+
     def go_back(self):
         self.hide()
         global inputID 
@@ -862,7 +954,7 @@ class statisticWindow(QMainWindow,form_statisticpage_ui):
         selectPage.show() 
 
 class servicenotreadyWindow(QMainWindow,form_servicenotready_ui):
-   
+
     def __init__(self, parent):
         super().__init__(parent)
         self.setupUi(self)
@@ -882,4 +974,7 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()
+    atexit.register(cleanup)
     sys.exit(app.exec())
+
+
