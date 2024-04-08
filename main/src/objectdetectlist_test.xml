@@ -4,9 +4,9 @@
             <model>0</model>
             <count>14</count>
             <parts>
-                <part>bar1</part>
-                <part>bar2</part>
-                <part>bar3</part>
+                <part>bar</part>
+                <part>bar</part>
+                <part>bar</part>
                 <part>head_l</part>
                 <part>head_r</part>
                 <part>nut</part>
@@ -18,14 +18,13 @@
                 <part>head_u</part>
                 <part>body</part>
                 <part>neck</part>
-                <barcount>2,2,3</barcount>
             </parts>
         </step>
         <step order="2">
             <model>0</model>
             <count>4</count>
             <parts>
-                <part>bar3</part>
+                <part>bar</part>
                 <part>head_r</part>
                 <part>bolt_x</part>
                 <part>bolt_y</part>
@@ -46,7 +45,7 @@
             <model>0</model>
             <count>4</count>
             <parts>
-                <part>bar3</part>
+                <part>bar</part>
                 <part>head_l</part>
                 <part>bolt_x</part>
                 <part>bolt_y</part>
@@ -139,7 +138,7 @@
             <model>0</model>
             <count>2</count>
             <parts>
-                <part>bar1</part>
+                <part>bar</part>
                 <part>bolt_L</part>
             </parts>
         </step>
@@ -151,7 +150,7 @@
             <model>0</model>
             <count>2</count>
             <parts>
-                <part>bar2</part>
+                <part>bar</part>
                 <part>bolt_L</part>
             </parts>
         </step>
@@ -181,7 +180,7 @@
             <model>0</model>
             <count>2</count>
             <parts>
-                <part>bar3</part>
+                <part>bar</part>
                 <part>neck</part>
             </parts>
         </step>
@@ -218,7 +217,7 @@
             <model>0</model>
             <count>2</count>
             <parts>
-                <part>bar1</part>
+                <part>bar</part>
                 <part>bar2</part>
             </parts>
         </step>
