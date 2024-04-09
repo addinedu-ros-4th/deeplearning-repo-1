@@ -2,11 +2,11 @@
     <instructions>
         <step order="1">
             <model>0</model>
-            <count>14</count>
+            <count>12</count>
             <parts>
-                <part>bar</part>
-                <part>bar</part>
-                <part>bar</part>
+                <part>bar1</part>
+                <part>bar2</part>
+                <part>bar3</part>
                 <part>head_l</part>
                 <part>head_r</part>
                 <part>nut</part>

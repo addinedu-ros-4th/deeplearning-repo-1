@@ -65,16 +65,21 @@ class Cxml_reader:
         
         return result 
     
-    def get_bar_count(self):
+    def get_part_count(self):
 
         result = []
 
-        barcount_text = self.xml_root.find('./instructions/step/parts/barcount').text
+        barcount_text = self.xml_root.findall('./instructions/step/parts/partcount')
 
-        barcount_list = barcount_text.split(',')
-
-        for count in barcount_list:
-            result.append(int(count))
+        for txt in barcount_text:
+            tmp_txt  = txt.text
+            barcount_list = tmp_txt.split(',')
+            
+            tmp_list =[]
+            for count in barcount_list:
+                tmp_list.append(int(count))
+            
+            result.append(tmp_list)
 
 
         return result  

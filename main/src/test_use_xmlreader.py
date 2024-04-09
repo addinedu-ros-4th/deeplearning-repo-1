@@ -23,7 +23,9 @@ def main():
     #xml안에 들어 있는 yolo 모델이 해당 스텝에 인식해야 하는 파트 이름 출력
     print(cxml_objectdetect.get_object_parts_list())
 
-    print(cxml_objectdetect.get_bar_count())
+    print(cxml_objectdetect.get_part_count())
+
+    print(len(cxml_objectdetect.get_part_count()))
 
 if __name__ == "__main__":
     main()
