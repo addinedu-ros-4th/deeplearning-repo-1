@@ -24,7 +24,9 @@ import koreanize_matplotlib
 import mediapipe as mp
 from tensorflow.keras.models import load_model
 from PyQt5.QtWidgets import QMessageBox
-
+import resource
+import time
+import torchvision.transforms as transforms
 TESTMODE = 0 #gui 테스트 하실때는 1
 
 form_loginpage_ui = uic.loadUiType("loginWindow.ui")[0]
@@ -44,7 +46,7 @@ step_yolo_path = '../../model/step_model_best.pt'
 mp_path = '../../model/model_cnn_mediapipe_vector2.h5'
 # 웹캠 속성 설정
 
-available_index = [0,2]
+available_index = []
 for index in range(5): 
     camera = cv2.VideoCapture(index)
     if camera.isOpened():
@@ -54,7 +56,8 @@ if len(available_index)==2:
     cap1 = cv2.VideoCapture(available_index[0])
     cap2 = cv2.VideoCapture(available_index[1])
 elif len(available_index)==1:
-    cap1 = cv2.VideoCapture(available_index[0])     
+    cap1 = cv2.VideoCapture(available_index[0])
+    cap1 = cv2.VideoCapture('../data/work_view_rgb.avi')
 else:
     cap1=cv2.VideoCapture(0); cap2 =cv2.VideoCapture(2)
 
@@ -71,11 +74,7 @@ if cap2.isOpened():
 else:
     print("camera 2 is not open")
     
-#mediapipe hand 속성 설정
 
-mp_hands = mp.solutions.hands
-hands = mp_hands.Hands(static_image_mode = True, max_num_hands = 1, min_detection_confidence = 0.3)
-    
 def cleanup():
     cap1.release()
     cap2.release()
@@ -238,6 +237,8 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         self.stepmodel = YOLO(step_yolo_path)
         self.yolo_detect_class = []
         self.yolo_detect_class_coordinate = []
+        self.yolo_detect_class_workview = []
+        self.yolo_detect_class_coordinate_workview = []
         
         #Load the Mediapipe model
         self.mp_model = load_model(mp_path)
@@ -253,7 +254,7 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
 # - 일단 이미지는 5초 디스플레이하고 넘어가게/ 영상은 2회 반복재생되면 넘어가게함 
         
         # 객체 인식 메서드 호출
-        self.media_folder = '/home/bo/amr_ws/dl_project/data/workorder/' #가이드이미지, 영상 저장된 폴더 루트 
+        self.media_folder = '/home/dyjung/amr_ws/ml/project/data/workorder/' #가이드이미지, 영상 저장된 폴더 루트 
         self.media_files = self.load_media_files()
         self.current_index = 0
         self.playback_count = 0  # 재생 횟수를 저ㅛ장하는 변수 추가
@@ -271,7 +272,28 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         self.fontNow = QFont() ;self.fontNow.setPointSize(13) ; self.fontNow.setBold(True)
         self.fontCheck= QFont(); self.fontCheck.setPointSize(11);self.fontCheck.setBold(True)
         self.ordernow = ''
+        self.mp_hands = mp.solutions.hands
+        self.hands = self.mp_hands.Hands(static_image_mode = True, max_num_hands = 1, min_detection_confidence = 0.3)
+
+        if torch.cuda.is_available():
+    # GPU를 사용하도록 설정
+            self.device = torch.device("cuda")
+            print("GPU를 사용합니다.")
+        else:
+        # CPU를 사용하도록 설정
+            self.device = torch.device("cpu")
+            print("GPU를 사용할 수 없습니다. CPU를 사용합니다.")
     
+
+    def convert_to_torchtensor(self, num_data):
+        transform = transforms.ToTensor()
+        tensor_data = transform(num_data)
+        return tensor_data  
+    
+    def move_to_device(self, data):
+        # GPU로 이동
+        tensor_data = data.to(self.device)
+        return tensor_data
 
         
 
@@ -311,33 +333,41 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
     # - 1)객체의 x,x1,y,y1 의 좌표에서 +a 만큼의 오차를 주어 2)손가락의 끝점 좌표로 그 영역에 들어가면 올바르게 잡았다고 확인
     # - 1) 과 2) 가 모두 True일때 다음 step으로 넘어감 (허공에서 grab을 했을 경우 제외)
         
-    def object_grab_check(self, mp_results, x1, y1, x2, y2, is_grabbing):
+    def object_grab_check(self, xy_list ):
         
         # grab_flag = False
         
         hand_landmark_list = [4, 8, 12, 16, 20]  # 손 끝점 
         error = 5  # 오차
-        
-        x1 -= error
-        y1 += error
-        x2 -= error
-        y2 += error
-        rect = [(x1, y1), (x2, y1), (x2, y2), (x1, y2)]
-        
-        if mp_results.multi_hand_landmarks:
-            for hand_landmarks in mp_results.multi_hand_landmarks: 
-                for index in hand_landmark_list:
-                    obj_grab_result = cv2.pointPolygonTest(rect, (hand_landmarks.landmark[index].x, hand_landmarks.landmark[index].y), False) 
-                    # x, y가 사각형 범위 안에 있는지 확인 (bool)
-        return obj_grab_result
+
+        # 각 좌표 리스트에 대해 처리
+        for coord in xy_list:
+            # 좌표 리스트의 각 좌표에 오차를 적용하여 사각형의 좌표를 계산
+            rect = [(coord[0] - error, coord[1] + error), 
+                    (coord[1] + error, coord[1] + error), 
+                    (coord[1] + error, coord[3] - error), 
+                    (coord[0] - error, coord[3] - error)]
+
+            # 손의 끝점이 사각형 범위 안에 있는지 확인
+            if self.mp_results.multi_hand_landmarks:
+                for hand_landmarks in self.mp_results.multi_hand_landmarks: 
+                    for index in hand_landmark_list:
+                        obj_grab_result = cv2.pointPolygonTest(rect, (hand_landmarks.landmark[index].x, hand_landmarks.landmark[index].y), False) 
+                        # x, y가 사각형 범위 안에 있는지 확인 (bool)
+                        # 만약 어떤 좌표에도 해당되지 않는다면 -1을 반환하므로, 해당 조건을 처리할 필요가 있습니다.
+                        if obj_grab_result != -1:
+                            return obj_grab_result
+
+        return False  # 모든 좌표 리스트에 대해 손의 끝점이 범위 안에 없으면 False를 반환
+
                     
 
     def mp_update(self, frame_for_mp):
         
-        mp_results = hands.process(frame_for_mp)
+        self.mp_results = self.hands.process(frame_for_mp)
         
-        if mp_results.multi_hand_landmarks:
-            for hand_landmarks in mp_results.multi_hand_landmarks: 
+        if self.mp_results.multi_hand_landmarks:
+            for hand_landmarks in self.mp_results.multi_hand_landmarks: 
                 # 손가락 각 관절의 벡터 값을 추출합니다.
                 finger_vectors = []
                 for finger_idx in range(5):  # 각 손가락에 대해
@@ -353,70 +383,11 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                 probability = prediction[0][0]  # 확률 값
         
                 # grab 상태 결정 
-                is_grabbing = probability >= 0.5
-                self.grab_status_text = f"Grab" if is_grabbing else f"Release" # 상태는 업데이트 되므로 qimage 표시하는곳에 puttext하면됨
+                self.is_grabbing = probability >= 0.5
+                # self.grab_status_text = f"Grab" if is_grabbing else f"Release" # 상태는 업데이트 되므로 qimage 표시하는곳에 puttext하면됨
         else:
             self.grab_status_text = " None "
             
-    def detect_objects(self, image_path):
-        # 이미지를 OpenCV 형식으로 로드
-        image = cv2.imread(image_path)
-        names = self.yolo_model.names  # 클래스 이름 가져오기
-    
-        # YOLO 객체 감지
-        box_results = self.model.predict(image, conf=0.5, verbose=False, show=False)
-        
-        for r in box_results:
-            for box in r.boxes.xyxy.cpu():
-                # 박스 좌표와 신뢰도 추출
-                if len(box) >= 4:
-                    x1, y1, x2, y2 = box[:4]  # bounding box 좌표
-                    confidence = box[4] if len(box) > 4 else None  # 신뢰도
-                
-                    # 실제 길이와 픽셀 길이의 비율 계산
-                
-               
-                    pixel_length = abs(x2 - x1)  # 정사각형의 픽셀 길이
-                    real_length = 2  # 실제 길이 (여기서는 2cm)
-                    pixel_to_cm_ratio = real_length / pixel_length
-
-                    # 객체의 픽셀 좌표를 실제 길이로 변환
-                    real_x1 = x1 * pixel_to_cm_ratio
-                    real_x2 = x2 * pixel_to_cm_ratio
-                    real_y1 = y1 * pixel_to_cm_ratio
-                    real_y2 = y2 * pixel_to_cm_ratio
-
-                    # 객체의 크기 계산
-                    real_width = abs(real_x2 - real_x1)
-                    real_height = abs(real_y2 - real_y1)
-                    
-                    # 각 객체의 박스를 OpenCV 이미지에 그립니다.
-                    cv2.rectangle(image, (int(x1), int(y1)), (int(x2), int(y2)), (255, 0, 0), 2)
-                    
-                        # 객체의 너비와 높이를 문자열로 변환
-                    size_text = "Width: {:.2f} cm, Height: {:.2f} cm".format(real_width, real_height)
-
-                    # 객체의 크기를 이미지에 표시
-                    font = cv2.FONT_HERSHEY_SIMPLEX
-                    font_scale = 0.5
-                    font_thickness = 1
-                    font_color = (255, 255, 255)  # 흰색
-                    text_size, _ = cv2.getTextSize(size_text, font, font_scale, font_thickness)
-                    text_x = int((x1 + x2) / 2 - text_size[0] / 2)
-                    text_y = int(y2 + text_size[1] + 5)  # 객체 아래에 위치
-                    cv2.putText(image, size_text, (text_x, text_y), font, font_scale, font_color, font_thickness)
-                else:
-                    continue  # 값이 충분하지 않으면 다음 박스로 넘어감
-                
-                
-                # 각 객체의 박스를 OpenCV 이미지에 그립니다.
-                cv2.rectangle(image, (int(x1), int(y1)), (int(x2), int(y2)), (255, 0, 0), 2)
-
-        # OpenCV 이미지를 Qt 이미지로 변환하여 표시
-        q_image = QImage(image.data, image.shape[1], image.shape[0], QImage.Format_RGB888).rgbSwapped()
-        pixmap = QPixmap.fromImage(q_image)
-        self.workNowLabel.setPixmap(pixmap)
-
 
     def yolo_update(self, frame_for_yolo):
         
@@ -424,6 +395,8 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         self.yolo_detect_class_coordinate.clear()
 
         if self.xml_detection_modellist[self.current_index] == '0':
+            frame_for_yolo = self.convert_to_torchtensor(frame_for_yolo)
+            frame_for_yolo = self.move_to_device(frame_for_yolo)
             results = self.model.predict(frame_for_yolo, conf=0.5, show_boxes=False)
             names = self.model.names
 
@@ -447,16 +420,50 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                     self.yolo_detect_class.append(tmp_name)
                     self.yolo_detect_class_coordinate.append(r.boxes.xyxy.cpu())
                 
+        print("materialview")
+        print(self.yolo_detect_class)
+        print("---")
+        # print(self.yolo_detect_class_coordinate)
 
-        # print(self.yolo_detect_class)
-        # print("---")
+    def yolo_update_workview(self, frame_for_yolo):
+        
+        self.yolo_detect_class_workview.clear() #담기 전에 reset
+        self.yolo_detect_class_coordinate_workview.clear()
+
+        if self.xml_detection_modellist[self.current_index] == '0':
+            results = self.model.predict(frame_for_yolo, conf=0.5, show_boxes=False)
+            names = self.model.names
+
+            for r in results:
+                for idx,cls_name in enumerate(r.boxes.cls):
+                    tmp_name = names[int(cls_name.item())]
+                    if tmp_name == 'bar':
+                        size = self.measure_bar_size(r.boxes.xyxy.cpu()[idx]) #bar일때만 꺼내려고 한건데 이게 맞낭..#하린님
+                        if size != 0:
+                            tmp_name += str(size)
+                    self.yolo_detect_class_workview.append(tmp_name)
+                    self.yolo_detect_class_coordinate_workview.append(r.boxes.xyxy.cpu())
+                
+        elif self.xml_detection_modellist[self.current_index] == '1':
+            results = self.stepmodel.predict(frame_for_yolo, show_boxes=False)
+            stepnames = self.stepmodel.names
+
+            for r in results:
+                for cls_name in r.boxes.cls:
+                    tmp_name = stepnames[int(cls_name.item())]
+                    self.yolo_detect_class_workview.append(tmp_name)
+                    self.yolo_detect_class_coordinate_workview.append(r.boxes.xyxy.cpu())
+
+        print("workview")
+        print(self.yolo_detect_class_workview)
+        print("---")
         # print(self.yolo_detect_class_coordinate)
         
-    def draw_rec(self,img_form):
+    def draw_rec(self,img_form): #work
         result = img_form.copy()
         is_grabbing = False
 
-        for val in self.yolo_detect_class_coordinate:
+        for val in self.yolo_detect_class_coordinate_workview:
             for idx, coord in enumerate(val):
                 x1 = coord[0]
                 y1 = coord[1]
@@ -464,11 +471,7 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                 y2 = coord[3]
                 cv2.rectangle(result, (int(x1.item()), int(y1.item())), (int(x2.item()), int(y2.item())), (255, 0, 0), 2)
                 
-                if is_grabbing and self.object_grab_check(x1, y1, x2, y2): # True ,False 반환 
-                    grab_text = "잘하셨습니다."
-                else:
-                    grab_text = "빨간 박스안의 물체를 잡으세요 !"
-                    #추가적인 시퀀스
+                
                     
                 # print("x1 : {}, y1: {} x2: {} y2: {}".format(int(x1), int(y1)), (int(x2), int(y2)))
             
@@ -476,26 +479,20 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                 # 객체의 크기를 이미지에 표시
                 font = cv2.FONT_HERSHEY_SIMPLEX
                 font_scale = 0.5
-                font_scale2 = 1
                 font_thickness = 1
-                font_thickness2 = 2
                 font_color = (255, 255, 255)  # 흰색
-                font_color2 = (255, 0 ,0)
-                font_color3 = (0, 0, 255)
+                
                 text_size, _ = cv2.getTextSize(self.yolo_detect_class[idx], font, font_scale, font_thickness)
                 text_x = int((x1 + x2) / 2 - text_size[0] / 2)
                 text_y = int(y2 + text_size[1] + 5)  # 객체 아래에 위치
                 cv2.putText(result, self.yolo_detect_class[idx], (text_x, text_y), font, font_scale, font_color, font_thickness)
-                cv2.putText(result, self.grab_status_text, (30, 30), font, font_scale, font_color2, font_thickness) #위치 수정 필요
-                cv2.putText(result, grab_text, (10, 30), font, font_scale2, font_color3, font_thickness2)           #위치 수정 필요
-                
                 
         return result 
     
 
     def draw_rec_for_materialview(self,img_form):
         result = img_form.copy()
-
+        xy_list = []
         for val in self.yolo_detect_class_coordinate:
             for idx, coord in enumerate(val):
                 x1 = coord[0]
@@ -505,82 +502,95 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                 if self.yolo_detect_class[idx] in self.xml_detection_partlist[self.current_index]:
                     cv2.rectangle(result, (int(x1.item()), int(y1.item())), (int(x2.item()), int(y2.item())), (255, 0, 0), 2)
                 # print("x1 : {}, y1: {} x2: {} y2: {}".format(int(x1), int(y1)), (int(x2), int(y2)))
-
+                    xy_list.append([int(x1.item()), int(y1.item()), int(x2.item()), int(y2.item())])
+                if self.is_grabbing and self.object_grab_check(xy_list): # True ,False 반환 
+                    grab_text = "Good."
+                else:
+                    grab_text = "Grab in red box !"
                 # 객체의 크기를 이미지에 표시
                 font = cv2.FONT_HERSHEY_SIMPLEX
                 font_scale = 0.5
+                font_scale2 = 1
+                font_color2 = (255, 0 ,0)
+                font_color3 = (0, 0, 255)
                 font_thickness = 1
+                font_thickness2 = 2
+                
                 font_color = (255, 255, 255)  # 흰색
                 text_size, _ = cv2.getTextSize(self.yolo_detect_class[idx], font, font_scale, font_thickness)
                 text_x = int((x1 + x2) / 2 - text_size[0] / 2)
                 text_y = int(y2 + text_size[1] + 5)  # 객체 아래에 위치
+                
                 if self.yolo_detect_class[idx] in self.xml_detection_partlist[self.current_index]:
                     cv2.putText(result, self.yolo_detect_class[idx], (text_x, text_y), font, font_scale, font_color, font_thickness)
+                    # cv2.putText(result, self.grab_status_text, (200, 50), font, font_scale, font_color2, font_thickness) #위치 수정 필요
+                    cv2.putText(result, grab_text, (200, 50), font, font_scale2, font_color3, font_thickness2)           #위치 수정 필요
         return result 
         
-        
-        # YOLO 객체 감지
-        #  for box in xyxy_bar:
-        #     # 박스 좌표와 신뢰도 추출
-        #     if len(box) >= 4:
-        #         x1, y1, x2, y2 = box[:4]  # bounding box 좌표
-            
-        #         print("x1: {} y1: {} x2: {} y2: {}".format(int(x1), int(y1), int(x2), int(y2)))
-                
-        #         # 각 객체의 박스를 OpenCV 이미지에 그립니다.
-        #         cv2.rectangle(img_form, (int(x1), int(y1)), (int(x2), int(y2)), (255, 0, 0), 2)
             
     def measure_bar_size(self, xyxy_bar):
         result_size = 0
         if len(xyxy_bar) >= 4:
-            # 박스 좌표와 신뢰도 추출
+            # 박스 좌표 추출
             x1 = xyxy_bar[0]
             y1 = xyxy_bar[1]
             x2 = xyxy_bar[2]
             y2 = xyxy_bar[3]
-
+            x1 = round(x1.item(), 2)
+            y1 = round(y1.item(), 2)
+            x2 = round(x2.item(), 2)
+            y2 = round(y2.item(), 2)
+           
             # 실제 길이와 픽셀 길이의 비율 계산
-            pixel_length = abs(x2 - x1)  # 정사각형의 픽셀 길이
-            real_length = 2  # 실제 길이 (여기서는 2cm)
-            pixel_to_cm_ratio = real_length / pixel_length
-
+            pixel_length_wid = abs(x2 - x1)  # 픽셀 길이
+            pixel_length_hei = abs(y2 - y1)
+            if pixel_length_wid > pixel_length_hei:
+                pixel_length_wid, pixel_length_hei = pixel_length_hei, pixel_length_wid
+            if 80 < pixel_length_hei < 90:
+                real_wid = 3
+            else:
+                real_wid = 2.5
+            # real_length = 2  # 실제 길이 (여기서는 2cm)
+            pixel_to_cm_ratio = real_wid / pixel_length_wid
             # 객체의 픽셀 좌표를 실제 길이로 변환
             real_x1 = x1 * pixel_to_cm_ratio
             real_x2 = x2 * pixel_to_cm_ratio
             real_y1 = y1 * pixel_to_cm_ratio
             real_y2 = y2 * pixel_to_cm_ratio
-
             # 객체의 크기 계산
             real_width = abs(real_x2 - real_x1)
             real_height = abs(real_y2 - real_y1)
-            
-            # 객체의 너비와 높이를 문자열로 변환
-            size_text = "Width: {:.2f} cm, Height: {:.2f} cm".format(real_width, real_height)
-
-            area = round((real_width.item())* (real_height.item()))
-
-            # #값들 튜닝 필요 #하린님
-            # if area == 4:
-            #     result_size =1
-            # elif area == 6:
-            #     result_size =2
-            # elif area == 8:
-            #     result_size =3
-
+            # real_width = round(real_width.item(), 2)
+            # real_height = round(real_height.item(), 2)
+       # 객체의 너비와 높이를 문자열로 변환
+            size_text = "Width: {:.3f} cm, Height: {:.3f} cm".format(real_width, real_height)
+            if 3.00 <= real_height < 4.55:
+               result_size = 1
+            elif 4.55 <= real_height < 5.55:
+                result_size = 2
+            else:
+                result_size = 3
+            # # #값들 튜닝 필요 #하린님
+            # if real_width == 2.5:
+            #     result_size = 2
+            # else :
+            #     if 3.00 <= real_height < 4.55:
+            #         result_size =1
+            #     else:
+            #         result_size =3
         else:
-            result_size =0
-            
+            result_size = 0
         return result_size
             
 
 
 
-    def isyolomodel_pass(self):
+    def isyolomodel_pass(self): #work view
         result = 0
         if self.xml_detection_countlist[self.current_index] == '0' : #count가 0이라서 detect 해야할 필요 없음
             result = 1
         else:
-            detected_cls = set(sorted(self.yolo_detect_class))
+            detected_cls = set(sorted(self.yolo_detect_class_workview))
             must_be_detected_cls = set(sorted(self.xml_detection_partlist[self.current_index]))
             if must_be_detected_cls == detected_cls :
                 if self.xml_detection_modellist[self.current_index] == '0':
@@ -694,13 +704,13 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
     
 # --- workGuideLabel 띄우기 끝 
                 
-    def update_frame1(self):
+    def update_frame1(self): #workview
         ret, frame_1 = cap1.read()  # 웹캠 1번
         if ret:
             frame_1 = cv2.rotate(frame_1, cv2.ROTATE_180)
             frame_1 = cv2.cvtColor(frame_1, cv2.COLOR_BGR2RGB)
             #frame_1으로 predict
-            self.yolo_update(frame_1)
+            self.yolo_update_workview(frame_1)
             frame_1 = self.draw_rec(frame_1)
             #frame_1에다가 rectangle 그리기 
             height, width, channel = frame_1.shape
@@ -709,7 +719,7 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
             pixmap_1 = QPixmap.fromImage(q_img)
             self.workNowLabel.setPixmap(pixmap_1)
 
-    def update_frame2(self):
+    def update_frame2(self): #materialview
         ret, frame_2 = cap2.read()  # 웹캠 2번
         if ret:
             frame_2 = cv2.cvtColor(frame_2, cv2.COLOR_BGR2RGB)
@@ -1069,5 +1079,4 @@ if __name__ == "__main__":
     window.show()
     atexit.register(cleanup)
     sys.exit(app.exec())
-
 
