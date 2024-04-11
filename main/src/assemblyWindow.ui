@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1389</width>
-    <height>934</height>
+    <width>1857</width>
+    <height>1012</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,10 +16,10 @@
   <widget class="QLabel" name="materialLabel">
    <property name="geometry">
     <rect>
-     <x>1010</x>
+     <x>1250</x>
      <y>430</y>
-     <width>371</width>
-     <height>431</height>
+     <width>591</width>
+     <height>491</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -54,8 +54,8 @@
    <property name="geometry">
     <rect>
      <x>600</x>
-     <y>880</y>
-     <width>781</width>
+     <y>950</y>
+     <width>1231</width>
      <height>41</height>
     </rect>
    </property>
@@ -121,7 +121,7 @@ border-radius :15px;
    <property name="geometry">
     <rect>
      <x>230</x>
-     <y>870</y>
+     <y>940</y>
      <width>151</width>
      <height>51</height>
     </rect>
@@ -161,8 +161,8 @@ border-radius :15px;
     <rect>
      <x>600</x>
      <y>430</y>
-     <width>391</width>
-     <height>431</height>
+     <width>641</width>
+     <height>491</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -200,7 +200,7 @@ border-radius :15px;
     <rect>
      <x>600</x>
      <y>40</y>
-     <width>781</width>
+     <width>1241</width>
      <height>371</height>
     </rect>
    </property>
@@ -217,7 +217,7 @@ border-radius :15px;
      <x>10</x>
      <y>120</y>
      <width>581</width>
-     <height>741</height>
+     <height>811</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -335,7 +335,7 @@ border-radius :15px;
      <x>20</x>
      <y>180</y>
      <width>561</width>
-     <height>671</height>
+     <height>741</height>
     </rect>
    </property>
    <property name="widgetResizable">
@@ -345,7 +345,7 @@ border-radius :15px;
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>0</y>
+      <y>-171</y>
       <width>545</width>
       <height>1528</height>
      </rect>
@@ -2532,7 +2532,7 @@ border-radius :15px;
     <rect>
      <x>600</x>
      <y>10</y>
-     <width>781</width>
+     <width>1241</width>
      <height>51</height>
     </rect>
    </property>
@@ -2582,7 +2582,7 @@ border-radius :15px;
   <widget class="QPushButton" name="quitButton">
    <property name="geometry">
     <rect>
-     <x>920</x>
+     <x>1140</x>
      <y>360</y>
      <width>141</width>
      <height>51</height>
