@@ -24,7 +24,7 @@
             <model>0</model>
             <count>4</count>
             <parts>
-                <part>bar</part>
+                <part>bar1</part>
                 <part>head_r</part>
                 <part>bolt_x</part>
                 <part>bolt_y</part>
@@ -33,20 +33,23 @@
         <step order="3">
             <model>0</model>
             <count>0</count>
+            <parts>
+                <part></part>
+            </parts>
         </step>
         <step order="4">
             <model>1</model>
             <count>1</count>
             <parts>
-                <part>step1-1</part>
+                <part>step1-2</part>
             </parts>
         </step>
         <step order="5">
             <model>0</model>
             <count>4</count>
             <parts>
-                <part>bar</part>
-                <part>head_l</part>
+                <part>bar1</part>
+                <part>head_r</part>
                 <part>bolt_x</part>
                 <part>bolt_y</part>
             </parts>
@@ -54,41 +57,52 @@
         <step order="6">
             <model>0</model>
             <count>0</count>
+            <parts>
+                <part></part>
+            </parts>
         </step>
         <step order="7">
             <model>1</model>
-            <count>2</count>
+            <count>1</count>
             <parts>
                 <part>step1-2</part>
-                <part>step1-3</part>
             </parts>
         </step>
         <step order="8">
             <model>0</model>
             <count>2</count>
             <parts>
-                <part>head_d</part>
+                <part>head_u</part>
                 <part>head_b</part>
             </parts>
         </step>
         <step order="9">
             <model>0</model>
             <count>0</count>
+            <parts>
+                <part></part>
+            </parts>
         </step>
         <step order="10">
             <model>1</model>
             <count>1</count>
             <parts>
-                <part>step1-4</part>
+                <part>step1-3</part>
             </parts>
         </step>
         <step order="11">
             <model>0</model>
             <count>0</count>
+            <parts>
+                <part></part>
+            </parts>
         </step>
         <step order="12">
             <model>0</model>
             <count>0</count>
+            <parts>
+                <part></part>
+            </parts>
         </step>
         <step order="13">
             <model>1</model>
@@ -101,12 +115,15 @@
             <model>0</model>
             <count>1</count>
             <parts>
-                <part>head_u</part>
+                <part>head_d</part>
             </parts>
         </step>
         <step order="15">
             <model>0</model>
             <count>0</count>
+            <parts>
+                <part></part>
+            </parts>
         </step>
         <step order="16">
             <model>1</model>
@@ -118,45 +135,60 @@
         <step order="17">
             <model>0</model>
             <count>0</count>
+            <parts>
+                <part></part>
+            </parts>
         </step>
         <step order="18">
             <model>0</model>
             <count>0</count>
+            <parts>
+                <part></part>
+            </parts>
         </step>
         <step order="19">
             <model>0</model>
             <count>0</count>
+            <parts>
+                <part></part>
+            </parts>
         </step>
         <step order="20">
-            <model>1</model>
-            <count>1</count>
+            <model>0</model>
+            <count>0</count>
             <parts>
-                <part>step1-5</part>
+                <part></part>
             </parts>
         </step>
         <step order="21">
             <model>0</model>
             <count>2</count>
             <parts>
-                <part>bar</part>
-                <part>bolt_L</part>
+                <part>bar3</part>
+                <part>bolt_y</part>
             </parts>
         </step>
         <step order="22">
             <model>0</model>
             <count>0</count>
+            <parts>
+                <part></part>
+            </parts>
         </step>
         <step order="23">
             <model>0</model>
             <count>2</count>
             <parts>
-                <part>bar</part>
-                <part>bolt_L</part>
+                <part>bar2</part>
+                <part>bolt_y</part>
             </parts>
         </step>
         <step order="24">
             <model>0</model>
             <count>0</count>
+            <parts>
+                <part></part>
+            </parts>
         </step>
         <step order="25">
             <model>0</model>
@@ -168,6 +200,9 @@
         <step order="26">
             <model>0</model>
             <count>0</count>
+            <parts>
+                <part></part>
+            </parts>
         </step>
         <step order="27">
             <model>1</model>
@@ -180,19 +215,22 @@
             <model>0</model>
             <count>2</count>
             <parts>
-                <part>bar</part>
+                <part>bar1</part>
                 <part>neck</part>
             </parts>
         </step>
         <step order="29">
             <model>0</model>
             <count>0</count>
+            <parts>
+                <part></part>
+            </parts>
         </step>
         <step order="30">
             <model>1</model>
             <count>1</count>
             <parts>
-                <part>step2-2</part>
+                <part>step-2-2</part>
             </parts>
         </step>
         <step order="31">
@@ -205,25 +243,31 @@
         <step order="32">
             <model>0</model>
             <count>0</count>
+            <parts>
+                <part></part>
+            </parts>
         </step>
         <step order="33">
             <model>1</model>
             <count>1</count>
             <parts>
-                <part>step2-3</part>
+                <part>stpe2-3</part>
             </parts>
         </step>
         <step order="34">
             <model>0</model>
             <count>2</count>
             <parts>
-                <part>bar</part>
                 <part>bar2</part>
+                <part>bar3</part>
             </parts>
         </step>
         <step order="35">
             <model>0</model>
             <count>0</count>
+            <parts>
+                <part></part>
+            </parts>
         </step>
         <step order="36">
             <model>1</model>
@@ -242,6 +286,9 @@
         <step order="38">
             <model>0</model>
             <count>0</count>
+            <parts>
+                <part></part>
+            </parts>
         </step>
          <step order="39">
             <model>1</model>
@@ -260,6 +307,9 @@
          <step order="41">
             <model>0</model>
             <count>0</count>
+            <parts>
+                <part></part>
+            </parts>
         </step>
          <step order="42">
             <model>1</model>
