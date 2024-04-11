@@ -7,9 +7,9 @@ class Cdatabase_connect:
         self.local = mysql.connector.connect(
             host = "localhost",
             port = 3306,
-            user = "root",
-            password = "1457",
-            database = "dl_project" 
+            user = "dyjung",
+            password = "0",
+            database = "mlproject" 
         )
 
     def get_operator(self):
