@@ -27,6 +27,7 @@ from PyQt5.QtWidgets import QMessageBox
 import resource
 import time
 import torchvision.transforms as transforms
+
 TESTMODE = 0 #gui 테스트 하실때는 1
 
 form_loginpage_ui = uic.loadUiType("loginWindow.ui")[0]
@@ -56,8 +57,8 @@ if len(available_index)==2:
     cap1 = cv2.VideoCapture(available_index[0])
     cap2 = cv2.VideoCapture(available_index[1])
 elif len(available_index)==1:
-    cap1 = cv2.VideoCapture(available_index[0])
-    cap1 = cv2.VideoCapture('../data/work_view_rgb.avi')
+    cap1 = cv2.VideoCapture(available_index[0])     
+    cap2 = cv2.VideoCapture('../data/work_view_rgb.avi')
 else:
     cap1=cv2.VideoCapture(0); cap2 =cv2.VideoCapture(2)
 
@@ -74,6 +75,14 @@ if cap2.isOpened():
 else:
     print("camera 2 is not open")
     
+#mediapipe hand 속성 설정
+
+
+
+# def function_to_measure():
+#     # 리소스를 측정할 함수
+#     for _ in range(1000000):
+#         _ = 1 + 1
 
 def cleanup():
     cap1.release()
@@ -222,7 +231,6 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         self.startButton.clicked.connect(self.restart_assembly)
         self.quitButton.hide()
         self.quitButton.clicked.connect(self.quitWork)
-         
         
         # 웹캠 영상을 표시하기 위해 QTimer 사용
         timer1 = QTimer(self)
@@ -246,6 +254,8 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         
 
         self.stepmodel_timecount = 0
+        self.iscorrecttimer_on =0
+        self.correcttimer = 0
 
 
     
@@ -256,8 +266,9 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         # 객체 인식 메서드 호출
         self.media_folder = '/home/dyjung/amr_ws/ml/project/data/workorder/' #가이드이미지, 영상 저장된 폴더 루트 
         self.media_files = self.load_media_files()
-        self.current_index = 0
-        self.playback_count = 0  # 재생 횟수를 저ㅛ장하는 변수 추가
+        self.current_index = 20
+        self.set_yolochecklist(self.current_index)
+        self.playback_count = 0  # 재생 횟수를 저장하는 변수 추가
 
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.display_media)
@@ -359,7 +370,6 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                             return obj_grab_result
 
         return False  # 모든 좌표 리스트에 대해 손의 끝점이 범위 안에 없으면 False를 반환
-
                     
 
     def mp_update(self, frame_for_mp):
@@ -387,51 +397,37 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                 # self.grab_status_text = f"Grab" if is_grabbing else f"Release" # 상태는 업데이트 되므로 qimage 표시하는곳에 puttext하면됨
         else:
             self.grab_status_text = " None "
-            
-
-    def yolo_update(self, frame_for_yolo):
+    def yolo_update(self, frame_for_yolo): #materialview
         
         self.yolo_detect_class.clear() #담기 전에 reset
         self.yolo_detect_class_coordinate.clear()
+        frame_for_yolo = self.convert_to_torchtensor(frame_for_yolo)
+        frame_for_yolo = self.move_to_device(frame_for_yolo)
 
-        if self.xml_detection_modellist[self.current_index] == '0':
-            frame_for_yolo = self.convert_to_torchtensor(frame_for_yolo)
-            frame_for_yolo = self.move_to_device(frame_for_yolo)
-            results = self.model.predict(frame_for_yolo, conf=0.5, show_boxes=False)
-            names = self.model.names
+        results = self.model.predict(frame_for_yolo, show_boxes=False)
+        names = self.model.names
 
-            for r in results:
-                for idx,cls_name in enumerate(r.boxes.cls):
-                    tmp_name = names[int(cls_name.item())]
-                    if tmp_name == 'bar':
-                        size = self.measure_bar_size(r.boxes.xyxy.cpu()[idx]) #bar일때만 꺼내려고 한건데 이게 맞낭..#하린님
-                        if size != 0:
-                            tmp_name += str(size)
-                    self.yolo_detect_class.append(tmp_name)
-                    self.yolo_detect_class_coordinate.append(r.boxes.xyxy.cpu())
+        for r in results:
+            for idx,cls_name in enumerate(r.boxes.cls):
+                tmp_name = names[int(cls_name.item())]
+                if tmp_name == 'bar':
+                    size = self.measure_bar_size(r.boxes.xyxy.cpu()[idx]) #bar일때만 꺼내려고 한건데 이게 맞낭..#하린님
+                    if size != 0:
+                        tmp_name += str(size)
+                self.yolo_detect_class.append(tmp_name)
+                self.yolo_detect_class_coordinate.append(r.boxes.xyxy.cpu())
                 
-        elif self.xml_detection_modellist[self.current_index] == '1':
-            results = self.stepmodel.predict(frame_for_yolo, show_boxes=False)
-            stepnames = self.stepmodel.names
-
-            for r in results:
-                for cls_name in r.boxes.cls:
-                    tmp_name = stepnames[int(cls_name.item())]
-                    self.yolo_detect_class.append(tmp_name)
-                    self.yolo_detect_class_coordinate.append(r.boxes.xyxy.cpu())
-                
-        print("materialview")
-        print(self.yolo_detect_class)
-        print("---")
+        # print("materialview")
+        # print(self.yolo_detect_class)
+        # print("---")
         # print(self.yolo_detect_class_coordinate)
-
+        
     def yolo_update_workview(self, frame_for_yolo):
         
         self.yolo_detect_class_workview.clear() #담기 전에 reset
         self.yolo_detect_class_coordinate_workview.clear()
-
         if self.xml_detection_modellist[self.current_index] == '0':
-            results = self.model.predict(frame_for_yolo, conf=0.5, show_boxes=False)
+            results = self.model.predict(frame_for_yolo, show_boxes=False)
             names = self.model.names
 
             for r in results:
@@ -454,14 +450,13 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                     self.yolo_detect_class_workview.append(tmp_name)
                     self.yolo_detect_class_coordinate_workview.append(r.boxes.xyxy.cpu())
 
-        print("workview")
-        print(self.yolo_detect_class_workview)
-        print("---")
+        # print("workview")
+        # print(self.yolo_detect_class_workview)
+        # print("---")
         # print(self.yolo_detect_class_coordinate)
         
-    def draw_rec(self,img_form): #work
+    def draw_rec(self,img_form): #workview
         result = img_form.copy()
-        is_grabbing = False
 
         for val in self.yolo_detect_class_coordinate_workview:
             for idx, coord in enumerate(val):
@@ -471,21 +466,18 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                 y2 = coord[3]
                 cv2.rectangle(result, (int(x1.item()), int(y1.item())), (int(x2.item()), int(y2.item())), (255, 0, 0), 2)
                 
-                
-                    
                 # print("x1 : {}, y1: {} x2: {} y2: {}".format(int(x1), int(y1)), (int(x2), int(y2)))
-            
-
                 # 객체의 크기를 이미지에 표시
+                
                 font = cv2.FONT_HERSHEY_SIMPLEX
                 font_scale = 0.5
                 font_thickness = 1
                 font_color = (255, 255, 255)  # 흰색
                 
-                text_size, _ = cv2.getTextSize(self.yolo_detect_class[idx], font, font_scale, font_thickness)
+                text_size, _ = cv2.getTextSize(self.yolo_detect_class_workview[idx], font, font_scale, font_thickness)
                 text_x = int((x1 + x2) / 2 - text_size[0] / 2)
                 text_y = int(y2 + text_size[1] + 5)  # 객체 아래에 위치
-                cv2.putText(result, self.yolo_detect_class[idx], (text_x, text_y), font, font_scale, font_color, font_thickness)
+                cv2.putText(result, self.yolo_detect_class_workview[idx], (text_x, text_y), font, font_scale, font_color, font_thickness)
                 
         return result 
     
@@ -499,6 +491,7 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                 y1 = coord[1]
                 x2 = coord[2]
                 y2 = coord[3]
+                
                 if self.yolo_detect_class[idx] in self.xml_detection_partlist[self.current_index]:
                     cv2.rectangle(result, (int(x1.item()), int(y1.item())), (int(x2.item()), int(y2.item())), (255, 0, 0), 2)
                 # print("x1 : {}, y1: {} x2: {} y2: {}".format(int(x1), int(y1)), (int(x2), int(y2)))
@@ -527,6 +520,17 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                     cv2.putText(result, grab_text, (200, 50), font, font_scale2, font_color3, font_thickness2)           #위치 수정 필요
         return result 
         
+        
+        # YOLO 객체 감지
+        #  for box in xyxy_bar:
+        #     # 박스 좌표와 신뢰도 추출
+        #     if len(box) >= 4:
+        #         x1, y1, x2, y2 = box[:4]  # bounding box 좌표
+            
+        #         print("x1: {} y1: {} x2: {} y2: {}".format(int(x1), int(y1), int(x2), int(y2)))
+                
+        #         # 각 객체의 박스를 OpenCV 이미지에 그립니다.
+        #         cv2.rectangle(img_form, (int(x1), int(y1)), (int(x2), int(y2)), (255, 0, 0), 2)
             
     def measure_bar_size(self, xyxy_bar):
         result_size = 0
@@ -536,14 +540,16 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
             y1 = xyxy_bar[1]
             x2 = xyxy_bar[2]
             y2 = xyxy_bar[3]
+            
             x1 = round(x1.item(), 2)
             y1 = round(y1.item(), 2)
             x2 = round(x2.item(), 2)
             y2 = round(y2.item(), 2)
-           
+            
             # 실제 길이와 픽셀 길이의 비율 계산
             pixel_length_wid = abs(x2 - x1)  # 픽셀 길이
             pixel_length_hei = abs(y2 - y1)
+            
             if pixel_length_wid > pixel_length_hei:
                 pixel_length_wid, pixel_length_hei = pixel_length_hei, pixel_length_wid
             if 80 < pixel_length_hei < 90:
@@ -557,52 +563,76 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
             real_x2 = x2 * pixel_to_cm_ratio
             real_y1 = y1 * pixel_to_cm_ratio
             real_y2 = y2 * pixel_to_cm_ratio
+            
             # 객체의 크기 계산
+            
             real_width = abs(real_x2 - real_x1)
             real_height = abs(real_y2 - real_y1)
+            
             # real_width = round(real_width.item(), 2)
             # real_height = round(real_height.item(), 2)
-       # 객체의 너비와 높이를 문자열로 변환
+            # 객체의 너비와 높이를 문자열로 변환
+            
             size_text = "Width: {:.3f} cm, Height: {:.3f} cm".format(real_width, real_height)
+            # print(size_text)
+            
             if 3.00 <= real_height < 4.55:
-               result_size = 1
+                result_size = 1
             elif 4.55 <= real_height < 5.55:
                 result_size = 2
             else:
                 result_size = 3
-            # # #값들 튜닝 필요 #하린님
-            # if real_width == 2.5:
-            #     result_size = 2
-            # else :
-            #     if 3.00 <= real_height < 4.55:
-            #         result_size =1
-            #     else:
-            #         result_size =3
         else:
             result_size = 0
         return result_size
             
 
+    def set_yolochecklist(self, tmp_step):
+        self.check_is_step_pass = [0] * len(self.xml_detection_partlist[tmp_step])
+        
+    def check_zero_index_yolocheck(self):
+        for idx, val in enumerate(self.check_is_step_pass):
+            if val == 0:
+                return idx
+        return -1
 
-
-    def isyolomodel_pass(self): #work view
+    def isyolomodel_pass(self):
         result = 0
         if self.xml_detection_countlist[self.current_index] == '0' : #count가 0이라서 detect 해야할 필요 없음
             result = 1
         else:
-            detected_cls = set(sorted(self.yolo_detect_class_workview))
-            must_be_detected_cls = set(sorted(self.xml_detection_partlist[self.current_index]))
-            if must_be_detected_cls == detected_cls :
-                if self.xml_detection_modellist[self.current_index] == '0':
-                    result = 1
-                elif self.xml_detection_modellist[self.current_index] == '1':
-                    if self.stepmodel_timecount == 300:
+            if self.current_index == 0:
+                for val in self.yolo_detect_class:
+                    if val in self.xml_detection_partlist[0]:
+                        try:
+                            index = self.xml_detection_partlist[0].index(val)
+                            self.check_is_step_pass[index] = 1
+                        except ValueError:
+                            pass
+        
+                if all(element == 1 for element in self.check_is_step_pass) :
                         result = 1
-                        self.stepmodel_timecount =0
-                    else:
-                        self.stepmodel_timecount += 1
-                    
-
+            # detected_cls = set(sorted(self.yolo_detect_class_workview))
+            # must_be_detected_cls = set(sorted(self.xml_detection_partlist[self.current_index]))
+            # if must_be_detected_cls == detected_cls :
+            else:
+                for val in self.yolo_detect_class_workview:
+                    if val in self.xml_detection_partlist[self.current_index]:
+                        try:
+                            index = self.xml_detection_partlist[self.current_index].index(val)
+                            self.check_is_step_pass[index] = 1
+                        except ValueError:
+                            pass
+                
+                if all(element == 1 for element in self.check_is_step_pass) :
+                    if self.xml_detection_modellist[self.current_index] == '0':
+                        result = 1
+                    elif self.xml_detection_modellist[self.current_index] == '1':
+                        if self.stepmodel_timecount == 50:
+                            result = 1
+                            self.stepmodel_timecount =0
+                        else:
+                            self.stepmodel_timecount += 1
 
         return result
 
@@ -632,8 +662,10 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
                 elif TESTMODE == 0 :
                     if self.isyolomodel_pass() == 1:
                         self.current_index += 1
+                        self.iscorrecttimer_on = 1
+                        self.set_yolochecklist(self.current_index)
                         
-                if self.current_index in [11, 17]:  # 11번째 사진, 17번째 사진의 경우
+                if self.current_index in [11, 17,20]:  # 11번째 사진, 17번째 사진의 경우
                     self.timer.start(5000)  # 5초 동안 표시
                 else:
                     self.timer.start(200)  # 나머지는 0.5초 동안 표시
@@ -682,7 +714,7 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
         while True:
             ret, frame = cap.read()
             if not ret:
-                self.playback_count += 1
+                self.playback_count += 2
                 if self.playback_count < 2:  # 2번 반복 재생
                     cap.set(cv2.CAP_PROP_POS_FRAMES, 0)  # 영상을 처음으로 되감음
                 else:
@@ -704,7 +736,49 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
     
 # --- workGuideLabel 띄우기 끝 
                 
-    def update_frame1(self): #workview
+    def set_green_ok(self, tmpframe):
+        result = tmpframe.copy()
+        
+        
+        if self.iscorrecttimer_on == 1:
+            if self.correcttimer == 30:
+                self.iscorrecttimer_on = 0
+                self.correcttimer =0
+
+            else:
+                self.correcttimer +=1
+        
+
+        # print("x1 : {}, y1: {} x2: {} y2: {}".format(int(x1), int(y1)), (int(x2), int(y2)))
+        # 객체의 크기를 이미지에 표시
+        
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        font_scale = 2
+        font_thickness = 1
+        font_color = (0, 255, 0)  # 흰색
+        org = (int(result.shape[1]/2) - 50, int(result.shape[0]/2)) 
+        ok_str = "OK"
+        
+        if self.iscorrecttimer_on == 1 :
+            cv2.putText(result, ok_str, org, font, font_scale, font_color, font_thickness)
+        return result
+    
+    def show_step_timer(self, tmpframe):
+        result = tmpframe.copy()
+        
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        font_scale = 2
+        font_thickness = 1
+        font_color = (255, 0, 0)  # 흰색
+        org = (int(result.shape[1]/2) - 50, int(result.shape[0]/2)) 
+        timer_str = str(self.stepmodel_timecount)
+        
+        if self.stepmodel_timecount != 0 :
+            cv2.putText(result, timer_str, org, font, font_scale, font_color, font_thickness)
+        return result
+                
+    
+    def update_frame1(self):
         ret, frame_1 = cap1.read()  # 웹캠 1번
         if ret:
             frame_1 = cv2.rotate(frame_1, cv2.ROTATE_180)
@@ -712,6 +786,8 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
             #frame_1으로 predict
             self.yolo_update_workview(frame_1)
             frame_1 = self.draw_rec(frame_1)
+            frame_1 = self.set_green_ok(frame_1)
+            frame_1 = self.show_step_timer(frame_1)
             #frame_1에다가 rectangle 그리기 
             height, width, channel = frame_1.shape
             bytes_per_line = 3 * width
@@ -719,7 +795,7 @@ class assemblyWindow(QMainWindow,form_assemblypage_ui):
             pixmap_1 = QPixmap.fromImage(q_img)
             self.workNowLabel.setPixmap(pixmap_1)
 
-    def update_frame2(self): #materialview
+    def update_frame2(self):
         ret, frame_2 = cap2.read()  # 웹캠 2번
         if ret:
             frame_2 = cv2.cvtColor(frame_2, cv2.COLOR_BGR2RGB)
@@ -1079,4 +1155,3 @@ if __name__ == "__main__":
     window.show()
     atexit.register(cleanup)
     sys.exit(app.exec())
-
