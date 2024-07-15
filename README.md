@@ -1,32 +1,119 @@
-# 작업 부품 구분 및 표시로 작업 시퀀스 학습을 도와 주는 서비스
-![표지](https://github.com/seungyeonSeok/iot-/assets/162243509/dab70132-4d61-4a24-899d-131664cc8821)
-#### 여기에 우리 시연영상 중 잘나온 부분 gif로 첨부하면 좋을듯 
-## 1. 프로젝트 개요 
-### 프로젝트 목표: ? 
-#### - 팀명: daYeonbOsunhaLinseungyeOn 
-#### - 팀원: 정다연(팀장), 김보선,  장하린, 석승연 
+# 👷 Worker Assistant 🧰
+####       : 작업 부품 구분 및 표시로 작업 시퀀스 학습을 도와 주는 서비스
+<br/>
 
-## 시스템 구성도 
-![시스템구성도](https://github.com/seungyeonSeok/iot-/assets/162243509/3dfe0ec2-f7ec-4b34-bc80-a64388352019)
-## 시퀸스 다이어그램 
-![image](https://github.com/addinedu-ros-4th/deeplearning-repo-1/assets/162243509/3316c1cc-78d1-4338-8b34-93f7d95f341b)
-## 기능리스트 
-|구분|기능명|기능|
-|---|---|---|
-|객체탐지| **재료 구분-종류** |키트에 들어 있는 나무 블럭 15개, 종류가 다른 볼트 3쌍, 너트 1쌍을 모양에 따라 구분  |
-|객체탐지| **재료 구분-크기** |모양이 비슷한 재료의 경우 사이즈 측정을 통해 재료를 2차 분류 bar블럭을 사이즈별 3종류로 구분 |
-|작업자 상호작용| **grab/release 인식** |자재를 잡았을 때의 상태인 grab 상태와 자재를 놓았을 때의 상태인 release 상태 확인 |
-|작업자 상호작용| **잘못된 자재 선택시 경고** |요구되는 자재가 아닌 다른 자재 근처에서 작업자의 grab하는 상태가 확인되면 경고 문구 도출 |
-|데이터관리| **작업자 데이터 호출** |로그인시 입력된 ID가 db내 operator 테이블에 존재시 그 ID에 해당하는 작업자의 이름을 불러옴 |
-|데이터관리| **작업 결과 저장** |db내 Workdata 테이블에 [작업명/ID/작업자 이름/작업날짜/작업상태(완료/불량)] 저장 |
-|데이터관리| **불량보고 데이터 저장** |db내 errordata 테이블에 [작업명/ID/작업자 이름/작업날짜/불량 파트/불량 사유] 저장 |
-|데이터관리| **작업 데이터 로드** |프로그램의 확장성을 위해 작업 데이터를 외부 xml 파일에서 로드함 |
+<p align="center"><img src="https://github.com/user-attachments/assets/522daaa9-c605-4c01-8ac3-abb15841ec96"  /></p> 
 
-## 적용 기술 
+<br/>
 
-## 사용자 인터페이스 
+## 프로젝트 기간 
 
-## 시연 영상(링크)
+2024.03.14 ~ 2024.04.11
 
-## 발표 자료 
+# 📖 Introduction
+이 프로젝트에서는 학습한 DL/ML 기술들을 활용하여 작업에 필요한 부품을 구분하고 조립공정을 진행하는 작업자의 작업 생산성을 높이고 
+작업을 돕기 위한 서비스를  구현을 하였다
+
+
+# 🔧 Stack 
+
+<br/>
+        
+<div align="center">
+  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=white"> <img src="https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=Ubuntu&logoColor=white">   
+</div>
+
+<div align="center">
+    <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white">  <img src="https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=OpenCV&logoColor=white"> <img src="https://img.shields.io/badge/PyQt-41CD52?style=for-the-badge&logo=Qt&logoColor=white"> <img src="https://img.shields.io/badge/Keras-D00000?style=for-the-badge&logo=Keras&logoColor=white"> <img src="https://img.shields.io/badge/Tensorflow-FF6F00?style=for-the-badge&logo=Tensorflow&logoColor=white">
+</div>
+
+<div align="center">
+   <img src="https://img.shields.io/badge/Github-181717?style=for-the-badge&logo=Github&logoColor=white"> 
+<img src="https://img.shields.io/badge/Confluence-172B4D?style=for-the-badge&logo=Confluence&logoColor=white"> <img src="https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=Slack&logoColor=white"> 
+
+</div>
+
+<br/>
+
+# Project 설계
+
+## 🛠️ System Architecture
+
+<p align="center"><img src="https://github.com/user-attachments/assets/87e3f442-d501-408e-b81b-04b9acd76eac"></p>
+
+## 📡 Sequence Diagram
+<br/> 
+
+<p align="center"><img src="https://github.com/user-attachments/assets/a55b4c22-c76b-4895-ab80-e919928ede84"></p>
+
+## 👈 주요 기능
+
+### 객체 탐지
+
+<br/>
+
+<p align="center"><img src="https://github.com/user-attachments/assets/dd4011a3-c535-445d-899c-db237e1978be"></p>
+
+<br/>
+<br/>
+
+### 작업자 상호작용
+
+<br/>
+
+<p align="center"><img src="https://github.com/user-attachments/assets/de449e65-6555-4a00-b8dd-d9a0317110e4"></p>
+
+<br/>
+<br/>
+
+### 데이터 관리 
+
+<br/>
+
+<p align="center"><img src="https://github.com/user-attachments/assets/3f1923f8-5d59-4f96-b437-12b0139f3f2f"></p>
+
+<br/>
+<br/>
+
+### 사용자 인터페이스 
+
+<br/>
+
+<p align="center"><img src="https://github.com/user-attachments/assets/98b6944f-d14c-429d-a221-7b3fb91b1ae2"></p>
+
+<br/>
+<br/>
+
+# 시연영상
+## 🖼️ GUI
+
+<br/>
+
+## 🙌 작업자 가이딩 영상
+
+<br/>
+<br/>
+
+
+# 🧑‍💻 Role  
+
+|팀원 |담당역할|
+|:--:|:--:|
+|김보선| 조립 상태 확인용 데이터셋 제작 및 yolo 모델 학습 <br> media Pipe를 통한 grab & realease 기술 구현|
+|석승연|GUI 배치 및 구현 <br> 자료 제작|
+|장하린|객체 길이 측정 함수 구현 및 적용|
+|정다연*|프로젝트 전체 구조 설계 <br> GUI 초안 작성 <br> 데이터 구조 설계 및 GUI 연동 <br> YOLO 모델 GUI 연동 |
+
+<br/>
+<br/>
+
+
+# 📊 발표 자료
+https://docs.google.com/presentation/d/1ae1tFd8COfWqzvSSINeDHH-cGEpuBUAiguhgcbK50bM/edit?usp=sharing
+
+
+
+
+
+
 
