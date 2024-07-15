@@ -91,6 +91,7 @@
 
 ## 🙌 작업자 가이딩 영상
 
+https://youtu.be/XdJhwoheq5w
 <br/>
 <br/>
 
