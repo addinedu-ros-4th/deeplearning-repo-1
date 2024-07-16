@@ -8,12 +8,17 @@
 
 ## 프로젝트 기간 
 
-2024.03.14 ~ 2024.04.11
+2024.03.21 ~ 2024.04.11
+
+<br/>
+<br/>
 
 # 📖 Introduction
 이 프로젝트에서는 학습한 DL/ML 기술들을 활용하여 작업에 필요한 부품을 구분하고 조립공정을 진행하는 작업자의 작업 생산성을 높이고 
 작업을 돕기 위한 서비스를  구현을 하였다
 
+<br/>
+<br/>
 
 # 🔧 Stack 
 
@@ -34,6 +39,7 @@
 </div>
 
 <br/>
+<br/>
 
 # Project 설계
 
@@ -41,10 +47,16 @@
 
 <p align="center"><img src="https://github.com/user-attachments/assets/87e3f442-d501-408e-b81b-04b9acd76eac"></p>
 
+<br/>
+<br/>
+
 ## 📡 Sequence Diagram
 <br/> 
 
 <p align="center"><img src="https://github.com/user-attachments/assets/a55b4c22-c76b-4895-ab80-e919928ede84"></p>
+
+<br/>
+<br/>
 
 ## 👈 주요 기능
 
@@ -87,7 +99,31 @@
 # 시연영상
 ## 🖼️ GUI
 
+### 로그인 
 <br/>
+
+<p align="center"><img src="https://github.com/user-attachments/assets/ac87cbac-2cca-48a1-abe1-d8ef4d89ff55"></p>
+
+<br/>
+<br/>
+
+### 작업 통계량 확인  
+<br/>
+
+<p align="center"><img src="https://github.com/user-attachments/assets/e23c8489-8e6d-462f-9d1d-73788d0cdf4d"></p>
+
+<br/>
+<br/>
+
+### 불량 보고  
+<br/>
+
+<p align="center"><img src="https://github.com/user-attachments/assets/7718f1bb-8e6d-4aca-b57d-8bf04ddf74b3"></p>
+
+<br/>
+<br/>
+
+
 
 ## 🙌 작업자 가이딩 영상
 
